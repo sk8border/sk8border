@@ -1,6 +1,28 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
+music(0)
+
+function _draw()
+cls()
+mapdraw()
+drawskater(0,36)
+drawskater(72,36)
+drawskater(0,0)
+drawskater(72,0)
+  
+end
+
+function drawskater(x,y)
+spr(1,x,y)
+spr(2,x+8,y)
+spr(17,x,y+8)
+spr(18,x+8,y+8)
+end
+
+function _update()
+
+end
 
 __gfx__
 00000000000000000000000000000000000000000000000066666666cccccccc0000000000000000000000000000000000000000000000000000000000000000
