@@ -1,6 +1,44 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
+tpb=16 // ticks per beat
+lst=16*tpb // loopstart tick
+let=lst+176*tpb // loopend tick
+early = 8 // early display ticks
+v1_recur = {0, 32*tpb}
+lyrics = {
+ {"♪we're gonna take♪",
+  -- span of time to display
+  {32*tpb, 36*tpb},
+  -- list of time offsets for
+  -- recurring display
+  v1_recur},
+ {"♪down that wall♪",
+  {36*tpb, 39*tpb},
+  v1_recur},
+ {"♪down that wall♪",
+  {40*tpb, 43*tpb},
+  v1_recur},
+ {"♪down that wall♪",
+  {44*tpb, 46.5*tpb},
+  v1_recur},
+ {"♪break it!♪",
+  {46.5*tpb, 49*tpb},
+  v1_recur},
+ {"♪we will tear♪",
+  {49*tpb, 52*tpb},
+  v1_recur},
+ {"♪down that wall♪",
+  {52*tpb, 56*tpb},
+  v1_recur},
+ {"♪that wall is comin down♪",
+  {56*tpb, 60*tpb},
+  v1_recur},
+ {"*interlude harmonique*",
+  {96*tpb, 112*tpb},
+  {0}},
+}
+
 music(0)
 
 palt(0,false)
@@ -21,18 +59,43 @@ palt(7,true)
 --drawskater(72,96)
 --drawskater(0,0)
 --drawskater(72,0)
-  
+
+ -- lyric cursor
+ local lc =
+  --(t-lst)%(let-lst) + early
+  (t-lst)+early //verse 1 only
+
+ for _,lyric in pairs(lyrics)
+ do
+  for _,off in pairs(lyric[3])
+  do
+   if
+    lc >= lyric[2][1] + off and
+    lc < lyric[2][2] + off then
+     text = lyric[1]
+     print(
+      text,
+      7.5*8 - #text*2,
+      8,
+      7
+     )
+     break
+   end
+  end
+ end
 end
 
 function drawskater(x,y)
 spr(1,x,y,2,2)
 end
 
-function _update()
+t = 0
+function _update60()
   if (btn(4)) then
     // if z is pressed...
     sfx(19) // test explosion
   end
+  t = t + 1
 end
 
 __gfx__
