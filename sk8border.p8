@@ -75,7 +75,7 @@ palt(7,true)
      text = lyric[1]
      print(
       text,
-      7.5*8 - #text*2,
+      8*8 - (#text*4)/2,
       8,
       7
      )
