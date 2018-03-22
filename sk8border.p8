@@ -3,25 +3,92 @@ version 16
 __lua__
 music(0)
 
-function _draw()
-cls()
-mapdraw()
-drawskater(0,36)
-drawskater(72,36)
-drawskater(0,0)
-drawskater(72,0)
-  
+-- globals
+t = nil
+player = nil
+
+-- keys
+keys = {
+ left=0,
+ right=1,
+ up=2,
+ down=3,
+ a=4,
+ b=5
+}
+
+-- accelration due to gravity
+g = 0.6
+
+function make_player(x,y)
+ local p = {}
+ p.x = x
+ p.y = y
+ p.dy = 0
+ p.ddy = g  -- acceleration due to gravity
+ return p
 end
 
-function drawskater(x,y)
-spr(1,x,y)
-spr(2,x+8,y)
-spr(17,x,y+8)
-spr(18,x+8,y+8)
+function update_player(p)
+ if (btn(keys.left)) then p.x -= 1 end
+ if (btn(keys.right)) then p.x += 1 end
+
+ -- vertical motion with simplistic gravity
+ if (btn(keys.up) or btn(keys.a)) then
+  p.dy = 0 -- reset falling from gravity
+  p.y -= 1
+ else
+  apply_gravity(p)
+ end 
+end
+
+function apply_gravity(p)
+ if (p.y < 36) then
+  p.dy += p.ddy
+  p.y += p.dy
+ else
+  p.dy = 0 -- we are on the ground
+ end
+end
+
+function drawskater(p)
+ spr(1,p.x,p.y)
+ spr(2,p.x+8,p.y)
+ spr(17,p.x,p.y+8)
+ spr(18,p.x+8,p.y+8)
+end
+
+function drawskater_jump(p)
+ spr(3,p.x,p.y)
+ spr(4,p.x+8,p.y)
+ spr(19,p.x,p.y+8)
+ spr(20,p.x+8,p.y+8)
+end
+
+function _init()
+ t = 0
+ player = make_player(0,36)
+end
+
+function _draw()
+ cls()
+ mapdraw()
+ drawskater(player)
+
+ -- if (t % 20 < 10) then
+ --  drawskater(0,36)
+ -- else
+ --  drawskater_jump(0,36)
+ -- end
+ -- drawskater(0,36)
+ -- drawskater(72,36)
+ -- drawskater(0,0)
+ -- drawskater(72,0)  
 end
 
 function _update()
-
+ t += 1
+ update_player(player)
 end
 
 __gfx__
