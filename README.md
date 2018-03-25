@@ -4,3 +4,5 @@ Bust Up the Border Wall!
 Un jeu, fait pour le [Game Jam Antifasciste 2018](https://itch.io/jam/antifa-game-jam).
 
 A game, made for the [Anti-Fascist Game Jam 2018](https://itch.io/jam/antifa-game-jam).
+
+Built inside of [Pico-8](https://www.lexaloffle.com/pico-8.php).
