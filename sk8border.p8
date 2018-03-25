@@ -143,11 +143,11 @@ function _draw()
   palt(0,false)
   palt(7,true)
   -- far far mountains
-  mapdraw(32,0,0,3*8,32,4)
+  mapdraw(32,1,0,4*8,32,3)
   -- background
-  drawscrollmap(s/8,32,5,0,5*8,16,16-5);
-  drawscrollmap(s/4,32,7,0,7*8,16,16-5);
-  drawscrollmap(s/2,32,9,0,9*8,16,16-5);
+  drawscrollmap(s/8,32,5,0,5*8,16,2);
+  drawscrollmap(s/4,32,7,0,7*8,16,2);
+  drawscrollmap(s/2,32,9,0,9*8,16,5);
   -- foreground
   drawscrollmap(s,0,0,0,0,16,16)
   drawskater(player)
