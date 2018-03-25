@@ -1,5 +1,5 @@
 # sk8border
-Bust Up the Border Wall!
+Bust Up the Border Wall! [#antifagamejam](https://twitter.com/search?q=%23antifagamejam)
 
 Un jeu, fait pour le [Game Jam Antifasciste 2018](https://itch.io/jam/antifa-game-jam).
 
