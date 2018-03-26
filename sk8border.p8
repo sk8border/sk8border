@@ -74,12 +74,19 @@ end
 
 
 function update_player(p)
-  if (btn(keys.left)) then p.x -= 1 end
-  if (btn(keys.right)) then p.x += 1 end
+  if btn(keys.left) then
+   p.x -= 1
+  end
+  if btn(keys.right) then
+   p.x += 1
+  end
 
   -- vertical motion with simplistic gravity
-  if (btn(keys.up) or btn(keys.a)) then
-    p.dy = 0 -- reset falling from gravity
+  if (
+   btn(keys.up) or btn(keys.a)
+  ) then
+    -- reset falling from gravity
+    p.dy = 0
     p.y -= 1
   else
     apply_gravity(p)
