@@ -51,14 +51,17 @@ keys = {
 }
 
   -- acceleration due to gravity
-g = 0.6
+g = 0.2
+jump_speed = 5
 
+ground_height = 8*14.5
 -- end constants
 
 
 -- global variables
 t = nil
 player = nil
+midjump = false
 
 -- end global variables
 
@@ -83,14 +86,17 @@ function update_player(p)
 
   -- vertical motion with simplistic gravity
   if (
-   btn(keys.up) or btn(keys.a)
+   not midjump and
+   (btn(keys.up) or btn(keys.a))
   ) then
     -- reset falling from gravity
-    p.dy = 0
-    p.y -= 1
-  else
-    apply_gravity(p)
-  end 
+    p.dy -= jump_speed
+    midjump = true
+  end
+
+  if not apply_gravity(p) then
+    midjump = false
+  end
   
   update_anim(p)
 end
@@ -106,13 +112,18 @@ function update_anim(p)
 		end
 end
 
+-- returns false if no effect,
+-- else true
 function apply_gravity(p)
-  if (p.y < 36) then
-    p.dy += p.ddy
-    p.y += p.dy
-  else
-    p.dy = 0 -- we are on the ground
+  p.dy += p.ddy
+  p.y += p.dy
+  if (p.y >= ground_height) then
+    -- we are on the ground
+    p.y = ground_height
+    p.dy = 0
+    return false  
   end
+  return true
 end
 
 
@@ -123,7 +134,10 @@ end
 
 function _init()
   t = 0
-  player = make_player(0,36)
+  player = make_player(
+    0,
+    ground_height
+  )
  
   music(0)
  
