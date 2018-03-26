@@ -51,14 +51,17 @@ keys = {
 }
 
   -- acceleration due to gravity
-g = 0.6
-
+g = 0.2
+jump_speed = 5
+playerheight = 24
+ground_height = 8*14.5
 -- end constants
 
 
 -- global variables
 t = nil
 player = nil
+midjump = false
 
 -- end global variables
 
@@ -74,16 +77,26 @@ end
 
 
 function update_player(p)
-  if (btn(keys.left)) then p.x -= 1 end
-  if (btn(keys.right)) then p.x += 1 end
+  if btn(keys.left) then
+   p.x -= 1
+  end
+  if btn(keys.right) then
+   p.x += 1
+  end
 
   -- vertical motion with simplistic gravity
-  if (btn(keys.up) or btn(keys.a)) then
-    p.dy = 0 -- reset falling from gravity
-    p.y -= 1
-  else
-    apply_gravity(p)
-  end 
+  if (
+   not midjump and
+   (btn(keys.up) or btn(keys.a))
+  ) then
+    -- reset falling from gravity
+    p.dy -= jump_speed
+    midjump = true
+  end
+
+  if not apply_gravity(p) then
+    midjump = false
+  end
   
   update_anim(p)
 end
@@ -99,24 +112,38 @@ function update_anim(p)
 		end
 end
 
+-- returns false if no effect,
+-- else true
 function apply_gravity(p)
-  if (p.y < 36) then
-    p.dy += p.ddy
-    p.y += p.dy
-  else
-    p.dy = 0 -- we are on the ground
+  p.dy += p.ddy
+  p.y += p.dy
+  if (p.y >= ground_height) then
+    -- we are on the ground
+    p.y = ground_height
+    p.dy = 0
+    return false  
   end
+  return true
 end
 
 
 function drawskater(p)
-  spr(p.frame,p.x,p.y+p.yoffset-24,p.framew,p.frameh)
+  spr(
+   p.frame,
+   p.x,
+   p.y+p.yoffset-playerheight,
+   p.framew,
+   p.frameh
+  )
 end
 
 
 function _init()
   t = 0
-  player = make_player(0,36)
+  player = make_player(
+    0,
+    ground_height
+  )
  
   music(0)
  
