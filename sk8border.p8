@@ -53,7 +53,7 @@ keys = {
   -- acceleration due to gravity
 g = 0.2
 jump_speed = 5
-
+playerheight = 24
 ground_height = 8*14.5
 -- end constants
 
@@ -128,7 +128,13 @@ end
 
 
 function drawskater(p)
-  spr(p.frame,p.x,p.y+p.yoffset-24,p.framew,p.frameh)
+  spr(
+   p.frame,
+   p.x,
+   p.y+p.yoffset-playerheight,
+   p.framew,
+   p.frameh
+  )
 end
 
 
