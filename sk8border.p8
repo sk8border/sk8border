@@ -115,11 +115,11 @@ end
 
 
 function _init()
-  t = 0
   player = make_player(0,36)
  
-  music(0)
- 
+  -- title music
+  music(13)
+
   palt(0,false)
   palt(7,true)
 end
@@ -132,7 +132,6 @@ function drawscrollmap(s,mx,my,x,y,w,h)
 end		
 
 function _draw()
-		s = t
   cls()
   --sky
   rectfill (0,0,127,127,12)
@@ -144,6 +143,20 @@ function _draw()
   palt(7,true)
   -- far far mountains
   mapdraw(32,1,0,4*8,32,3)
+  
+  if (t == nil) then
+   local text =
+    'press any key to start'
+   print(
+    text,
+    8*8 - (#text*4)/2,
+    8*7,
+    7
+   )
+   return
+  end
+  
+  s = t
   -- background
   drawscrollmap(s/8,32,5,0,5*8,16,2);
   drawscrollmap(s/4,32,7,0,7*8,16,2);
@@ -179,8 +192,35 @@ function _draw()
   end
 end
 
+function any_btn()
+  return (
+   btn(0) or btn(1) or
+   btn(2) or btn(3) or
+   btn(4) or btn(5)
+  )
+end
 
+timeout = nil
 function _update60()
+  if timeout == nil then
+    if any_btn() then
+     timeout = 40
+     music(-1)
+     sfx(42)
+     -- wait 400 ms before
+     -- starting game
+    end
+    return
+  elseif timeout > 0 then
+   timeout = timeout - 1
+   if timeout == 0 then
+    t = -1
+    music(0)
+   else
+    return
+   end
+  end
+
   update_player(player)
 
   if (btn(4)) then
@@ -190,7 +230,6 @@ function _update60()
   if (btn(5)) then
     sfx(23)
   end
-  t = t + 1
 end
 
 __gfx__
@@ -350,6 +389,7 @@ __sfx__
 011e00001a2321a2321a2321a2321a2321a2321a2321a2321a2321a2321a2321a2321a2321a2321a2321a23200200000000000000000000000000000000000000000000000000000000000000000000000000000
 011e00001f2321f2321f2321f2321f2321f2321f2321f232202312023220232202322023220232162311623200202002000000000000000000000000000000000000000000000000000000000000000000000000
 011e00000c6000c600246000c6000c6000c600246000c6000c6000c600246000c6000c6000c600246000c6000c6000c600246000c6000c6000c600246000c6000c6000c600246000c6000c635246450c63524645
+01080000290552f05536000360003600036000360003600018700177051f702247021f702167051e7021e702187001e7001e700137001e7001d7001d700127001d7001c7001c7001b7001b7001b7001b7001c700
 __music__
 00 01421244
 01 01021244
