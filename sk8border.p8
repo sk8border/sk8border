@@ -100,6 +100,7 @@ launch_t = nil
 land_t = nil
 yoffset = 0
 p_state = states.idle
+lastwall = nil
 
 -- end global variables
 
@@ -266,7 +267,7 @@ function _init()
     ground_y
   )
  
-  --music(0)
+  music(0)
   play_snd(snd.skate)
  
   palt(0,false)
@@ -317,6 +318,7 @@ function add_wall(x,w,h)
 			end
 		end
 	end
+	lastwall = wall
 	return wall
 end
 
@@ -332,7 +334,7 @@ function break_wall(wa)
 	wa.breaking = true
 	wa.at = 0
 	for i=1, wa.w do
-		wa.xplos[i] = -2-flr(rnd(4))
+		wa.xplos[i] = -4-flr(rnd(4))
 		wa.rubble[i] = rubble[1+flr(rnd(3))]
 	end
 	play_snd(snd.explode)
@@ -503,9 +505,20 @@ function _update60()
   for i=1, #walls do
   	update_wall(walls[i])
   end
-  if t%60 == 0 then
+  if lastwall == nil or
+  	lastwall.x+lastwall.w*8 <= 128
+  then
+  	local wallx = 128
+  	if not lastwall == nil then
+  		wallx = lastwall.x + lastwall.w*8
+  	end
+  	add_wall(wallx,4+flr(rnd(8)),5+flr(rnd(5)))
+  end
+  
+  
+  if t%120 == 0 then
   	break_allwalls()
-  	add_wall(128,4+flr(rnd(8)),5+flr(rnd(5)))
+  	--add_wall(128,4+flr(rnd(8)),5+flr(rnd(5)))
   end
   t += 1
 end
