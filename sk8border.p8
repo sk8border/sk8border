@@ -67,6 +67,18 @@ snd = {
  grind=24
 }
 
+rubble = {
+	{i=64,w=2,h=1},
+	{i=66,w=1,h=1},
+	{i=67,w=1,h=1},
+	{i=68,w=1,h=1}
+}
+
+prop = {
+	{i=12,w=4,h=4},
+	{i=8,w=4,h=2}
+}
+
   -- acceleration due to gravity
 g = 0.2
 jump_speed = 5
@@ -260,7 +272,164 @@ function _init()
   palt(0,false)
   palt(7,true)
   prevwt = 0
-  xplos = {}
+  walls = {}
+  
+  --xplos = {}
+end
+
+function add_wall(x,w,h)
+	local wall = nil
+	for i=1,#walls do
+		if not walls[i].exists then
+			wall = walls[i]
+			break
+		end
+	end
+	if wall == nil then
+		wall = {}
+		walls[#walls+1] = wall
+	end
+	wall.x = x
+	wall.y = 112-h*8
+	wall.w = w
+	wall.h = h
+	wall.ax = 0
+	wall.ay = 0
+	wall.at = 0
+	wall.exists = true
+	wall.breaking = false
+	wall.prop = {}
+	wall.xplos = {}
+	wall.rubble = {}
+	-- add propaganda
+	local px = 1
+	local py = 1
+	for i=1,#prop do
+		local p = prop[i]
+		if w >= p.w+2 and h >= p.h+2 then
+			if rnd(1)<0.3 then
+				wall.prop[#wall.prop+1]={
+					i=p.i,w=p.w,h=p.h,
+					x=8+rnd(8*(w-p.w-2)),
+					y=8+rnd(8*(h-p.h-2))
+				}
+				break
+			end
+		end
+	end
+	return wall
+end
+
+function break_allwalls()
+	for i=1, #walls do
+		break_wall(walls[i])
+	end
+end
+
+function break_wall(wa)
+	if not wa.exists then return end
+	if wa.breaking then return end
+	wa.breaking = true
+	wa.at = 0
+	for i=1, wa.w do
+		wa.xplos[i] = -2-flr(rnd(4))
+		wa.rubble[i] = rubble[1+flr(rnd(3))]
+	end
+	play_snd(snd.explode)
+end
+
+function update_wall(wa)
+	if not wa.exists then 
+		return
+	end
+	if wa.breaking then
+		wa.at += 1
+		wa.ax = rnd(6)-3
+		wa.ay = (wa.at/4)*(wa.at/4) + rnd(2)-1
+	end
+	wa.x -= 1
+	if wa.x+wa.w*8 < -16 then
+		wa.exists = false
+	end
+end
+
+function draw_wall(wa)
+	if not wa.exists then 
+		return
+	end
+	local x = wa.x + wa.ax
+	local y = wa.y + wa.ay
+	local sprs = {1,17,33,49}
+	local coli = 0
+	
+	for i=1, wa.w do
+		if i == wa.w then coli = 2
+		elseif i > 1 then coli = 1
+		end
+		local rowi = 1
+		for j=1, wa.h do
+			if j == wa.h then rowi = 4
+			elseif j == wa.h-1 then rowi = 3
+			elseif j > 1 then rowi = 2
+			end
+			-- draw!!
+			spr(sprs[rowi]+coli,x+(i-1)*8,y+(j-1)*8)
+		end
+		
+		-- draw rubble
+		if wa.breaking then
+ 		local xat = flr(wa.at/4+wa.xplos[i])
+ 		if xat >= 2 then
+ 			local rubble = wa.rubble[i]
+ 			spr(
+ 				rubble.i,
+ 				wa.x+(i-0.5-rubble.w/2)*8,
+ 				wa.y+(wa.h-rubble.h)*8,
+ 				rubble.w,
+ 				rubble.h
+ 			)
+ 		end
+		end
+	end
+	
+	palt(7,false)
+ palt(0,true)
+	-- draw propaganda
+	for i=1, #wa.prop do
+		local p = wa.prop[i]
+		spr(p.i,x+p.x,y+p.y,p.w,p.h)
+	end
+	palt(0,false)
+ palt(7,true)
+end
+
+function draw_wallxplos(wa)
+	if not wa.exists then 
+		return
+	end
+	if wa.breaking then
+   palt(0,true)
+   palt(7,false)
+   local aframes = 4
+   for i=1,wa.w do
+   	-- total animation time
+   	local xat = flr(wa.at/4+wa.xplos[i])
+   	-- current cycle time (wall anim frame)
+   	local xaf = xat%aframes
+   	-- plays explosion anim only 2 times
+   	if xat >=0 and xat < aframes*1 and xaf >= 0 and xaf <= 3
+   	then
+   		local f=162+xaf*2
+   		spr(
+   			f,
+   			wa.x+(i-1)*8-4,
+   			wa.y+(wa.h-2)*8,2,2
+   		)
+   	end
+   end
+   palt(0,false)
+   palt(7,true)
+	end			
 end
 
 function drawscrollmap(s,mx,my,x,y,w,h)
@@ -289,57 +458,12 @@ function _draw()
   drawscrollmap(s/2,32,9,0,9*8,16,5);
   
   --wall test!
-  local wx = 2*8
-  local wy = 5*8
-  local ww = 7
-  local wh = 9
-  
-  local wxa = wx
-  local wya = wy
-  
-  local wt = t%120-60
-  
-  if wt >= 0 then
-   if prevwt < 0 then
-   	for i=0,7 do
-   		xplos[i]=flr(rnd(6))
-   	end
-   end
-  	wxa = wx + rnd(6)-3
-  	wya = wy + (wt/4)*(wt/4) + rnd(2)-1
-  	
+  for i=1, #walls do
+  	draw_wall(walls[i])
   end
-  prevwt = wt
-  
-  -- actually draw the wall
-  mapdraw(0,5,wxa,wya,ww,wh)
-  -- propaganda!
-  palt(0,true)
-  palt(7,false)
-  spr(8,wxa+8,wya+8,4,2)
-  spr(12,wxa+12,wya+30,4,4)
-  palt(0,false)
-  palt(7,true)
-  
-  if wt >= 0 then
-  palt(0,true)
-  palt(7,false)
-  for i=0,7 do
-  	local xpf=flr(xplos[i]+wt/4)%6
-  	local f=162+xpf*2
-  	if xpf > 3 then f=0 end
-  	--f = 139
-  	if f > 0 then
-  		spr(f,wx+(i-1)*8,wy+(wh-2)*8,2,2)
-  	end
+  for i=1, #walls do
+  	draw_wallxplos(walls[i])
   end
-  palt(0,false)
-  palt(7,true)
-
-  if (wt == 0) then
-    play_snd(snd.explode)
-  end
-end
   
   -- foreground
   --drawscrollmap(s,0,0,0,0,16,16)
@@ -376,6 +500,13 @@ end
 
 function _update60()
   update_player(player)
+  for i=1, #walls do
+  	update_wall(walls[i])
+  end
+  if t%60 == 0 then
+  	break_allwalls()
+  	add_wall(128,4+flr(rnd(8)),5+flr(rnd(5)))
+  end
   t += 1
 end
 
