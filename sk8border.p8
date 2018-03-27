@@ -311,7 +311,15 @@ function _draw()
   end
   prevwt = wt
   
+  -- actually draw the wall
   mapdraw(0,5,wxa,wya,ww,wh)
+  -- propaganda!
+  palt(0,true)
+  palt(7,false)
+  spr(192,wxa+8,wya+8,4,2)
+  spr(196,wxa+12,wya+30,4,4)
+  palt(0,false)
+  palt(7,true)
   
   if wt >= 0 then
   palt(0,true)
