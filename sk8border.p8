@@ -60,6 +60,13 @@ states = {
  land=6
 }
 
+snd = {
+ explode=19,
+ skate=22,
+ jump=23,
+ grind=24
+}
+
   -- acceleration due to gravity
 g = 0.2
 jump_speed = 5
@@ -84,7 +91,6 @@ p_state = states.idle
 
 -- end global variables
 
-
 function make_player(x,y)
   local p = {}
   p.x = x
@@ -92,6 +98,11 @@ function make_player(x,y)
   p.dy = 0
   p.ddy = g  -- acceleration due to gravity
   return p
+end
+
+function play_snd(index)
+ sfx(-1, 3)
+ sfx(index, 3)
 end
 
 function update_player(p)
@@ -117,6 +128,7 @@ function update_player(p)
     p_state = states.launch
     launch_t = t
     p.dy -= jump_speed
+    play_snd(snd.jump)
    end
   elseif ps == states.launch then
    if (
@@ -152,6 +164,7 @@ function update_player(p)
   ) then
    p_state = states.land
    land_t = t
+   play_snd(snd.skate)
    -- todo: sometimes we want
    -- to go to the grind state
   end
@@ -242,6 +255,7 @@ function _init()
   )
  
   music(0)
+  play_snd(snd.skate)
  
   palt(0,false)
   palt(7,true)
@@ -305,15 +319,7 @@ end
 
 function _update60()
   update_player(player)
-
-  if (btn(4)) then
-    // if z is pressed...
-    sfx(19) // test explosion
-  end
-  if (btn(5)) then
-    sfx(23)
-  end
-  t = t + 1
+  t += 1
 end
 
 __gfx__
