@@ -332,7 +332,11 @@ function _draw()
   end
   palt(0,false)
   palt(7,true)
+
+  if (wt == 0) then
+    play_snd(snd.explode)
   end
+end
   
   -- foreground
   --drawscrollmap(s,0,0,0,0,16,16)
