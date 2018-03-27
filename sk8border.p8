@@ -50,21 +50,46 @@ keys = {
  b=5
 }
 
+states = {
+ idle=0,
+ crouch=1,
+ launch=2,
+ jump=3,
+ grind=4,
+ down=5,
+ land=6
+}
+
+snd = {
+ explode=19,
+ skate=22,
+ jump=23,
+ grind=24
+}
+
   -- acceleration due to gravity
 g = 0.2
 jump_speed = 5
 playerheight = 24
-ground_height = 8*14.5
+ground_y = 8*14.5
+horiz_speed = 1
+launch_time = 12
+launch_frame_time = 6
+max_grind_y = 40
+land_time = 10
+idle_bob_time = 8
 -- end constants
 
 
 -- global variables
 t = nil
 player = nil
-midjump = false
+launch_t = nil
+land_t = nil
+yoffset = 0
+p_state = states.idle
 
 -- end global variables
-
 
 function make_player(x,y)
   local p = {}
@@ -75,41 +100,125 @@ function make_player(x,y)
   return p
 end
 
+function play_snd(index)
+ sfx(-1, 3)
+ sfx(index, 3)
+end
 
 function update_player(p)
   if btn(keys.left) then
-   p.x -= 1
+   p.x -= horiz_speed
   end
   if btn(keys.right) then
-   p.x += 1
+   p.x += horiz_speed
   end
 
-  -- vertical motion with simplistic gravity
-  if (
-   not midjump and
-   (btn(keys.up) or btn(keys.a))
-  ) then
-    -- reset falling from gravity
+  local ps = p_state
+
+  if ps == states.idle then
+   if (
+    btn(keys.a) or btn(keys.b)
+   ) then
+    p_state = states.crouch
+   end
+  elseif ps == states.crouch then
+   if not (
+    btn(keys.a) or btn(keys.b)
+   ) then
+    p_state = states.launch
+    launch_t = t
     p.dy -= jump_speed
-    midjump = true
+    play_snd(snd.jump)
+   end
+  elseif ps == states.launch then
+   if (
+    t - launch_t >= launch_time
+   ) then
+    p_state = states.jump
+   end
+  elseif ps == states.jump then
+   if (
+    p.dy > 0 and
+    ground_y-p.y < max_grind_y
+   ) then
+    p_state = states.down
+   end
+  elseif ps == states.grind then
+   -- todo: handle grinding
+  elseif ps == states.down then
+   -- todo: special handling ?
+  else  -- states.land
+   if (
+    t - land_t >= land_time
+   ) then
+    p_state = states.idle
+   end
   end
 
-  if not apply_gravity(p) then
-    midjump = false
+  if (
+   (
+    ps == states.launch or
+    ps == states.jump or
+    ps == states.down
+   ) and not apply_gravity(p)
+  ) then
+   p_state = states.land
+   land_t = t
+   play_snd(snd.skate)
+   -- todo: sometimes we want
+   -- to go to the grind state
   end
-  
-  update_anim(p)
+
+  if (
+   p_state == states.idle or
+   p_state == states.crouch or
+   p_state == states.land
+  ) then
+   yoffset = 0 - flr(
+    t / idle_bob_time % 2
+   )
+  else
+   yoffset = 0
+  end
+
+  compute_frame(p)
 end
 
-function update_anim(p)
-		frm = flr(t/6)%7
-		p.frame = 80+2*frm
-		p.framew = 2
-		p.frameh = 3
-		p.yoffset = 0
-		if (frm >=3 and frm <=5)
-			then p.yoffset = -8
-		end
+function compute_frame(p)
+  local ps = p_state
+  if ps == states.idle then
+   frm = 0
+  elseif ps == states.crouch then
+   frm = 1
+  elseif ps == states.launch then
+   if t - launch_t < 6 then
+    frm = 2
+   else
+    frm = 3
+   end
+  elseif ps == states.jump then
+   if btn(keys.a) then
+    frm = 3
+   elseif btn(keys.b) then
+    frm = 5
+   else
+    frm = 4
+   end
+  elseif ps == states.grind then
+   -- todo: handle grind
+  elseif ps == states.down then
+   if btn(keys.a) then
+    frm = 3
+   else
+    frm = 5
+   end
+  else -- ps == states.land
+   frm = 1
+  end
+
+  p.frame = 80+2*frm
+  p.framew = 2
+  p.frameh = 3
 end
 
 -- returns false if no effect,
@@ -117,11 +226,11 @@ end
 function apply_gravity(p)
   p.dy += p.ddy
   p.y += p.dy
-  if (p.y >= ground_height) then
+  if (p.y >= ground_y) then
     -- we are on the ground
-    p.y = ground_height
+    p.y = ground_y
     p.dy = 0
-    return false  
+    return false
   end
   return true
 end
@@ -131,7 +240,7 @@ function drawskater(p)
   spr(
    p.frame,
    p.x,
-   p.y+p.yoffset-playerheight,
+   p.y + yoffset - playerheight,
    p.framew,
    p.frameh
   )
@@ -142,10 +251,11 @@ function _init()
   t = 0
   player = make_player(
     0,
-    ground_height
+    ground_y
   )
  
   music(0)
+  play_snd(snd.skate)
  
   palt(0,false)
   palt(7,true)
@@ -222,7 +332,11 @@ function _draw()
   end
   palt(0,false)
   palt(7,true)
+
+  if (wt == 0) then
+    play_snd(snd.explode)
   end
+end
   
   -- foreground
   --drawscrollmap(s,0,0,0,0,16,16)
@@ -259,15 +373,7 @@ end
 
 function _update60()
   update_player(player)
-
-  if (btn(4)) then
-    // if z is pressed...
-    sfx(19) // test explosion
-  end
-  if (btn(5)) then
-    sfx(23)
-  end
-  t = t + 1
+  t += 1
 end
 
 __gfx__
