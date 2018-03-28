@@ -286,14 +286,13 @@ function _init()
 
   palt(0,false)
   palt(7,true)
-  prevwt = 0
   walls = {}
 end
 
 function add_wall(x,w,h)
 	local wall = nil
 	for i=1,#walls do
-		if not walls[i].exists then
+ 	if not walls[i].exists then
 			wall = walls[i]
 			break
 		end
@@ -315,13 +314,19 @@ function add_wall(x,w,h)
 	wall.explosions = {}
 	wall.rubble = {}
 	-- add propaganda
+	-- cycle through every poster
+	-- model and do a random check
+	-- to post it on the wall
 	local px = 1
 	local py = 1
 	for i=1,#posters do
 		local p = posters[i]
-		if w >= p.w+2 and h >= p.h+2 then
+		if w >= p.w+2 and
+		h >= p.h+2 then
 			if rnd(1)<0.3 then
-				wall.posters[#wall.posters+1]={
+				wall.posters[
+				#wall.posters+1]=
+				{
 					i=p.i,w=p.w,h=p.h,
 					x=8+rnd(8*(w-p.w-2)),
 					y=8+rnd(8*(h-p.h-2))
@@ -334,32 +339,41 @@ function add_wall(x,w,h)
 	return wall
 end
 
-function break_allwalls()
+function break_all_walls()
 	for i=1, #walls do
 		break_wall(walls[i])
 	end
 end
 
 function break_wall(wall)
-	if not wall.exists then return end
-	if wall.breaking then return end
+	if not wall.exists or
+	wall.breaking then 
+		return
+	end
 	wall.breaking = true
 	wall.anim_elapsed = 0
 	for i=1, wall.w do
-		wall.explosions[i] = -4-flr(rnd(4))
-		wall.rubble[i] = rubble[1+flr(rnd(3))]
+		wall.explosions[i] = 
+		 -4-flr(rnd(4))
+		wall.rubble[i] = 
+		 rubble[1+flr(rnd(3))]
 	end
 	play_snd(snd.explode)
 end
 
 function update_wall(wall)
-	if not (wall.exists and game_started) then
+	if not (wall.exists and
+	game_started) then
 		return
 	end
 	if wall.breaking then
 		wall.anim_elapsed += 1
-		wall.anim_x = rnd(6)-3
-		wall.anim_y = (wall.anim_elapsed/4)*(wall.anim_elapsed/4) + rnd(2)-1
+		wall.anim_x = 
+		 rnd(6)-3
+		wall.anim_y = 
+		 (wall.anim_elapsed/4)*
+		 (wall.anim_elapsed/4)+
+		 rnd(2)-1
 	end
 	wall.x -= 1
 	if wall.x+wall.w*8 < -16 then
@@ -377,29 +391,39 @@ function draw_wall(wall)
 	local col_index = 0
 	
 	for i=1, wall.w do
-		if i == wall.w then col_index = 2
-		elseif i > 1 then col_index = 1
+		if i == wall.w then 
+		 col_index = 2
+		elseif i > 1 then 
+		 col_index = 1
 		end
 		local row_index = 1
 		for j=1, wall.h do
-			if j == wall.h then row_index = 4
-			elseif j == wall.h-1 then row_index = 3
-			elseif j > 1 then row_index = 2
+			if j == wall.h then
+			 row_index = 4
+			elseif j == wall.h-1 then
+			 row_index = 3
+			elseif j > 1 then
+			 row_index = 2
 			end
-			-- draw!!
-			spr(indexes[row_index]+col_index,x+(i-1)*8,y+(j-1)*8)
+			-- draw 1x1 wall sprite
+			-- at i,j
+			spr(
+				indexes[row_index]+col_index,
+				x+(i-1)*8,y+(j-1)*8)
 		end
 		
 		-- draw rubble
 		if wall.breaking then
-		-- total animation time in frames
-		-- of the corresponding explosion
-		-- if at least past a certain point,
-		-- reveal the rubble
+			-- total animation time in frames
+			-- of the corresponding explosion
+			-- if at least past a certain point,
+			-- reveal the rubble
  		local xplo_frames =
-		flr(wall.anim_elapsed/4+wall.explosions[i])
+				flr(wall.anim_elapsed/
+				4+wall.explosions[i])
  		if xplo_frames >= 2 then
- 			local rubble = wall.rubble[i]
+ 			local rubble = 
+ 			wall.rubble[i]
  			spr(
  				rubble.i,
  				wall.x+(i-0.5-rubble.w/2)*8,
@@ -422,43 +446,51 @@ function draw_wall(wall)
  palt(7,true)
 end
 
-function draw_wall_explosions(wall)
+function draw_wall_explosions(
+wall)
 	if not wall.exists then
 		return
 	end
 	if wall.breaking then
-   palt(0,true)
-   palt(7,false)
-   -- explosion duration in frames
-   local xplo_duration = 4
-   for i=1,wall.w do
-   	-- total animation time in frames
-   	local xplo_frames =
-	flr(wall.anim_elapsed/4+wall.explosions[i])
-   	-- current cycle frame
-   	local xplo_curframe =
-	xplo_frames%xplo_duration
-   	-- plays explosion anim only 2 times
-   	if xplo_frames >=0 and
-	xplo_frames < xplo_duration*1
-	and xplo_curframe >= 0
-	and xplo_curframe <= 3
-   	then
-   		local sprite_index=
-		explosion_frames[xplo_curframe+1]
-   		spr(
-   			sprite_index,
-   			wall.x+(i-1)*8-4,
-   			wall.y+(wall.h-2)*8,2,2
-   		)
-   	end
-   end
-   palt(0,false)
-   palt(7,true)
+  palt(0,true)
+  palt(7,false)
+  -- explosion duration
+  -- in frames
+  local xplo_duration = 4
+  for i=1,wall.w do
+  	-- total elapsed animation
+  	-- frames
+  	local xplo_frames =
+				flr(wall.anim_elapsed/4+
+				wall.explosions[i])
+  	-- current frame index
+  	local xplo_curframe =
+				xplo_frames%xplo_duration
+  	-- plays explosion anim only 2 times
+  	if xplo_frames >=0 and
+				xplo_frames < 
+				xplo_duration*1 and
+				xplo_curframe >= 0 and
+				xplo_curframe <= 3 then
+  			local sprite_index=
+						explosion_frames[
+						xplo_curframe+1]
+  			spr(
+  				sprite_index,
+  				wall.x+(i-1)*8-4,
+  				wall.y+(wall.h-2)*8,
+  				2,
+  				2
+  			)
+  		end
+  	end
+  palt(0,false)
+  palt(7,true)
 	end			
 end
 
-function drawscrollmap(s,mx,my,x,y,w,h)
+function drawscrollmap(
+s,mx,my,x,y,w,h)
 		tx = flr(s/8)%w
   dx = -(s%8)
   mapdraw(mx+tx,my,dx,y,w-tx,h)
@@ -650,7 +682,7 @@ function _update60()
 
   if game_started then
    if t%120 == 0 then
-    break_allwalls()
+    break_all_walls()
    end
    t += 1
   end
