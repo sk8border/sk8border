@@ -475,7 +475,7 @@ function is_a_wall_moving()
 end
 
 function draw_title()
- if t > 60 then
+ if t > 40 then
   return
  end
 
@@ -486,14 +486,21 @@ function draw_title()
  -- wall in foreground
  map(0,20,-1,wall_y,18,9)
 
- if not game_started then
-  print(
-   'press ❎ or 🅾️ to start',
-   18,
-   8*13,
-   7
-  )
+ local message =
+   'press 🅾️ or ❎ to start'
+ if (
+  start_countdown or
+  game_started
+ ) then
+  message =
+   ' let\'s wreck that wall!'
  end
+ print(
+  message,
+  18,
+  8*13,
+  7
+ )
 end
 
 function _draw()
