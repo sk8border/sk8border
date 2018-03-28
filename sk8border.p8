@@ -480,7 +480,7 @@ function is_a_wall_moving()
 end
 
 function draw_title()
- if t > 40 then
+ if t > 60 then
   return
  end
 
@@ -490,8 +490,11 @@ function draw_title()
   -- apply gravity at start
   title_wall_y+wall_anim_y
  
+ local logo_t = max(0,t-5)
+ local logo_anim_y =
+ 	flr((logo_t/4)*(logo_t/4))
 	local logo_x = 13
-	local logo_y = 12+wall_anim_y
+	local logo_y = 12+logo_anim_y
 
  -- wall in foreground
  map(0,17,-1,wall_y,18,15)
