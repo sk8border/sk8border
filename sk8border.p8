@@ -451,10 +451,34 @@ function drawscrollmap(s,mx,my,x,y,w,h)
   dx = -(s%8)
   mapdraw(mx+tx,my,dx,y,w-tx,h)
   mapdraw(mx,my,(w-tx)*8+dx,y,tx+1,h)
-end		
+end
+
+function is_a_wall_moving()
+ for i=1, #walls do
+  local wall = walls[i]
+  if (
+    wall.breaking and
+    wall.y + wall.anim_y <
+     ground_y + 60
+  ) then
+   return true
+  end
+ end
+ return false
+end
 
 function _draw()
-		local s = t
+  local cam_x = 0
+  local cam_y = 0
+  if is_a_wall_moving() then
+   cam_x =
+    flr(-1 + rnd(5))
+   cam_y =
+    flr(-1 + rnd(3))
+  end
+  camera(cam_x, cam_y)
+
+	local s = t
   cls()
   --sky
   rectfill (0,0,127,127,12)
