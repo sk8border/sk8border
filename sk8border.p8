@@ -486,9 +486,9 @@ function _draw()
   palt(0,true)
   palt(7,false)
   local cloudx 
-  cloudx= 130-((t+800)/16)%180
+  cloudx= 130-((t+5000)/64)%180
   spr(76,cloudx,16,4,1)
-  cloudx= 130-((t)/20)%180
+  cloudx= 130-((t+1000)/72)%180
   spr(76,cloudx,24,4,1)
   palt(0,false)
   palt(7,true)
