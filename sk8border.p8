@@ -3,7 +3,7 @@ version 16
 __lua__
 -- bust up the border wall!
 
-DEBUG = false
+debug = false
 
 -- constants
 tpb=16 // ticks per beat
@@ -89,7 +89,41 @@ explosion_frames = {
 140,142,236,238
 }
 
+scoring = {
+ -- base number of ticks for
+ -- the score to increase by 1
+ -- while grinding
+ -- set to this value when
+ -- grinding starts
+ interval_base=15,
+ -- if grinding on the opposite
+ -- time as last time, 
+ -- that interval start as
+ -- this number of ticks
+ interval_alt=5,
+ -- whenever score is increased
+ -- by grinding, decrease the
+ -- interval by this many ticks
+ interval_drop_rate=5,
+ -- but not below this
+ interval_min=3,
+ -- stop raking points when
+ -- grinding for over this many
+ -- ticks uninterrupted
+ max_grind_ticks=60,
+ -- points when grinding starts
+ grind_start_pts=1,
+ -- points when walls are destroyed
+ destruction_pts=100,
+ -- wheter to destroy walls
+ -- when falling, besides
+ -- when jumping
+ -- (if gauge is filled)
+ destroy_on_fall=false
+}
+
   -- acceleration due to gravity
+game_duration = 60
 g = 0.2
 jump_speed = 5
 playerheight = 24
@@ -107,6 +141,8 @@ scroll_speed = 1.5
 
 -- global variables
 game_started = false
+game_over = false
+-- in seconds
 t = nil
 player = nil
 frm = 0
@@ -126,6 +162,24 @@ function make_player(x,y)
   return p
 end
 
+function add_to_score(points)
+ score += points*gauge.multiplier
+ set_gauge_value(
+  gauge,
+  gauge.value+points
+ )
+end
+
+function check_for_destruction()
+ if gauge.maxed then
+  break_all_walls()
+  score += scoring.destruction_pts
+  reset_gauge(gauge)
+  return true
+ end
+ return false
+end
+
 function play_snd(index)
  sfx(-1, 3)
  sfx(index, 3)
@@ -137,6 +191,7 @@ function update_player(p)
    return
   end
 
+		local sc = scoring
   local ps = p_state
 
   function check_for_jump()
@@ -146,7 +201,10 @@ function update_player(p)
     p_state = states.launch
     launch_t = t
     p.dy = -jump_speed
-    play_snd(snd.jump)
+    if not check_for_destruction()
+    then
+     play_snd(snd.jump)
+    end
    end
   end
 
@@ -179,17 +237,59 @@ function update_player(p)
          if (
            walls[i].exists and
            not walls[i].breaking and
-           player.x >= walls[i].x and
+           player.x+16 >= walls[i].x and
            player.x <= walls[i].x + 8*walls[i].w
          ) then
-         if flr(abs(player.y - walls[i].y)) == 0 then
-           p_state = states.grind
-           player.y = walls[i].y
-           player.dy = 0
-           play_snd(snd.grind)
-         end
-         current_wall = walls[i]
-         break
+          if flr(abs(player.y - walls[i].y)) == 0 then
+            
+            -- just entered
+            -- grind state
+            add_to_score(
+            sc.grind_start_pts)
+            
+            -- is a down, or is it
+            -- b?
+            local adown = 
+            btn(keys.a)
+            
+            -- initiate 
+            -- grinding
+            -- scoring
+            -------------------
+            -- reset grind ticks
+            -- for this unperturbated
+            -- horizontal section
+            p_totalgrindt = 0
+            
+            -- if grinding on the
+            -- opposite side as
+            -- last time...
+            if (adown and  
+            p_last_grind == 'b') or
+            (adown == false and
+            p_last_grind == 'a') 
+            then
+             p_grindinterval = 
+             sc.interval_alt
+            else
+             -- reset fully
+             p_grindt = 0
+             p_grindinterval = 
+             sc.interval_base
+            end
+            ---------------------
+            
+            p_last_grind =
+             adown and 'a' or 'b'
+             
+            p_state = states.grind
+            player.y = walls[i].y
+            player.dy = 0
+            play_snd(snd.grind)
+
+          end
+          current_wall = walls[i]
+          break
          end
        end
      end
@@ -215,7 +315,28 @@ function update_player(p)
    if player_should_fall then
     -- fallllllllllllllll
     p_state = states.jump
+    if sc.destroy_on_fall then
+     check_for_destruction()
+    end
    else
+   
+    -- continuous grinding!!
+    ------------------
+    if p_totalgrindt < 
+    sc.max_grind_ticks then
+     p_grindt += 1
+     p_totalgrindt += 1
+     if p_grindt>=p_grindinterval
+    	then
+     	add_to_score(1)
+     	p_grindt = 0
+     	p_grindinterval =
+      	max(p_grindinterval-
+      	sc.interval_drop_rate,
+      	sc.interval_min)
+    	end
+    end
+    ------------
     check_for_jump()
    end
   elseif ps == states.down then
@@ -248,6 +369,9 @@ function update_player(p)
      p.y = current_wall.y
    end
    else
+    -- just landed
+    p_last_grind = nil
+    reset_gauge(gauge)
     p_state = states.land
     land_t = t
     play_snd(snd.skate)
@@ -334,106 +458,152 @@ function drawskater(p)
   )
 end
 
+function reset()
+ --------------
+ frm = 0
+ launch_t = nil
+ land_t = nil
+ p_state = states.idle
+ lastwall = nil
+ start_countdown = nil
+ --------------------
+ t = 0
+ score = 0
+ game_started = false
+ timer = game_duration
+ p_last_grind = nil
+ set_gauge_value(gauge,0)
+ player.y = ground_y
+ -- title music
+ music(14)
+ walls = {}
+end
 
 function _init()
-  t = 0
+  
+  game_over = false
+  
   player = make_player(8, ground_y)
-
-  local gauge_widht_in_sprites=
-   10
-  local gauge_x=
-   64-
-   (gauge_widht_in_sprites*8)/
-   2
+  
   gauge = make_gauge(
-   10,2,gauge_x,119
-  )
-  
-  set_gauge_value(gauge,0)
-  
+   8,64,0,119)
 
-  -- title music
-  music(14)
+  gauge.x = 64-gauge.width/2
 
   palt(0,false)
   palt(7,true)
-  walls = {}
+  
+  reset()
 end
 
 function make_gauge(
 width_in_sprites,
-units_per_sprite,
+max_value,
 x,y)
+
 	width_in_sprites = max(
 	 3,width_in_sprites)
-	
-	-- make sure units_per_sprite
-	-- is a power of two
-	-- (can only be 1,2,4 or 8)
-	if units_per_sprite>8 then
-	 units_per_sprite = 8
-	end
-	for i=0,3 do
-	 local target = 2^i
-	 if units_per_sprite<=
-	 target then
-	  units_per_sprite=target
-	  break
-	 end
-	end
-	
- local maxval=
-  width_in_sprites*
-  units_per_sprite
+	 
+	local width =
+	 width_in_sprites * 8
   
  -- create gauge object
  gauge={
  	w=w,
  	x=x,
  	y=y,
+ 	width=width,
  	width_in_sprites=
- 	width_in_sprites,
- 	units_per_sprite=
- 	units_per_sprite,
+ 	 width_in_sprites,
  	pixels_per_unit=
- 	8/units_per_sprite,
- 	max_value=maxval,
- 	value=0
+ 	 width/max_value,
+ 	max_value=max_value,
+ 	value=0,
+ 	multiplier=1,
+ 	maxed=false
  }
- set_gauge_value(gauge,maxval)
+ 
+ set_gauge_value(gauge,units)
+ 
  return gauge
+end
+
+function reset_gauge(gauge)
+ set_gauge_value(gauge,0)
 end
 
 function set_gauge_value(
 gauge,value)
  gauge.value = min(
-  gauge.max_value,value) 
+  gauge.max_value,value)
+ gauge.maxed = gauge.value==
+  gauge.max_value 
+ local mult =
+ flr(4*(gauge.value/
+ gauge.max_value))+1
+ mult = min(mult,4)
+ gauge.multiplier = mult
 end
 
 function draw_gauge(gauge)
+
  local x = gauge.x
  local y = gauge.y
- spr(70,x,y)
- for i=1,
- gauge.width_in_sprites-2 do
+ local col = 7+gauge.multiplier
+ 
+ local flasht 
+ local gaugecol
+ local textcol
+ 
+ if gauge.maxed then
+  col = 2
+ 	-- zero or one
+  flasht = flr((t%16)/8)
+  gaugecol = flasht == 0 and 7 or 0
+  textcol = flasht == 0 and 0 or 7
+  pal(2,gaugecol)
+ end
+ 
+ -- left cap
+ spr(70,x-1,y)
+ for i=0,
+ gauge.width_in_sprites-1 do
   spr(71,x+i*8,y)
  end
- spr(72,
- x+(gauge.width_in_sprites-1)
-  *8,
- y)
- if gauge.value <= 0 then
- 	return
+ -- right cap
+ spr(70,x+gauge.width,y)
+
+ -- draw the gauge's inside
+ if gauge.value > 0 then
+  local inner_height=6
+  rectfill(
+   x,
+   y+1,
+   x+gauge.pixels_per_unit*
+    gauge.value-1,
+   y+inner_height,
+   col
+  )
  end
- local inner_height=6
- rectfill(
-  x+1,
-  y+1,
-  x+gauge.pixels_per_unit*
-   gauge.value-2,
-  y+inner_height,
-  9
- )
+ 
+ if gauge.maxed then
+  local text = "bring it down!"
+  print(
+   text,
+   x+gauge.width/2-
+    (#text/2)*4,
+   y+1,
+   textcol
+  )
+  -- reset
+  pal(2,2)
+ else
+  -- separators
+  spr(70,x+gauge.width*0.25,y)
+  spr(70,x+gauge.width*0.5,y)
+  spr(70,x+gauge.width*0.75,y)
+ end
+ 
 end
 
 function add_wall(x,w,h)
@@ -801,7 +971,7 @@ function _draw()
   --walls
   for i=1, #walls do
   	draw_wall(walls[i])
-    if DEBUG then
+    if debug then
       draw_wall_outline(walls[i])
     end
   end
@@ -837,15 +1007,33 @@ function _draw()
     end
   end
   
+  ------------------------
+  -- u.i ☉☉
+  ------------------------
+  
   -- gauge
   draw_gauge(gauge)
+  
+  -- score
+  local text = tostr(score)
+  print(text,
+   gauge.x+gauge.width+4
+   ,121,0)
+  
+  -- timer
+  spr(53,2,121-2)
+  text = tostr(timer)
+  print(text,12,121,0)
 
-  if DEBUG then
+  if debug then
     print_debug_messages()
   end
 
   -- layer title screen on top
   draw_title()
+  
+  -- game over screen
+  --draw_game_over()
 end
 
 function _update60()
@@ -893,15 +1081,48 @@ function _update60()
   	if lastwall then
   		wallx = flr(lastwall.x+
   		lastwall.w*8)
+  		if rnd(1) < 0.1 then
+  		 wallx += flr(rnd(64))
+  		end
   	end
   	add_wall(wallx,4+flr(rnd(8)),
   	5+flr(rnd(5)))
   end
 
-  if game_started then
-   if t%360 == 0 then
-    break_all_walls()
-    set_gauge_value(gauge,gauge.value+1)
+  if game_over then
+   if go_transition_in then
+    if go_colindex >= 0 then
+     pal(go_colindex,0)
+     go_colindex -= 1
+    elseif go_t == 45 then
+     go_transition_in = false
+     go_colindex = 15
+     reset()
+    end
+   else --transition out
+    if go_colindex >=0 then
+     pal(go_colindex,go_colindex)
+     go_colindex -= 1
+    else
+     game_over = false
+    end 
+   end
+   go_t += 1
+  end
+  
+  if game_started 
+  then
+   if t%60 == 0 then
+    timer -= 1
+    if timer == 0 then
+     go_t = 0
+     go_colindex = 15
+     go_transition_in = true
+     game_over = true
+     game_started = false
+     sfx(-1)
+     --music(-1)
+    end
    end
    t += 1
   end
@@ -932,22 +1153,22 @@ ffffffff015555555555555555555560ff4444444444444444444444444444ff0000000000000000
 4444444401555555555555555555556044444444444444444444444444444444000000000000000000000000000000008888888114fff177771ffff418888888
 44444444015555555555555555555560444444444444444444444444444444440000000000000000000000000000000088888881114ffff44ffffff418888888
 44444444056666666666666666666660444444444444444444444444444444440000000000000000000000000000000088888881114fffffffffff4418888888
-44444444015555555555555555555560777777770000000000000000000000000000000000000000000000000000000088888881114fffffffffff4418888888
-444444440155555555555555555555607770077700000000000000000000000000000000000000000000000000000000888888811144ffffffffff4418888888
-4444444401555555555555555555556077077077000000000000000000000000000000000000000000000000000000008888888811441ffffffff44188888888
-44444444056666666666666666666660770770770000000000000000000000000000000000000000000000000000000088888888111441111114441188888888
-44444444015555555555555555555560770770770000000000000000000000000000000000000000000000000000000088888888811144444411111888888888
-44444444056666666666666666666660770770770000000000000000000000000000000000000000000000000000000081888888881111111111118888888818
-44444444056666666666666666666660777007770000000000000000000000000000000000000000000000000000000081188888888811111111888888888118
-44444444055555555555555555555550000770000000000000000000000000000000000000000000000000000000000088888888888888888888888888888888
-77700000000000777777777777777777777777777700007772222222222222222222222777777777777777777777777700000000000000000000000000000000
+44444444015555555555555555555560777777777700007700000000000000000000000000000000000000000000000088888881114fffffffffff4418888888
+444444440155555555555555555555607770077770777707000000000000000000000000000000000000000000000000888888811144ffffffffff4418888888
+4444444401555555555555555555556077077077077077700000000000000000000000000000000000000000000000008888888811441ffffffff44188888888
+44444444056666666666666666666660770770770770777000000000000000000000000000000000000000000000000088888888111441111114441188888888
+44444444015555555555555555555560770770770770007000000000000000000000000000000000000000000000000088888888811144444411111888888888
+44444444056666666666666666666660770770770777777000000000000000000000000000000000000000000000000081888888881111111111118888888818
+44444444056666666666666666666660777007777077770700000000000000000000000000000000000000000000000081188888888811111111888888888118
+44444444055555555555555555555550000770007700007700000000000000000000000000000000000000000000000088888888888888888888888888888888
+77700000000000777777777777777777777777777700007777777777222222227777777777777777777777777777777700000000000000000000000000000000
 77066666666666077777777777777777777777777056660727777777777777777777777277777777777777777777777700000007777777777700000000000000
 70155555555566607777777777777777777777770155556027777777777777777777777277777777777777777777777700000077777777777770000000000000
 01555555555555607700007777777777770007770155556027777777777777777777777277777777777777777777777700000077777777777770000000000000
 01555555555555507016660777000077701660770155556027777777777777777777777277777777777777777777777707777777777777777777770000000000
 01555555555555500155556070166607015556070155555027777777777777777777777277777777777777777777777777777777777777777777777777777700
 01555555555555500155556001556660015556077011110727777777777777777777777277777777777777777777777777777777777777777777777777777770
-01555555555555500155556001555550015555077700007772222222222222222222222777777777777777777777777707777777777777777777777777777700
+01555555555555500155556001555550015555077700007777777777222222227777777777777777777777777777777707777777777777777777777777777700
 77777777777777777777777777777777777777777700077777777777777777777777777777777777777777777777777777777777777777777777777777777777
 77777777777777777777777777777777777777777049907777777777777777777777777777777777777777777777777777777777777777777777777777777777
 77777777777777777777777777777777777770000040077777777777777777777777777777777777777777777777777777777777777777777777777777777777
