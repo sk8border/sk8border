@@ -2,7 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
 
-DEBUG = true
+DEBUG = false
 
 -- constants
 tpb=16 // ticks per beat
