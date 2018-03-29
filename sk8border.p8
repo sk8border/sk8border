@@ -202,7 +202,29 @@ function update_player(p)
      end
    end
   elseif ps == states.grind then
-   check_for_jump()
+   -- prove me wrong!
+   local player_should_fall = true
+
+   for i=1,#walls do
+    if (
+     walls[i].exists and
+     not walls[i].breaking and
+     player.x >= walls[i].x and
+     player.x <= walls[i].x + 8*walls[i].w
+    ) then
+     if flr(abs(player.y - walls[i].y)) == 0 then
+      player_should_fall = false
+     end
+     break
+    end
+   end
+
+   if player_should_fall then
+    -- fallllllllllllllll
+    p_state = states.jump
+   else
+    check_for_jump()
+   end
   elseif ps == states.down then
    -- todo: special handling ?
   else  -- states.land
