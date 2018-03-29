@@ -3,7 +3,7 @@ version 16
 __lua__
 -- bust up the border wall!
 
-DEBUG = false
+debug = false
 
 -- constants
 tpb=16 // ticks per beat
@@ -94,8 +94,8 @@ g = 0.2
 jump_speed = 5
 playerheight = 24
 ground_y = 8*14.5
-launch_time = 12
-launch_frame_time = 6
+launch_frm_time = 8
+launch_time = launch_frm_time*2
 max_grind_y = 40
 land_time = 10
 idle_bob_time = 8
@@ -279,7 +279,10 @@ function compute_frame(p)
   elseif ps == states.crouch then
    frm = 1
   elseif ps == states.launch then
-   if t - launch_t < 6 then
+   if (
+    t - launch_t <
+    launch_frm_time
+   ) then
     frm = 2
    else
     frm = 3
@@ -801,7 +804,7 @@ function _draw()
   --walls
   for i=1, #walls do
   	draw_wall(walls[i])
-    if DEBUG then
+    if debug then
       draw_wall_outline(walls[i])
     end
   end
@@ -840,7 +843,7 @@ function _draw()
   -- gauge
   draw_gauge(gauge)
 
-  if DEBUG then
+  if debug then
     print_debug_messages()
   end
 
