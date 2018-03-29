@@ -132,6 +132,7 @@ function play_snd(index)
 end
 
 function update_player(p)
+  local transition_to_grind = false
   if not game_started then
    return
   end
@@ -172,6 +173,26 @@ function update_player(p)
     ground_y-p.y < max_grind_y
    ) then
     p_state = states.down
+   else
+     if (btn(a) or btn(b)) then
+       for i=1,#walls do
+         if (
+           walls[i].exists and
+           not walls[i].breaking and
+           player.x >= walls[i].x and
+           player.x <= walls[i].x + 8*walls[i].w
+         ) then
+         -- if flr(abs(player.y - walls[i].y)) <= 50 then
+         if true then
+           p_state = states.grind
+           transition_to_grind = true
+           player.y = walls[i].y
+           player.dy = 0
+         end
+         break
+         end
+       end
+     end
    end
   elseif ps == states.grind then
    -- todo: handle grinding
@@ -187,6 +208,7 @@ function update_player(p)
 
   if (
    (
+    not transition_to_grind and
     ps == states.launch or
     ps == states.jump or
     ps == states.down
@@ -608,7 +630,8 @@ end
 function print_debug_messages()
   local debug_messages = {
     "walls: "..tostr(#walls),
-    "player: ("..tostr(player.x)..", "..tostr(player.y)..")"
+    "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
+    "player state: "..tostr(p_state)
   }
   for i=1,#debug_messages do
     print(debug_messages[i], 1, (i-1)*6 + 16, 1)
