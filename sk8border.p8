@@ -174,7 +174,7 @@ function update_player(p)
    ) then
     p_state = states.down
    else
-     if (btn(a) or btn(b)) then
+     if (btn(keys.a) or btn(keys.b)) then
        for i=1,#walls do
          if (
            walls[i].exists and
