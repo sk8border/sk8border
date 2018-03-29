@@ -193,6 +193,7 @@ function update_player(p)
            p_state = states.grind
            player.y = walls[i].y
            player.dy = 0
+           play_snd(snd.grind)
          end
          current_wall = walls[i]
          break
