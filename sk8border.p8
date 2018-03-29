@@ -812,7 +812,7 @@ function _update60()
   end
 
   if game_started then
-   if t%180 == 0 then
+   if t%360 == 0 then
     break_all_walls()
     set_gauge_value(gauge,gauge.value+1)
    end
