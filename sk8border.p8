@@ -605,6 +605,16 @@ function draw_wall_outline(wall)
   end
 end
 
+function print_debug_messages()
+  local debug_messages = {
+    "walls: "..tostr(#walls),
+    "player: ("..tostr(player.x)..", "..tostr(player.y)..")"
+  }
+  for i=1,#debug_messages do
+    print(debug_messages[i], 1, (i-1)*6 + 16, 1)
+  end
+end
+
 function _draw()
   local cam_x = 0
   local cam_y = 0
@@ -676,6 +686,10 @@ function _draw()
           break
       end
     end
+  end
+
+  if DEBUG then
+    print_debug_messages()
   end
 
   -- layer title screen on top
