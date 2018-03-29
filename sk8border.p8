@@ -182,8 +182,7 @@ function update_player(p)
            player.x >= walls[i].x and
            player.x <= walls[i].x + 8*walls[i].w
          ) then
-         -- if flr(abs(player.y - walls[i].y)) <= 50 then
-         if true then
+         if flr(abs(player.y - walls[i].y)) == 0 then
            p_state = states.grind
            transition_to_grind = true
            player.y = walls[i].y
