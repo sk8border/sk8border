@@ -3,6 +3,8 @@ version 16
 __lua__
 -- bust up the border wall!
 
+DEBUG = false
+
 -- constants
 tpb=16 // ticks per beat
 lst=16*tpb // loopstart tick
@@ -130,6 +132,7 @@ function play_snd(index)
  sfx(index, 3)
 end
 
+
 function update_player(p)
   if not game_started then
    return
@@ -144,6 +147,20 @@ function update_player(p)
 
   local ps = p_state
 
+  function check_for_jump()
+   if not (
+    btn(keys.a) or btn(keys.b)
+   ) then
+    p_state = states.launch
+    launch_t = t
+    p.dy = -jump_speed
+    play_snd(snd.jump)
+   end
+  end
+
+  -- used for grinding
+  local current_wall = nil
+
   if ps == states.idle then
    if (
     btn(keys.a) or btn(keys.b)
@@ -151,14 +168,7 @@ function update_player(p)
     p_state = states.crouch
    end
   elseif ps == states.crouch then
-   if not (
-    btn(keys.a) or btn(keys.b)
-   ) then
-    p_state = states.launch
-    launch_t = t
-    p.dy -= jump_speed
-    play_snd(snd.jump)
-   end
+   check_for_jump()
   elseif ps == states.launch then
    if (
     t - launch_t >= launch_time
@@ -171,9 +181,51 @@ function update_player(p)
     ground_y-p.y < max_grind_y
    ) then
     p_state = states.down
+   else
+     if (btn(keys.a) or btn(keys.b)) then
+       for i=1,#walls do
+         if (
+           walls[i].exists and
+           not walls[i].breaking and
+           player.x >= walls[i].x and
+           player.x <= walls[i].x + 8*walls[i].w
+         ) then
+         if flr(abs(player.y - walls[i].y)) == 0 then
+           p_state = states.grind
+           player.y = walls[i].y
+           player.dy = 0
+           play_snd(snd.grind)
+         end
+         current_wall = walls[i]
+         break
+         end
+       end
+     end
    end
   elseif ps == states.grind then
-   -- todo: handle grinding
+   -- prove me wrong!
+   local player_should_fall = true
+
+   for i=1,#walls do
+    if (
+     walls[i].exists and
+     not walls[i].breaking and
+     player.x >= walls[i].x and
+     player.x <= walls[i].x + 8*walls[i].w
+    ) then
+     if flr(abs(player.y - walls[i].y)) == 0 then
+      player_should_fall = false
+     end
+     break
+    end
+   end
+
+   if player_should_fall then
+    -- fallllllllllllllll
+    p_state = states.jump
+   else
+    check_for_jump()
+   end
   elseif ps == states.down then
    -- todo: special handling ?
   else  -- states.land
@@ -185,17 +237,29 @@ function update_player(p)
   end
 
   if (
-   (
-    ps == states.launch or
-    ps == states.jump or
-    ps == states.down
-   ) and not apply_gravity(p)
+   p_state == states.launch or
+   p_state == states.jump or
+   p_state == states.down
   ) then
-   p_state = states.land
-   land_t = t
-   play_snd(snd.skate)
-   -- todo: sometimes we want
-   -- to go to the grind state
+   local py_before = p.y
+   if apply_gravity(p) then
+    if (
+     current_wall and
+     (btn(keys.a) or btn(keys.b)) and
+     py_before < current_wall.y and
+     p.y > current_wall.y
+    ) then
+     -- oops we just passed through
+     -- the wall while holding the button!
+     -- reset player on wall so grinding
+     -- works on next turn
+     p.y = current_wall.y
+   end
+   else
+    p_state = states.land
+    land_t = t
+    play_snd(snd.skate)
+   end
   end
 
   if (
@@ -684,6 +748,33 @@ function draw_title()
  end
 end
 
+function draw_wall_outline(wall)
+  local width = 8*wall.w
+  local height = 8*wall.h
+  if (
+    wall.exists and
+    not wall.breaking
+    and player.x >= wall.x
+    and player.x <= wall.x + width
+  ) then
+    line(wall.x, wall.y, wall.x, wall.y + height, 11)
+    line(wall.x, wall.y, wall.x + width, wall.y, 11)
+    line(wall.x, wall.y + height, wall.x + width, wall.y + height, 11)
+    line(wall.x + width, wall.y, wall.x + width, wall.y + height, 11)
+  end
+end
+
+function print_debug_messages()
+  local debug_messages = {
+    "walls: "..tostr(#walls),
+    "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
+    "player state: "..tostr(p_state)
+  }
+  for i=1,#debug_messages do
+    print(debug_messages[i], 1, (i-1)*6 + 16, 1)
+  end
+end
+
 function _draw()
   local cam_x = 0
   local cam_y = 0
@@ -721,6 +812,9 @@ function _draw()
   --walls
   for i=1, #walls do
   	draw_wall(walls[i])
+    if DEBUG then
+      draw_wall_outline(walls[i])
+    end
   end
   for i=1, #walls do
   	draw_wall_explosions(walls[i])
@@ -756,6 +850,10 @@ function _draw()
   
   -- gauge
   draw_gauge(gauge)
+
+  if DEBUG then
+    print_debug_messages()
+  end
 
   -- layer title screen on top
   draw_title()
