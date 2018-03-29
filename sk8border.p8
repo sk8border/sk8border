@@ -173,26 +173,31 @@ function update_player(p)
     ground_y-p.y < max_grind_y
    ) then
     p_state = states.down
-   else
-     if (btn(keys.a) or btn(keys.b)) then
-       for i=1,#walls do
-         if (
-           walls[i].exists and
-           not walls[i].breaking and
-           player.x >= walls[i].x and
-           player.x <= walls[i].x + 8*walls[i].w
-         ) then
-         if flr(abs(player.y - walls[i].y)) == 0 then
-           p_state = states.grind
-           player.y = walls[i].y
-           player.dy = 0
-           play_snd(snd.grind)
-         end
-         current_wall = walls[i]
-         break
-         end
-       end
+   elseif (
+    btn(keys.a) or
+    btn(keys.b)
+   ) then
+    for i=1,#walls do
+     if (
+      walls[i].exists and
+      not walls[i].breaking and
+      player.x >= walls[i].x and
+      player.x <= walls[i].x + 8*walls[i].w
+     ) then
+      if (
+       flr(abs(
+        player.y - walls[i].y
+       )) == 0
+      ) then
+       p_state = states.grind
+       player.y = walls[i].y
+       player.dy = 0
+       play_snd(snd.grind)
+      end
+      current_wall = walls[i]
+      break
      end
+    end
    end
   elseif ps == states.grind then
    -- prove me wrong!
