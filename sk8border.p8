@@ -2,6 +2,8 @@ pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
 
+DEBUG = true
+
 -- constants
 tpb=16 // ticks per beat
 lst=16*tpb // loopstart tick
@@ -581,6 +583,22 @@ function draw_title()
  )
 end
 
+function draw_wall_outline(wall)
+  local width = 8*wall.w
+  local height = 8*wall.h
+  if (
+    wall.exists and
+    not wall.breaking
+    and player.x >= wall.x
+    and player.x <= wall.x + width
+  ) then
+    line(wall.x, wall.y, wall.x, wall.y + height, 11)
+    line(wall.x, wall.y, wall.x + width, wall.y, 11)
+    line(wall.x, wall.y + height, wall.x + width, wall.y + height, 11)
+    line(wall.x + width, wall.y, wall.x + width, wall.y + height, 11)
+  end
+end
+
 function _draw()
   local cam_x = 0
   local cam_y = 0
@@ -617,6 +635,9 @@ function _draw()
   --walls
   for i=1, #walls do
   	draw_wall(walls[i])
+    if DEBUG then
+      draw_wall_outline(walls[i])
+    end
   end
   for i=1, #walls do
   	draw_wall_explosions(walls[i])
@@ -701,7 +722,7 @@ function _update60()
 
   if game_started then
    if t%180 == 0 then
-    break_all_walls()
+    -- break_all_walls()
    end
    t += 1
   end
