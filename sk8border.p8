@@ -128,9 +128,10 @@ g = 0.2
 jump_speed = 5
 playerheight = 24
 ground_y = 8*14.5
-launch_time = 12
-launch_frame_time = 6
+launch_frm_time = 8
+launch_time = launch_frm_time*2
 max_grind_y = 40
+grind_y_offset = 2
 land_time = 10
 idle_bob_time = 8
 title_wall_y = 8 * 8
@@ -185,6 +186,9 @@ function play_snd(index)
  sfx(index, 3)
 end
 
+function find_grind_y(wall)
+ return wall.y + grind_y_offset
+end
 
 function update_player(p)
   if not game_started then
@@ -231,68 +235,70 @@ function update_player(p)
     ground_y-p.y < max_grind_y
    ) then
     p_state = states.down
-   else
-     if (btn(keys.a) or btn(keys.b)) then
-       for i=1,#walls do
-         if (
-           walls[i].exists and
-           not walls[i].breaking and
-           player.x+16 >= walls[i].x and
-           player.x <= walls[i].x + 8*walls[i].w
-         ) then
-          if flr(abs(player.y - walls[i].y)) == 0 then
-            
-            -- just entered
-            -- grind state
-            add_to_score(
-            sc.grind_start_pts)
-            
-            -- is a down, or is it
-            -- b?
-            local adown = 
-            btn(keys.a)
-            
-            -- initiate 
-            -- grinding
-            -- scoring
-            -------------------
-            -- reset grind ticks
-            -- for this unperturbated
-            -- horizontal section
-            p_totalgrindt = 0
-            
-            -- if grinding on the
-            -- opposite side as
-            -- last time...
-            if (adown and  
-            p_last_grind == 'b') or
-            (adown == false and
-            p_last_grind == 'a') 
-            then
-             p_grindinterval = 
-             sc.interval_alt
-            else
-             -- reset fully
-             p_grindt = 0
-             p_grindinterval = 
-             sc.interval_base
-            end
-            ---------------------
-            
-            p_last_grind =
-             adown and 'a' or 'b'
-             
-            p_state = states.grind
-            player.y = walls[i].y
-            player.dy = 0
-            play_snd(snd.grind)
+   elseif (
+    p.dy >= 0 and
+    (btn(keys.a) or btn(keys.b))
+   ) then
+    for i=1,#walls do
+     if (
+      walls[i].exists and
+      not walls[i].breaking and
+      player.x >= walls[i].x and
+      player.x <= walls[i].x + 8*walls[i].w
+     ) then
+      local grind_y =
+       find_grind_y(walls[i])
+      if player.y == grind_y then
 
-          end
-          current_wall = walls[i]
-          break
-         end
+       -- just entered
+       -- grind state
+       add_to_score(
+       sc.grind_start_pts)
+
+       -- is a down, or is it
+       -- b?
+       local adown =
+       btn(keys.a)
+
+       -- initiate 
+       -- grinding
+       -- scoring
+       -------------------
+       -- reset grind ticks
+       -- for this unperturbated
+       -- horizontal section
+       p_totalgrindt = 0
+
+       -- if grinding on the
+       -- opposite side as
+       -- last time...
+       if (adown and  
+       p_last_grind == 'b') or
+       (adown == false and
+       p_last_grind == 'a') 
+       then
+        p_grindinterval = 
+        sc.interval_alt
+       else
+        -- reset fully
+        p_grindt = 0
+        p_grindinterval = 
+        sc.interval_base
        end
+       ---------------------
+
+       p_last_grind =
+        adown and 'a' or 'b'
+
+       p_state = states.grind
+       player.dy = 0
+       play_snd(snd.grind)
+
+      end
+      current_wall = walls[i]
+      break
      end
+    end
    end
   elseif ps == states.grind then
    -- prove me wrong!
@@ -305,7 +311,9 @@ function update_player(p)
      player.x >= walls[i].x and
      player.x <= walls[i].x + 8*walls[i].w
     ) then
-     if flr(abs(player.y - walls[i].y)) == 0 then
+     local grind_y =
+      find_grind_y(walls[i])
+     if player.y == grind_y then
       player_should_fall = false
      end
      break
@@ -358,16 +366,21 @@ function update_player(p)
    if apply_gravity(p) then
     if (
      current_wall and
-     (btn(keys.a) or btn(keys.b)) and
-     py_before < current_wall.y and
-     p.y > current_wall.y
+     (btn(keys.a) or btn(keys.b))
     ) then
-     -- oops we just passed through
-     -- the wall while holding the button!
-     -- reset player on wall so grinding
-     -- works on next turn
-     p.y = current_wall.y
-   end
+     local grind_y =
+      find_grind_y(current_wall)
+     if (
+      py_before < grind_y and
+      p.y > grind_y
+     ) then
+      -- oops we just passed through
+      -- the wall while holding the button!
+      -- reset player on wall so grinding
+      -- works on next turn
+      p.y = grind_y
+     end
+    end
    else
     -- just landed
     p_last_grind = nil
@@ -403,7 +416,10 @@ function compute_frame(p)
   elseif ps == states.crouch then
    frm = 1
   elseif ps == states.launch then
-   if t - launch_t < 6 then
+   if (
+    t - launch_t <
+    launch_frm_time
+   ) then
     frm = 2
    else
     frm = 3
