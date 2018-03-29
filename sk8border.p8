@@ -1,6 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
+-- bust up the border wall!
 
 -- constants
 tpb=16 // ticks per beat
@@ -571,20 +572,27 @@ function draw_title()
  5,4)
 
  local message =
-   'press 🅾️ or ❎ to start'
+   '  press ❎ to start'
+ local blink = true
  if (
   start_countdown or
   game_started
  ) then
   message =
-   ' let\'s wreck that wall!'
+   'let\'s wreck that wall!'
+  blink = false
  end
- print(
-  message,
-  18,
-  8*13+wall_anim_y,
-  7
- )
+ if (
+  not blink or
+  flr(time()) % 2 == 0
+ ) then
+  print(
+   message,
+   8*2.5,
+   8*13+wall_anim_y,
+   7
+  )
+ end
 end
 
 function _draw()
