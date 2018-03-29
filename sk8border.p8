@@ -97,6 +97,7 @@ ground_y = 8*14.5
 launch_frm_time = 8
 launch_time = launch_frm_time*2
 max_grind_y = 40
+grind_y_offset = 2
 land_time = 10
 idle_bob_time = 8
 title_wall_y = 8 * 8
@@ -131,6 +132,9 @@ function play_snd(index)
  sfx(index, 3)
 end
 
+function find_grind_y(wall)
+ return wall.y + grind_y_offset
+end
 
 function update_player(p)
   if not game_started then
@@ -174,6 +178,7 @@ function update_player(p)
    ) then
     p_state = states.down
    elseif (
+    p.dy >= 0 and
     btn(keys.a) or
     btn(keys.b)
    ) then
@@ -184,13 +189,10 @@ function update_player(p)
       player.x >= walls[i].x and
       player.x <= walls[i].x + 8*walls[i].w
      ) then
-      if (
-       flr(abs(
-        player.y - walls[i].y
-       )) == 0
-      ) then
+      local grind_y =
+       find_grind_y(walls[i])
+      if player.y == grind_y then
        p_state = states.grind
-       player.y = walls[i].y
        player.dy = 0
        play_snd(snd.grind)
       end
@@ -210,7 +212,9 @@ function update_player(p)
      player.x >= walls[i].x and
      player.x <= walls[i].x + 8*walls[i].w
     ) then
-     if flr(abs(player.y - walls[i].y)) == 0 then
+     local grind_y =
+      find_grind_y(walls[i])
+     if player.y == grind_y then
       player_should_fall = false
      end
      break
@@ -242,16 +246,21 @@ function update_player(p)
    if apply_gravity(p) then
     if (
      current_wall and
-     (btn(keys.a) or btn(keys.b)) and
-     py_before < current_wall.y and
-     p.y > current_wall.y
+     (btn(keys.a) or btn(keys.b))
     ) then
-     -- oops we just passed through
-     -- the wall while holding the button!
-     -- reset player on wall so grinding
-     -- works on next turn
-     p.y = current_wall.y
-   end
+     local grind_y =
+      find_grind_y(current_wall)
+     if (
+      py_before < grind_y and
+      p.y > grind_y
+     ) then
+      -- oops we just passed through
+      -- the wall while holding the button!
+      -- reset player on wall so grinding
+      -- works on next turn
+      p.y = grind_y
+     end
+    end
    else
     p_state = states.land
     land_t = t
