@@ -99,7 +99,7 @@ land_time = 10
 idle_bob_time = 8
 title_wall_y = 8 * 8
 start_delay = 40
-scroll_speed = 1
+scroll_speed = 1.5
 -- end constants
 
 
@@ -402,8 +402,10 @@ function draw_wall(wall)
 	if not wall.exists then
 		return
 	end
-	local x = wall.x + wall.anim_x
-	local y = wall.y + wall.anim_y
+	local x = wall.x+
+	 wall.anim_x
+	local y = wall.y+
+	 wall.anim_y
 	local indexes = {1,17,33,49}
 	local col_index = 0
 	
@@ -691,17 +693,22 @@ function _update60()
   end
 
   update_player(player)
-  for i=1, #walls do
-  	update_wall(walls[i])
-  end
+  
   if lastwall == nil or
-  	lastwall.x+lastwall.w*8 <= 128
+  	lastwall.x+lastwall.w*8 <= 
+  	128
   then
   	local wallx = 128
-  	if not lastwall == nil then
-  		wallx = lastwall.x + lastwall.w*8
+  	if lastwall then
+  		wallx = flr(lastwall.x+
+  		lastwall.w*8)
   	end
-  	add_wall(wallx,4+flr(rnd(8)),5+flr(rnd(5)))
+  	add_wall(wallx,4+flr(rnd(8)),
+  	5+flr(rnd(5)))
+  end
+  
+  for i=1, #walls do
+  	update_wall(walls[i])
   end
 
   if game_started then
