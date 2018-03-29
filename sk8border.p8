@@ -132,7 +132,6 @@ function play_snd(index)
 end
 
 function update_player(p)
-  local transition_to_grind = false
   if not game_started then
    return
   end
@@ -184,7 +183,6 @@ function update_player(p)
          ) then
          if flr(abs(player.y - walls[i].y)) == 0 then
            p_state = states.grind
-           transition_to_grind = true
            player.y = walls[i].y
            player.dy = 0
          end
@@ -207,10 +205,9 @@ function update_player(p)
 
   if (
    (
-    not transition_to_grind and
-    ps == states.launch or
-    ps == states.jump or
-    ps == states.down
+    p_state == states.launch or
+    p_state == states.jump or
+    p_state == states.down
    ) and not apply_gravity(p)
   ) then
    p_state = states.land
