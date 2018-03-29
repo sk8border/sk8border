@@ -157,6 +157,9 @@ function update_player(p)
    end
   end
 
+  -- used for grinding
+  local current_wall = nil
+
   if ps == states.idle then
    if (
     btn(keys.a) or btn(keys.b)
@@ -191,6 +194,7 @@ function update_player(p)
            player.y = walls[i].y
            player.dy = 0
          end
+         current_wall = walls[i]
          break
          end
        end
@@ -209,17 +213,29 @@ function update_player(p)
   end
 
   if (
-   (
-    p_state == states.launch or
-    p_state == states.jump or
-    p_state == states.down
-   ) and not apply_gravity(p)
+   p_state == states.launch or
+   p_state == states.jump or
+   p_state == states.down
   ) then
-   p_state = states.land
-   land_t = t
-   play_snd(snd.skate)
-   -- todo: sometimes we want
-   -- to go to the grind state
+   local py_before = p.y
+   if apply_gravity(p) then
+    if (
+     current_wall and
+     (btn(keys.a) or btn(keys.b)) and
+     py_before < current_wall.y and
+     p.y > current_wall.y
+    ) then
+     -- oops we just passed through
+     -- the wall while holding the button!
+     -- reset player on wall so grinding
+     -- works on next turn
+     p.y = current_wall.y
+   end
+   else
+    p_state = states.land
+    land_t = t
+    play_snd(snd.skate)
+   end
   end
 
   if (
