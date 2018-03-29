@@ -131,6 +131,7 @@ function play_snd(index)
  sfx(index, 3)
 end
 
+
 function update_player(p)
   if not game_started then
    return
@@ -145,6 +146,17 @@ function update_player(p)
 
   local ps = p_state
 
+  function check_for_jump()
+   if not (
+    btn(keys.a) or btn(keys.b)
+   ) then
+    p_state = states.launch
+    launch_t = t
+    p.dy = -jump_speed
+    play_snd(snd.jump)
+   end
+  end
+
   if ps == states.idle then
    if (
     btn(keys.a) or btn(keys.b)
@@ -152,14 +164,7 @@ function update_player(p)
     p_state = states.crouch
    end
   elseif ps == states.crouch then
-   if not (
-    btn(keys.a) or btn(keys.b)
-   ) then
-    p_state = states.launch
-    launch_t = t
-    p.dy -= jump_speed
-    play_snd(snd.jump)
-   end
+   check_for_jump()
   elseif ps == states.launch then
    if (
     t - launch_t >= launch_time
@@ -192,7 +197,7 @@ function update_player(p)
      end
    end
   elseif ps == states.grind then
-   -- todo: handle grinding
+   check_for_jump()
   elseif ps == states.down then
    -- todo: special handling ?
   else  -- states.land
