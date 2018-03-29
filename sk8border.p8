@@ -94,7 +94,6 @@ g = 0.2
 jump_speed = 5
 playerheight = 24
 ground_y = 8*14.5
-horiz_speed = 1
 launch_time = 12
 launch_frame_time = 6
 max_grind_y = 40
@@ -136,13 +135,6 @@ end
 function update_player(p)
   if not game_started then
    return
-  end
-
-  if btn(keys.left) then
-   p.x -= horiz_speed
-  end
-  if btn(keys.right) then
-   p.x += horiz_speed
   end
 
   local ps = p_state
@@ -345,11 +337,8 @@ end
 
 function _init()
   t = 0
-  player = make_player(
-    0,
-    ground_y
-  )
-  
+  player = make_player(8, ground_y)
+
   local gauge_widht_in_sprites=
    10
   local gauge_x=
