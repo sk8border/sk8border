@@ -74,15 +74,15 @@ snd = {
 }
 
 rubble = {
-	{i=64,w=2,h=1},
-	{i=66,w=1,h=1},
-	{i=67,w=1,h=1},
-	{i=68,w=1,h=1}
+ {i=64,w=2,h=1},
+ {i=66,w=1,h=1},
+ {i=67,w=1,h=1},
+ {i=68,w=1,h=1}
 }
 
 posters = {
-	{i=12,w=4,h=4},
-	{i=8,w=4,h=2}
+ {i=12,w=4,h=4},
+ {i=8,w=4,h=2}
 }
 
 explosion_frames = {
@@ -141,6 +141,7 @@ min_wall_w = 4
 max_wall_w = 12
 min_wall_h = 4
 max_wall_h = 10
+barbwire_on = false
 -- end constants
 
 
@@ -199,7 +200,7 @@ function update_player(p)
    return
   end
 
-		local sc = scoring
+  local sc = scoring
   local ps = p_state
 
   function check_for_jump()
@@ -339,14 +340,14 @@ function update_player(p)
      p_grindt += 1
      p_totalgrindt += 1
      if p_grindt>=p_grindinterval
-    	then
-     	add_to_score(1)
-     	p_grindt = 0
-     	p_grindinterval =
-      	max(p_grindinterval-
-      	sc.interval_drop_rate,
-      	sc.interval_min)
-    	end
+     then
+      add_to_score(1)
+      p_grindt = 0
+      p_grindinterval =
+       max(p_grindinterval-
+       sc.interval_drop_rate,
+       sc.interval_min)
+     end
     end
     ------------
     check_for_jump()
@@ -401,7 +402,7 @@ function update_player(p)
    p_state == states.land
   ) then
    player.bob_frame = flr(
-  	t/idle_bob_time % 2
+   t/idle_bob_time % 2
    )
   else
    yoffset = 0
@@ -413,7 +414,7 @@ end
 function compute_frame(p)
   local ps = p_state
   if ps == states.idle then
-  	if p.bob_frame == 0 then frm = 0
+   if p.bob_frame == 0 then frm = 0
    else
    frm = 6
    end
@@ -469,7 +470,7 @@ end
 
 
 function drawskater(p)
-	spr(
+ spr(
    p.frame,
    p.x,
    p.y - playerheight,
@@ -521,26 +522,26 @@ width_in_sprites,
 max_value,
 x,y)
 
-	width_in_sprites = max(
-	 3,width_in_sprites)
-	 
-	local width =
-	 width_in_sprites * 8
+ width_in_sprites = max(
+  3,width_in_sprites)
+  
+ local width =
+  width_in_sprites * 8
   
  -- create gauge object
  gauge={
- 	w=w,
- 	x=x,
- 	y=y,
- 	width=width,
- 	width_in_sprites=
- 	 width_in_sprites,
- 	pixels_per_unit=
- 	 width/max_value,
- 	max_value=max_value,
- 	value=0,
- 	multiplier=1,
- 	maxed=false
+  w=w,
+  x=x,
+  y=y,
+  width=width,
+  width_in_sprites=
+   width_in_sprites,
+  pixels_per_unit=
+   width/max_value,
+  max_value=max_value,
+  value=0,
+  multiplier=1,
+  maxed=false
  }
  
  set_gauge_value(gauge,units)
@@ -577,7 +578,7 @@ function draw_gauge(gauge)
  
  if gauge.maxed then
   col = 2
- 	-- zero or one
+  -- zero or one
   flasht = flr((t%16)/8)
   gaugecol = flasht == 0 and 7 or 0
   textcol = flasht == 0 and 0 or 7
@@ -627,228 +628,230 @@ function draw_gauge(gauge)
 end
 
 function add_wall(x,w,h)
-	local wall = nil
-	for i=1,#walls do
- 	if not walls[i].exists then
-			wall = walls[i]
-			break
-		end
-	end
-	if wall == nil then
-		wall = {}
-		walls[#walls+1] = wall
-	end
-	wall.x = x
-	wall.y = 112-h*8
-	wall.w = w
-	wall.h = h
-	wall.anim_x = 0
-	wall.anim_y = 0
-	wall.anim_elapsed = 0
-	wall.exists = true
-	wall.breaking = false
-	wall.posters = {}
-	wall.barbwire = {}
-	wall.explosions = {}
-	wall.rubble = {}
-	
-	-- add barbwire (or not)
-	if rnd(1) < 0.2 then
-		local numbarbs =
-		 min(4,2+flr(rnd(w-4+1)))
-		local barbstart =
-			1+flr(rnd(w-numbarbs+1))
-	 for i=1,w do
-	  wall.barbwire[i] =
-	  	i >=barbstart and
-	  	i < barbstart+numbarbs
-	 end
-	end
-	
-	-- add propaganda
-	-- cycle through every poster
-	-- model and do a random check
-	-- to post it on the wall
-	for i=1,#posters do
-		local p = posters[i]
-		if w >= p.w+2 and
-		h >= p.h+2 then
-			if rnd(1)<0.3 then
-				wall.posters[
-				#wall.posters+1]=
-				{
-					i=p.i,w=p.w,h=p.h,
-					x=8+rnd(8*(w-p.w-2)),
-					y=8+rnd(8*(h-p.h-2))
-				}
-				break
-			end
-		end
-	end
-	lastwall = wall
-	return wall
+ local wall = nil
+ for i=1,#walls do
+  if not walls[i].exists then
+   wall = walls[i]
+   break
+  end
+ end
+ if wall == nil then
+  wall = {}
+  walls[#walls+1] = wall
+ end
+ wall.x = x
+ wall.y = 112-h*8
+ wall.w = w
+ wall.h = h
+ wall.anim_x = 0
+ wall.anim_y = 0
+ wall.anim_elapsed = 0
+ wall.exists = true
+ wall.breaking = false
+ wall.posters = {}
+ wall.barbwire = {}
+ wall.explosions = {}
+ wall.rubble = {}
+ 
+ -- add barbwire (or not)
+ if barbwire_on then
+  if rnd(1) < 0.2 then
+   local numbarbs =
+    min(4,2+flr(rnd(w-4+1)))
+   local barbstart =
+    1+flr(rnd(w-numbarbs+1))
+   for i=1,w do
+    wall.barbwire[i] =
+     i >=barbstart and
+     i < barbstart+numbarbs
+   end
+  end
+ end
+ 
+ -- add propaganda
+ -- cycle through every poster
+ -- model and do a random check
+ -- to post it on the wall
+ for i=1,#posters do
+  local p = posters[i]
+  if w >= p.w+2 and
+  h >= p.h+2 then
+   if rnd(1)<0.3 then
+    wall.posters[
+    #wall.posters+1]=
+    {
+     i=p.i,w=p.w,h=p.h,
+     x=8+rnd(8*(w-p.w-2)),
+     y=8+rnd(8*(h-p.h-2))
+    }
+    break
+   end
+  end
+ end
+ lastwall = wall
+ return wall
 end
 
 function break_all_walls()
-	for i=1, #walls do
-		break_wall(walls[i])
-	end
+ for i=1, #walls do
+  break_wall(walls[i])
+ end
 end
 
 function break_wall(wall)
-	if not wall.exists or
-	wall.breaking then 
-		return
-	end
-	wall.breaking = true
-	wall.anim_elapsed = 0
-	for i=1, wall.w do
-		wall.explosions[i] = 
-		 -4-flr(rnd(4))
-		wall.rubble[i] = 
-		 rubble[1+flr(rnd(3))]
-	end
-	play_snd(snd.explode)
+ if not wall.exists or
+ wall.breaking then 
+  return
+ end
+ wall.breaking = true
+ wall.anim_elapsed = 0
+ for i=1, wall.w do
+  wall.explosions[i] = 
+   -4-flr(rnd(4))
+  wall.rubble[i] = 
+   rubble[1+flr(rnd(3))]
+ end
+ play_snd(snd.explode)
 end
 
 function update_wall(wall)
-	if not (wall.exists and
-	game_started) then
-		return
-	end
-	if wall.breaking then
-		wall.anim_elapsed += 1
-		wall.anim_x = 
-		 rnd(6)-3
-		wall.anim_y = 
-		 (wall.anim_elapsed/4)*
-		 (wall.anim_elapsed/4)+
-		 rnd(2)-1
-	end
-	wall.x -= scroll_speed
-	if wall.x+wall.w*8 < -16 then
-		wall.exists = false
-	end
+ if not (wall.exists and
+ game_started) then
+  return
+ end
+ if wall.breaking then
+  wall.anim_elapsed += 1
+  wall.anim_x = 
+   rnd(6)-3
+  wall.anim_y = 
+   (wall.anim_elapsed/4)*
+   (wall.anim_elapsed/4)+
+   rnd(2)-1
+ end
+ wall.x -= scroll_speed
+ if wall.x+wall.w*8 < -16 then
+  wall.exists = false
+ end
 end
 
 function draw_wall(wall)
-	if not wall.exists then
-		return
-	end
-	local x = wall.x+
-	 wall.anim_x
-	local y = wall.y+
-	 wall.anim_y
-	local indexes = {1,17,33,49}
-	local col_index = 0
-	
-	for i=1, wall.w do
-		if i == wall.w then 
-		 col_index = 2
-		elseif i > 1 then 
-		 col_index = 1
-		end
-		local row_index = 1
-		for j=1, wall.h do
-			if j == wall.h then
-			 row_index = 4
-			elseif j == wall.h-1 then
-			 row_index = 3
-			elseif j > 1 then
-			 row_index = 2
-			end
-			-- draw 1x1 wall sprite
-			-- at i,j
-			spr(
-				indexes[row_index]+col_index,
-				x+(i-1)*8,y+(j-1)*8)
-		end
-		
-		-- draw barbwire
-		if wall.barbwire[i] then
-		 spr(52,x+(i-1)*8,y-8)
-		end
-		
-		-- draw rubble
-		if wall.breaking then
-			-- total animation time in frames
-			-- of the corresponding explosion
-			-- if at least past a certain point,
-			-- reveal the rubble
- 		local xplo_frames =
-				flr(wall.anim_elapsed/
-				4+wall.explosions[i])
- 		if xplo_frames >= 2 then
- 			local rubble = 
- 			wall.rubble[i]
- 			spr(
- 				rubble.i,
- 				wall.x+(i-0.5-rubble.w/2)*8,
- 				wall.y+(wall.h-rubble.h)*8,
- 				rubble.w,
- 				rubble.h
- 			)
- 		end
-		end
-	end
-	
-	palt(7,false)
-	palt(0,true)
-	-- draw propaganda
-	for i=1, #wall.posters do
-		local p = wall.posters[i]
-		spr(p.i,x+p.x,y+p.y,p.w,p.h)
-	end
-	palt(0,false)
+ if not wall.exists then
+  return
+ end
+ local x = wall.x+
+  wall.anim_x
+ local y = wall.y+
+  wall.anim_y
+ local indexes = {1,17,33,49}
+ local col_index = 0
+ 
+ for i=1, wall.w do
+  if i == wall.w then 
+   col_index = 2
+  elseif i > 1 then 
+   col_index = 1
+  end
+  local row_index = 1
+  for j=1, wall.h do
+   if j == wall.h then
+    row_index = 4
+   elseif j == wall.h-1 then
+    row_index = 3
+   elseif j > 1 then
+    row_index = 2
+   end
+   -- draw 1x1 wall sprite
+   -- at i,j
+   spr(
+    indexes[row_index]+col_index,
+    x+(i-1)*8,y+(j-1)*8)
+  end
+  
+  -- draw barbwire
+  if wall.barbwire[i] then
+   spr(52,x+(i-1)*8,y-8)
+  end
+  
+  -- draw rubble
+  if wall.breaking then
+   -- total animation time in frames
+   -- of the corresponding explosion
+   -- if at least past a certain point,
+   -- reveal the rubble
+   local xplo_frames =
+    flr(wall.anim_elapsed/
+    4+wall.explosions[i])
+   if xplo_frames >= 2 then
+    local rubble = 
+    wall.rubble[i]
+    spr(
+     rubble.i,
+     wall.x+(i-0.5-rubble.w/2)*8,
+     wall.y+(wall.h-rubble.h)*8,
+     rubble.w,
+     rubble.h
+    )
+   end
+  end
+ end
+ 
+ palt(7,false)
+ palt(0,true)
+ -- draw propaganda
+ for i=1, #wall.posters do
+  local p = wall.posters[i]
+  spr(p.i,x+p.x,y+p.y,p.w,p.h)
+ end
+ palt(0,false)
  palt(7,true)
 end
 
 function draw_wall_explosions(
 wall)
-	if not wall.exists then
-		return
-	end
-	if wall.breaking then
+ if not wall.exists then
+  return
+ end
+ if wall.breaking then
   palt(0,true)
   palt(7,false)
   -- explosion duration
   -- in frames
   local xplo_duration = 4
   for i=1,wall.w do
-  	-- total elapsed animation
-  	-- frames
-  	local xplo_frames =
-				flr(wall.anim_elapsed/4+
-				wall.explosions[i])
-  	-- current frame index
-  	local xplo_curframe =
-				xplo_frames%xplo_duration
-  	-- plays explosion anim only 2 times
-  	if xplo_frames >=0 and
-				xplo_frames < 
-				xplo_duration*1 and
-				xplo_curframe >= 0 and
-				xplo_curframe <= 3 then
-  			local sprite_index=
-						explosion_frames[
-						xplo_curframe+1]
-  			spr(
-  				sprite_index,
-  				wall.x+(i-1)*8-4,
-  				wall.y+(wall.h-2)*8,
-  				2,
-  				2
-  			)
-  		end
-  	end
+   -- total elapsed animation
+   -- frames
+   local xplo_frames =
+    flr(wall.anim_elapsed/4+
+    wall.explosions[i])
+   -- current frame index
+   local xplo_curframe =
+    xplo_frames%xplo_duration
+   -- plays explosion anim only 2 times
+   if xplo_frames >=0 and
+    xplo_frames < 
+    xplo_duration*1 and
+    xplo_curframe >= 0 and
+    xplo_curframe <= 3 then
+     local sprite_index=
+      explosion_frames[
+      xplo_curframe+1]
+     spr(
+      sprite_index,
+      wall.x+(i-1)*8-4,
+      wall.y+(wall.h-2)*8,
+      2,
+      2
+     )
+    end
+   end
   palt(0,false)
   palt(7,true)
-	end			
+ end   
 end
 
 function drawscrollmap(
 s,mx,my,x,y,w,h)
-		tx = flr(s/8)%w
+  tx = flr(s/8)%w
   dx = -(s%8)
   mapdraw(mx+tx,my,dx,y,w-tx,h)
   mapdraw(mx,my,(w-tx)*8+dx,y,tx+1,h)
@@ -875,16 +878,16 @@ function draw_title()
  end
 
  local wall_anim_y =
- 	flr((t/4)*(t/4))
+  flr((t/4)*(t/4))
  local wall_y =
   -- apply gravity at start
   title_wall_y+wall_anim_y
  
  local logo_t = max(0,t-5)
  local logo_anim_y =
- 	flr((logo_t/4)*(logo_t/4))
-	local logo_x = 13
-	local logo_y = 12+logo_anim_y
+  flr((logo_t/4)*(logo_t/4))
+ local logo_x = 13
+ local logo_y = 12+logo_anim_y
 
  -- wall in foreground
  map(0,17,-1,wall_y,18,15)
@@ -964,9 +967,9 @@ function _draw()
     flr(-1 + rnd(3))
   end
   camera(cam_x, cam_y)
-		
-		--s is the amount of scrolling
-	 local s = t*scroll_speed
+  
+  --s is the amount of scrolling
+  local s = t*scroll_speed
   cls()
   --sky
   rectfill (-8,-8,127+8,127+8,12)
@@ -990,13 +993,13 @@ function _draw()
 
   --walls
   for i=1, #walls do
-  	draw_wall(walls[i])
+   draw_wall(walls[i])
     if debug then
       draw_wall_outline(walls[i])
     end
   end
   for i=1, #walls do
-  	draw_wall_explosions(walls[i])
+   draw_wall_explosions(walls[i])
   end
 
   -- foreground
@@ -1090,18 +1093,18 @@ function _update60()
   update_player(player)
   
   for i=1, #walls do
-  	update_wall(walls[i])
+   update_wall(walls[i])
   end
   
   if lastwall == nil or
-  	lastwall.x+lastwall.w*8 <= 
-  	128
+   lastwall.x+lastwall.w*8 <= 
+   128
   then
-  	local wallx = 128
-  	if lastwall then
-  		wallx = flr(lastwall.x+
-  		lastwall.w*8)
-  	end
+   local wallx = 128
+   if lastwall then
+    wallx = flr(lastwall.x+
+    lastwall.w*8)
+   end
    add_wall(
     wallx,
     min_wall_w +
