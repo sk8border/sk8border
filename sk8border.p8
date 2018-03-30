@@ -119,7 +119,7 @@ scoring = {
  -- when falling, besides
  -- when jumping
  -- (if gauge is filled)
- destroy_on_fall=false
+ destroy_on_fall=true
 }
 
   -- acceleration due to gravity
@@ -243,7 +243,7 @@ function update_player(p)
      if (
       walls[i].exists and
       not walls[i].breaking and
-      player.x >= walls[i].x and
+      player.x + 16 >= walls[i].x and
       player.x <= walls[i].x + 8*walls[i].w
      ) then
       local grind_y =
@@ -308,15 +308,15 @@ function update_player(p)
     if (
      walls[i].exists and
      not walls[i].breaking and
-     player.x >= walls[i].x and
+     player.x + 16 >= walls[i].x and
      player.x <= walls[i].x + 8*walls[i].w
     ) then
      local grind_y =
       find_grind_y(walls[i])
      if player.y == grind_y then
       player_should_fall = false
-     end
      break
+     end
     end
    end
 
@@ -354,6 +354,11 @@ function update_player(p)
     t - land_t >= land_time
    ) then
     p_state = states.idle
+    if (
+    btn(keys.a) or btn(keys.b)
+   ) then
+    p_state = states.crouch
+   end
    end
   end
 
