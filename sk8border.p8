@@ -308,7 +308,7 @@ function update_player(p)
     if (
      walls[i].exists and
      not walls[i].breaking and
-     player.x + 16 >= walls[i].x and
+     player.x >= walls[i].x and
      player.x <= walls[i].x + 8*walls[i].w
     ) then
      local grind_y =
