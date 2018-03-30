@@ -125,7 +125,8 @@ scoring = {
   -- acceleration due to gravity
 game_duration = 60
 g = 0.2
-jump_speed = 5
+ground_jump_speed = 5
+grind_jump_speed = 4.1
 playerheight = 24
 ground_y = 8*14.5
 launch_frm_time = 8
@@ -139,7 +140,7 @@ start_delay = 40
 scroll_speed = 1.5
 min_wall_w = 4
 max_wall_w = 12
-min_wall_h = 4
+min_wall_h = 5
 max_wall_h = 10
 barbwire_on = false
 -- end constants
@@ -203,7 +204,7 @@ function update_player(p)
   local sc = scoring
   local ps = p_state
 
-  function check_for_jump()
+  function check_for_jump(jump_speed)
    if not (
     btn(keys.a) or btn(keys.b)
    ) then
@@ -227,7 +228,7 @@ function update_player(p)
     p_state = states.crouch
    end
   elseif ps == states.crouch then
-   check_for_jump()
+   check_for_jump(ground_jump_speed)
   elseif ps == states.launch then
    if (
     t - launch_t >= launch_time
@@ -350,7 +351,7 @@ function update_player(p)
      end
     end
     ------------
-    check_for_jump()
+    check_for_jump(grind_jump_speed)
    end
   elseif ps == states.down then
    -- todo: special handling ?
