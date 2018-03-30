@@ -130,13 +130,17 @@ playerheight = 24
 ground_y = 8*14.5
 launch_frm_time = 8
 launch_time = launch_frm_time*2
-max_grind_y = 40
+max_grind_y = 30
 grind_y_offset = 2
 land_time = 10
 idle_bob_time = 8
 title_wall_y = 8 * 8
 start_delay = 40
 scroll_speed = 1.5
+min_wall_w = 4
+max_wall_w = 12
+min_wall_h = 4
+max_wall_h = 10
 -- end constants
 
 
@@ -1097,12 +1101,20 @@ function _update60()
   	if lastwall then
   		wallx = flr(lastwall.x+
   		lastwall.w*8)
-  		if rnd(1) < 0.1 then
-  		 wallx += flr(rnd(64))
-  		end
   	end
-  	add_wall(wallx,4+flr(rnd(8)),
-  	5+flr(rnd(5)))
+   add_wall(
+    wallx,
+    min_wall_w +
+     flr(rnd(
+      max_wall_w -
+      min_wall_w
+     )),
+    min_wall_h +
+     flr(rnd(
+      max_wall_h -
+      min_wall_h
+     ))
+   )
   end
 
   if game_over then
