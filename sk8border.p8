@@ -725,7 +725,18 @@ function update_wall(wall)
  game_started) then
   return
  end
- if wall.breaking then
+ if p_state == states.grind then
+  local lvl = gauge.multiplier
+  local range = 1
+  if lvl == 2 then
+   range = 2
+  elseif lvl == 3 then
+   range = 2
+  elseif lvl == 4 then
+   range = 3
+  end
+  wall.anim_y = flr(rnd(range))
+ elseif wall.breaking then
   wall.anim_elapsed += 1
   wall.anim_x = 
    rnd(6)-3
