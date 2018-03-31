@@ -123,7 +123,7 @@ scoring = {
 }
 
   -- acceleration due to gravity
-game_duration = 60
+game_duration = 90
 g = 0.2
 ground_jump_speed = 5
 grind_jump_speed = 4.1
@@ -147,9 +147,10 @@ barbwire_on = false
 
 
 -- global variables
+hi_score = nil
+last_score = nil
 game_started = false
 game_over = false
--- in seconds
 t = nil
 player = nil
 frm = 0
@@ -922,6 +923,27 @@ function draw_title()
  logo_x+border_offset_x+16,
  logo_y+border_offset_y-16,
  5,4)
+ 
+ printh(last_score)
+ -- score
+ if not (last_score == nil) then
+ local text = 'score: '..
+  last_score
+ print(
+  text,
+  64-#text*2,
+  8*9+wall_anim_y,
+  7
+ )
+ text = 'hi score: '..
+  hi_score
+ print(
+  text,
+  64-#text*2,
+  8*10+wall_anim_y,
+  7
+ )
+ end
 
  local message =
    '  press ❎ to start'
@@ -1163,11 +1185,18 @@ function _update60()
    if t%60 == 0 then
     timer -= 1
     if timer == 0 then
-     go_t = 0
-     go_colindex = 15
-     go_transition_in = true
+     -- enter game over
+     -- set hi-score
+     last_score = score
+     if hi_score == nil or
+     last_score > hi_score then
+      hi_score = last_score
+     end
      game_over = true
      game_started = false
+     go_transition_in = true
+     go_t = 0
+     go_colindex = 15
      sfx(-1)
      --music(-1)
     end
