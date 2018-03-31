@@ -3,6 +3,8 @@ version 16
 __lua__
 -- bust up the border wall!
 
+cartdata('sk8border')
+
 debug = false
 
 -- constants
@@ -147,7 +149,7 @@ barbwire_on = false
 
 
 -- global variables
-hi_score = nil
+hi_score = dget(0)
 last_score = nil
 game_started = false
 game_over = false
@@ -927,25 +929,26 @@ function draw_title()
  logo_y+border_offset_y-16,
  5,4)
  
- printh(last_score)
  -- score
  if not (last_score == nil) then
- local text = 'score: '..
-  last_score
- print(
-  text,
-  64-#text*2,
-  8*9+wall_anim_y,
-  7
- )
- text = 'hi score: '..
-  hi_score
- print(
-  text,
-  64-#text*2,
-  8*10+wall_anim_y,
-  7
- )
+  local text = 'score: '..
+   last_score
+  print(
+   text,
+   64-#text*2,
+   8*9+wall_anim_y,
+   7
+  )
+ end
+ if not (hi_score == nil) then
+  text = 'hi score: '..
+   hi_score
+  print(
+   text,
+   64-#text*2,
+   8*10+wall_anim_y,
+   7
+  )
  end
 
  local message =
@@ -1194,6 +1197,7 @@ function _update60()
      if hi_score == nil or
      last_score > hi_score then
       hi_score = last_score
+      dset(0, hi_score)
      end
      game_over = true
      game_started = false
