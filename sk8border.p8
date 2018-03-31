@@ -725,6 +725,9 @@ function update_wall(wall)
  game_started) then
   return
  end
+ -- no anim offset by default
+ wall.anim_x = 0
+ wall.anim_y = 0
  if p_state == states.grind then
   local lvl = gauge.multiplier
   local range = 1
