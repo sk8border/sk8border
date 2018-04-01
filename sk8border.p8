@@ -736,7 +736,9 @@ function update_wall(wall)
  p_state == states.grind then
   local lvl = gauge.multiplier
   local range = 1
-  if lvl == 2 then
+  if gauge.maxed then
+   range = 4
+  elseif lvl == 2 then
    range = 2
   elseif lvl == 3 then
    range = 2
