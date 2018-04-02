@@ -3,7 +3,9 @@ version 16
 __lua__
 -- bust up the border wall!
 
-DEBUG = false
+cartdata('sk8border')
+
+debug = false
 
 -- constants
 tpb=16 // ticks per beat
@@ -74,39 +76,83 @@ snd = {
 }
 
 rubble = {
-	{i=64,w=2,h=1},
-	{i=66,w=1,h=1},
-	{i=67,w=1,h=1},
-	{i=68,w=1,h=1}
+ {i=64,w=2,h=1},
+ {i=66,w=1,h=1},
+ {i=67,w=1,h=1},
+ {i=68,w=1,h=1}
 }
 
 posters = {
-	{i=12,w=4,h=4},
-	{i=8,w=4,h=2}
+ {i=12,w=4,h=4},
+ {i=8,w=4,h=2}
 }
 
 explosion_frames = {
 140,142,236,238
 }
 
+scoring = {
+ -- base number of ticks for
+ -- the score to increase by 1
+ -- while grinding
+ -- set to this value when
+ -- grinding starts
+ interval_base=15,
+ -- if grinding on the opposite
+ -- time as last time, 
+ -- that interval start as
+ -- this number of ticks
+ interval_alt=5,
+ -- whenever score is increased
+ -- by grinding, decrease the
+ -- interval by this many ticks
+ interval_drop_rate=5,
+ -- but not below this
+ interval_min=3,
+ -- stop raking points when
+ -- grinding for over this many
+ -- ticks uninterrupted
+ max_grind_ticks=60,
+ -- points when grinding starts
+ grind_start_pts=1,
+ -- points when walls are destroyed
+ destruction_pts=100,
+ -- wheter to destroy walls
+ -- when falling, besides
+ -- when jumping
+ -- (if gauge is filled)
+ destroy_on_fall=true
+}
+
   -- acceleration due to gravity
+game_duration = 90
 g = 0.2
-jump_speed = 5
+ground_jump_speed = 5
+grind_jump_speed = 4.1
 playerheight = 24
 ground_y = 8*14.5
-launch_time = 12
-launch_frame_time = 6
-max_grind_y = 40
+launch_frm_time = 8
+launch_time = launch_frm_time*2
+max_grind_y = 30
+grind_y_offset = 2
 land_time = 10
 idle_bob_time = 8
 title_wall_y = 8 * 8
 start_delay = 40
 scroll_speed = 1.5
+min_wall_w = 4
+max_wall_w = 12
+min_wall_h = 5
+max_wall_h = 10
+barbwire_on = false
 -- end constants
 
 
 -- global variables
+hi_score = dget(0)
+last_score = nil
 game_started = false
+game_over = false
 t = nil
 player = nil
 frm = 0
@@ -126,27 +172,52 @@ function make_player(x,y)
   return p
 end
 
+function add_to_score(points)
+ score += points*gauge.multiplier
+ set_gauge_value(
+  gauge,
+  gauge.value+points
+ )
+end
+
+function check_for_destruction()
+ if gauge.maxed then
+  break_all_walls()
+  score += scoring.destruction_pts
+  reset_gauge(gauge)
+  return true
+ end
+ return false
+end
+
 function play_snd(index)
  sfx(-1, 3)
  sfx(index, 3)
 end
 
+function find_grind_y(wall)
+ return wall.y + grind_y_offset
+end
 
 function update_player(p)
   if not game_started then
    return
   end
 
+  local sc = scoring
   local ps = p_state
 
-  function check_for_jump()
+  function check_for_jump(jump_speed)
    if not (
     btn(keys.a) or btn(keys.b)
    ) then
     p_state = states.launch
     launch_t = t
     p.dy = -jump_speed
-    play_snd(snd.jump)
+    if not check_for_destruction()
+    then
+     play_snd(snd.jump)
+    end
    end
   end
 
@@ -160,7 +231,7 @@ function update_player(p)
     p_state = states.crouch
    end
   elseif ps == states.crouch then
-   check_for_jump()
+   check_for_jump(ground_jump_speed)
   elseif ps == states.launch then
    if (
     t - launch_t >= launch_time
@@ -173,26 +244,70 @@ function update_player(p)
     ground_y-p.y < max_grind_y
    ) then
     p_state = states.down
-   else
-     if (btn(keys.a) or btn(keys.b)) then
-       for i=1,#walls do
-         if (
-           walls[i].exists and
-           not walls[i].breaking and
-           player.x >= walls[i].x and
-           player.x <= walls[i].x + 8*walls[i].w
-         ) then
-         if flr(abs(player.y - walls[i].y)) == 0 then
-           p_state = states.grind
-           player.y = walls[i].y
-           player.dy = 0
-           play_snd(snd.grind)
-         end
-         current_wall = walls[i]
-         break
-         end
+   elseif (
+    p.dy >= 0 and
+    (btn(keys.a) or btn(keys.b))
+   ) then
+    for i=1,#walls do
+     if (
+      walls[i].exists and
+      not walls[i].breaking and
+      player.x + 16 >= walls[i].x and
+      player.x <= walls[i].x + 8*walls[i].w
+     ) then
+      local grind_y =
+       find_grind_y(walls[i])
+      if player.y == grind_y then
+
+       -- just entered
+       -- grind state
+       add_to_score(
+       sc.grind_start_pts)
+
+       -- is a down, or is it
+       -- b?
+       local adown =
+       btn(keys.a)
+
+       -- initiate 
+       -- grinding
+       -- scoring
+       -------------------
+       -- reset grind ticks
+       -- for this unperturbated
+       -- horizontal section
+       p_totalgrindt = 0
+
+       -- if grinding on the
+       -- opposite side as
+       -- last time...
+       if (adown and  
+       p_last_grind == 'b') or
+       (adown == false and
+       p_last_grind == 'a') 
+       then
+        p_grindinterval = 
+        sc.interval_alt
+       else
+        -- reset fully
+        p_grindt = 0
+        p_grindinterval = 
+        sc.interval_base
        end
+       ---------------------
+
+       p_last_grind =
+        adown and 'a' or 'b'
+
+       p_state = states.grind
+       player.dy = 0
+       play_snd(snd.grind)
+
+      end
+      current_wall = walls[i]
+      break
      end
+    end
    end
   elseif ps == states.grind then
    -- prove me wrong!
@@ -202,21 +317,45 @@ function update_player(p)
     if (
      walls[i].exists and
      not walls[i].breaking and
-     player.x >= walls[i].x and
+     player.x + 16 >= walls[i].x and
      player.x <= walls[i].x + 8*walls[i].w
     ) then
-     if flr(abs(player.y - walls[i].y)) == 0 then
+     local grind_y =
+      find_grind_y(walls[i])
+     if player.y == grind_y then
       player_should_fall = false
-     end
      break
+     end
     end
    end
 
    if player_should_fall then
     -- fallllllllllllllll
     p_state = states.jump
+    play_snd(-1) -- stop grind noise
+    if sc.destroy_on_fall then
+     check_for_destruction()
+    end
    else
-    check_for_jump()
+   
+    -- continuous grinding!!
+    ------------------
+    if p_totalgrindt < 
+    sc.max_grind_ticks then
+     p_grindt += 1
+     p_totalgrindt += 1
+     if p_grindt>=p_grindinterval
+     then
+      add_to_score(1)
+      p_grindt = 0
+      p_grindinterval =
+       max(p_grindinterval-
+       sc.interval_drop_rate,
+       sc.interval_min)
+     end
+    end
+    ------------
+    check_for_jump(grind_jump_speed)
    end
   elseif ps == states.down then
    -- todo: special handling ?
@@ -225,6 +364,11 @@ function update_player(p)
     t - land_t >= land_time
    ) then
     p_state = states.idle
+    if (
+    btn(keys.a) or btn(keys.b)
+   ) then
+    p_state = states.crouch
+   end
    end
   end
 
@@ -237,17 +381,25 @@ function update_player(p)
    if apply_gravity(p) then
     if (
      current_wall and
-     (btn(keys.a) or btn(keys.b)) and
-     py_before < current_wall.y and
-     p.y > current_wall.y
+     (btn(keys.a) or btn(keys.b))
     ) then
-     -- oops we just passed through
-     -- the wall while holding the button!
-     -- reset player on wall so grinding
-     -- works on next turn
-     p.y = current_wall.y
-   end
+     local grind_y =
+      find_grind_y(current_wall)
+     if (
+      py_before < grind_y and
+      p.y > grind_y
+     ) then
+      -- oops we just passed through
+      -- the wall while holding the button!
+      -- reset player on wall so grinding
+      -- works on next turn
+      p.y = grind_y
+     end
+    end
    else
+    -- just landed
+    p_last_grind = nil
+    reset_gauge(gauge)
     p_state = states.land
     land_t = t
     play_snd(snd.skate)
@@ -260,7 +412,7 @@ function update_player(p)
    p_state == states.land
   ) then
    player.bob_frame = flr(
-  	t/idle_bob_time % 2
+   t/idle_bob_time % 2
    )
   else
    yoffset = 0
@@ -272,14 +424,17 @@ end
 function compute_frame(p)
   local ps = p_state
   if ps == states.idle then
-  	if p.bob_frame == 0 then frm = 0
+   if p.bob_frame == 0 then frm = 0
    else
    frm = 6
    end
   elseif ps == states.crouch then
    frm = 1
   elseif ps == states.launch then
-   if t - launch_t < 6 then
+   if (
+    t - launch_t <
+    launch_frm_time
+   ) then
     frm = 2
    else
     frm = 3
@@ -325,7 +480,7 @@ end
 
 
 function drawskater(p)
-	spr(
+ spr(
    p.frame,
    p.x,
    p.y - playerheight,
@@ -334,331 +489,397 @@ function drawskater(p)
   )
 end
 
+function reset()
+ --------------
+ frm = 0
+ launch_t = nil
+ land_t = nil
+ p_state = states.idle
+ lastwall = nil
+ start_countdown = nil
+ --------------------
+ t = 0
+ score = 0
+ game_started = false
+ timer = game_duration
+ p_last_grind = nil
+ set_gauge_value(gauge,0)
+ player.y = ground_y
+ -- title music
+ music(14)
+ walls = {}
+end
 
 function _init()
-  t = 0
+  
+  game_over = false
+  
   player = make_player(8, ground_y)
-
-  local gauge_widht_in_sprites=
-   10
-  local gauge_x=
-   64-
-   (gauge_widht_in_sprites*8)/
-   2
+  
   gauge = make_gauge(
-   10,2,gauge_x,119
-  )
-  
-  set_gauge_value(gauge,0)
-  
+   8,64,0,119)
 
-  -- title music
-  music(14)
+  gauge.x = 64-gauge.width/2
 
   palt(0,false)
   palt(7,true)
-  walls = {}
+  
+  reset()
 end
 
 function make_gauge(
 width_in_sprites,
-units_per_sprite,
+max_value,
 x,y)
-	width_in_sprites = max(
-	 3,width_in_sprites)
-	
-	-- make sure units_per_sprite
-	-- is a power of two
-	-- (can only be 1,2,4 or 8)
-	if units_per_sprite>8 then
-	 units_per_sprite = 8
-	end
-	for i=0,3 do
-	 local target = 2^i
-	 if units_per_sprite<=
-	 target then
-	  units_per_sprite=target
-	  break
-	 end
-	end
-	
- local maxval=
-  width_in_sprites*
-  units_per_sprite
+
+ width_in_sprites = max(
+  3,width_in_sprites)
+  
+ local width =
+  width_in_sprites * 8
   
  -- create gauge object
  gauge={
- 	w=w,
- 	x=x,
- 	y=y,
- 	width_in_sprites=
- 	width_in_sprites,
- 	units_per_sprite=
- 	units_per_sprite,
- 	pixels_per_unit=
- 	8/units_per_sprite,
- 	max_value=maxval,
- 	value=0
+  w=w,
+  x=x,
+  y=y,
+  width=width,
+  width_in_sprites=
+   width_in_sprites,
+  pixels_per_unit=
+   width/max_value,
+  max_value=max_value,
+  value=0,
+  multiplier=1,
+  maxed=false
  }
- set_gauge_value(gauge,maxval)
+ 
+ set_gauge_value(gauge,units)
+ 
  return gauge
+end
+
+function reset_gauge(gauge)
+ set_gauge_value(gauge,0)
 end
 
 function set_gauge_value(
 gauge,value)
  gauge.value = min(
-  gauge.max_value,value) 
+  gauge.max_value,value)
+ gauge.maxed = gauge.value==
+  gauge.max_value 
+ local mult =
+ flr(4*(gauge.value/
+ gauge.max_value))+1
+ mult = min(mult,4)
+ gauge.multiplier = mult
 end
 
 function draw_gauge(gauge)
+
  local x = gauge.x
  local y = gauge.y
- spr(70,x,y)
- for i=1,
- gauge.width_in_sprites-2 do
+ local col = 7+gauge.multiplier
+ local basecol = 5
+ 
+ local flasht 
+ local gaugecol
+ local textcol
+ 
+ if gauge.maxed then
+  col = basecol
+  -- zero or one
+  flasht = flr((t%16)/8)
+  gaugecol = flasht == 0 and 7 or 0
+  textcol = flasht == 0 and 0 or 7
+  pal(basecol,gaugecol)
+ end
+ 
+ -- left cap
+ spr(70,x-1,y)
+ for i=0,
+ gauge.width_in_sprites-1 do
   spr(71,x+i*8,y)
  end
- spr(72,
- x+(gauge.width_in_sprites-1)
-  *8,
- y)
- if gauge.value <= 0 then
- 	return
+ -- right cap
+ spr(70,x+gauge.width,y)
+
+ -- draw the gauge's inside
+ if gauge.value > 0 then
+  local inner_height=6
+  rectfill(
+   x,
+   y+1,
+   x+gauge.pixels_per_unit*
+    gauge.value-1,
+   y+inner_height,
+   col
+  )
  end
- local inner_height=6
- rectfill(
-  x+1,
-  y+1,
-  x+gauge.pixels_per_unit*
-   gauge.value-2,
-  y+inner_height,
-  9
- )
+ 
+ if gauge.maxed then
+  local text = "bring it down!"
+  print(
+   text,
+   x+gauge.width/2-
+    (#text/2)*4,
+   y+1,
+   textcol
+  )
+  -- reset
+  pal(basecol,basecol)
+ else
+  -- separators
+  spr(70,x+gauge.width*0.25,y)
+  spr(70,x+gauge.width*0.5,y)
+  spr(70,x+gauge.width*0.75,y)
+ end
+ 
 end
 
 function add_wall(x,w,h)
-	local wall = nil
-	for i=1,#walls do
- 	if not walls[i].exists then
-			wall = walls[i]
-			break
-		end
-	end
-	if wall == nil then
-		wall = {}
-		walls[#walls+1] = wall
-	end
-	wall.x = x
-	wall.y = 112-h*8
-	wall.w = w
-	wall.h = h
-	wall.anim_x = 0
-	wall.anim_y = 0
-	wall.anim_elapsed = 0
-	wall.exists = true
-	wall.breaking = false
-	wall.posters = {}
-	wall.barbwire = {}
-	wall.explosions = {}
-	wall.rubble = {}
-	
-	-- add barbwire (or not)
-	if rnd(1) < 0.2 then
-		local numbarbs =
-		 min(4,2+flr(rnd(w-4+1)))
-		local barbstart =
-			1+flr(rnd(w-numbarbs+1))
-	 for i=1,w do
-	  wall.barbwire[i] =
-	  	i >=barbstart and
-	  	i < barbstart+numbarbs
-	 end
-	end
-	
-	-- add propaganda
-	-- cycle through every poster
-	-- model and do a random check
-	-- to post it on the wall
-	for i=1,#posters do
-		local p = posters[i]
-		if w >= p.w+2 and
-		h >= p.h+2 then
-			if rnd(1)<0.3 then
-				wall.posters[
-				#wall.posters+1]=
-				{
-					i=p.i,w=p.w,h=p.h,
-					x=8+rnd(8*(w-p.w-2)),
-					y=8+rnd(8*(h-p.h-2))
-				}
-				break
-			end
-		end
-	end
-	lastwall = wall
-	return wall
+ local wall = nil
+ for i=1,#walls do
+  if not walls[i].exists then
+   wall = walls[i]
+   break
+  end
+ end
+ if wall == nil then
+  wall = {}
+  walls[#walls+1] = wall
+ end
+ wall.x = x
+ wall.y = 112-h*8
+ wall.w = w
+ wall.h = h
+ wall.anim_x = 0
+ wall.anim_y = 0
+ wall.anim_elapsed = 0
+ wall.exists = true
+ wall.breaking = false
+ wall.posters = {}
+ wall.barbwire = {}
+ wall.explosions = {}
+ wall.rubble = {}
+ 
+ -- add barbwire (or not)
+ if barbwire_on then
+  if rnd(1) < 0.2 then
+   local numbarbs =
+    min(4,2+flr(rnd(w-4+1)))
+   local barbstart =
+    1+flr(rnd(w-numbarbs+1))
+   for i=1,w do
+    wall.barbwire[i] =
+     i >=barbstart and
+     i < barbstart+numbarbs
+   end
+  end
+ end
+ 
+ -- add propaganda
+ -- cycle through every poster
+ -- model and do a random check
+ -- to post it on the wall
+ for i=1,#posters do
+  local p = posters[i]
+  if w >= p.w+2 and
+  h >= p.h+2 then
+   if rnd(1)<0.3 then
+    wall.posters[
+    #wall.posters+1]=
+    {
+     i=p.i,w=p.w,h=p.h,
+     x=8+rnd(8*(w-p.w-2)),
+     y=8+rnd(8*(h-p.h-2))
+    }
+    break
+   end
+  end
+ end
+ lastwall = wall
+ return wall
 end
 
 function break_all_walls()
-	for i=1, #walls do
-		break_wall(walls[i])
-	end
+ for i=1, #walls do
+  break_wall(walls[i])
+ end
 end
 
 function break_wall(wall)
-	if not wall.exists or
-	wall.breaking then 
-		return
-	end
-	wall.breaking = true
-	wall.anim_elapsed = 0
-	for i=1, wall.w do
-		wall.explosions[i] = 
-		 -4-flr(rnd(4))
-		wall.rubble[i] = 
-		 rubble[1+flr(rnd(3))]
-	end
-	play_snd(snd.explode)
+ if not wall.exists or
+ wall.breaking then 
+  return
+ end
+ wall.breaking = true
+ wall.anim_elapsed = 0
+ for i=1, wall.w do
+  wall.explosions[i] = 
+   -4-flr(rnd(4))
+  wall.rubble[i] = 
+   rubble[1+flr(rnd(3))]
+ end
+ play_snd(snd.explode)
 end
 
 function update_wall(wall)
-	if not (wall.exists and
-	game_started) then
-		return
-	end
-	if wall.breaking then
-		wall.anim_elapsed += 1
-		wall.anim_x = 
-		 rnd(6)-3
-		wall.anim_y = 
-		 (wall.anim_elapsed/4)*
-		 (wall.anim_elapsed/4)+
-		 rnd(2)-1
-	end
-	wall.x -= scroll_speed
-	if wall.x+wall.w*8 < -16 then
-		wall.exists = false
-	end
+ if not (wall.exists and
+ game_started) then
+  return
+ end
+ -- no anim offset by default
+ wall.anim_x = 0
+ wall.anim_y = 0
+ if not wall.breaking and
+ p_state == states.grind then
+  local lvl = gauge.multiplier
+  local range = 1
+  if gauge.maxed then
+   range = 4
+  elseif lvl == 2 then
+   range = 2
+  elseif lvl == 3 then
+   range = 2
+  elseif lvl == 4 then
+   range = 3
+  end
+  wall.anim_y = flr(rnd(range))
+ elseif wall.breaking then
+  wall.anim_elapsed += 1
+  wall.anim_x = 
+   rnd(6)-3
+  wall.anim_y = 
+   (wall.anim_elapsed/4)*
+   (wall.anim_elapsed/4)+
+   rnd(2)-1
+ end
+ wall.x -= scroll_speed
+ if wall.x+wall.w*8 < -16 then
+  wall.exists = false
+ end
 end
 
 function draw_wall(wall)
-	if not wall.exists then
-		return
-	end
-	local x = wall.x+
-	 wall.anim_x
-	local y = wall.y+
-	 wall.anim_y
-	local indexes = {1,17,33,49}
-	local col_index = 0
-	
-	for i=1, wall.w do
-		if i == wall.w then 
-		 col_index = 2
-		elseif i > 1 then 
-		 col_index = 1
-		end
-		local row_index = 1
-		for j=1, wall.h do
-			if j == wall.h then
-			 row_index = 4
-			elseif j == wall.h-1 then
-			 row_index = 3
-			elseif j > 1 then
-			 row_index = 2
-			end
-			-- draw 1x1 wall sprite
-			-- at i,j
-			spr(
-				indexes[row_index]+col_index,
-				x+(i-1)*8,y+(j-1)*8)
-		end
-		
-		-- draw barbwire
-		if wall.barbwire[i] then
-		 spr(52,x+(i-1)*8,y-8)
-		end
-		
-		-- draw rubble
-		if wall.breaking then
-			-- total animation time in frames
-			-- of the corresponding explosion
-			-- if at least past a certain point,
-			-- reveal the rubble
- 		local xplo_frames =
-				flr(wall.anim_elapsed/
-				4+wall.explosions[i])
- 		if xplo_frames >= 2 then
- 			local rubble = 
- 			wall.rubble[i]
- 			spr(
- 				rubble.i,
- 				wall.x+(i-0.5-rubble.w/2)*8,
- 				wall.y+(wall.h-rubble.h)*8,
- 				rubble.w,
- 				rubble.h
- 			)
- 		end
-		end
-	end
-	
-	palt(7,false)
-	palt(0,true)
-	-- draw propaganda
-	for i=1, #wall.posters do
-		local p = wall.posters[i]
-		spr(p.i,x+p.x,y+p.y,p.w,p.h)
-	end
-	palt(0,false)
+ if not wall.exists then
+  return
+ end
+ local x = wall.x+
+  wall.anim_x
+ local y = wall.y+
+  wall.anim_y
+ local indexes = {1,17,33,49}
+ local col_index = 0
+ 
+ for i=1, wall.w do
+  if i == wall.w then 
+   col_index = 2
+  elseif i > 1 then 
+   col_index = 1
+  end
+  local row_index = 1
+  for j=1, wall.h do
+   if j == wall.h then
+    row_index = 4
+   elseif j == wall.h-1 then
+    row_index = 3
+   elseif j > 1 then
+    row_index = 2
+   end
+   -- draw 1x1 wall sprite
+   -- at i,j
+   spr(
+    indexes[row_index]+col_index,
+    x+(i-1)*8,y+(j-1)*8)
+  end
+  
+  -- draw barbwire
+  if wall.barbwire[i] then
+   spr(52,x+(i-1)*8,y-8)
+  end
+  
+  -- draw rubble
+  if wall.breaking then
+   -- total animation time in frames
+   -- of the corresponding explosion
+   -- if at least past a certain point,
+   -- reveal the rubble
+   local xplo_frames =
+    flr(wall.anim_elapsed/
+    4+wall.explosions[i])
+   if xplo_frames >= 2 then
+    local rubble = 
+    wall.rubble[i]
+    spr(
+     rubble.i,
+     wall.x+(i-0.5-rubble.w/2)*8,
+     wall.y+(wall.h-rubble.h)*8,
+     rubble.w,
+     rubble.h
+    )
+   end
+  end
+ end
+ 
+ palt(7,false)
+ palt(0,true)
+ -- draw propaganda
+ for i=1, #wall.posters do
+  local p = wall.posters[i]
+  spr(p.i,x+p.x,y+p.y,p.w,p.h)
+ end
+ palt(0,false)
  palt(7,true)
 end
 
 function draw_wall_explosions(
 wall)
-	if not wall.exists then
-		return
-	end
-	if wall.breaking then
+ if not wall.exists then
+  return
+ end
+ if wall.breaking then
   palt(0,true)
   palt(7,false)
   -- explosion duration
   -- in frames
   local xplo_duration = 4
   for i=1,wall.w do
-  	-- total elapsed animation
-  	-- frames
-  	local xplo_frames =
-				flr(wall.anim_elapsed/4+
-				wall.explosions[i])
-  	-- current frame index
-  	local xplo_curframe =
-				xplo_frames%xplo_duration
-  	-- plays explosion anim only 2 times
-  	if xplo_frames >=0 and
-				xplo_frames < 
-				xplo_duration*1 and
-				xplo_curframe >= 0 and
-				xplo_curframe <= 3 then
-  			local sprite_index=
-						explosion_frames[
-						xplo_curframe+1]
-  			spr(
-  				sprite_index,
-  				wall.x+(i-1)*8-4,
-  				wall.y+(wall.h-2)*8,
-  				2,
-  				2
-  			)
-  		end
-  	end
+   -- total elapsed animation
+   -- frames
+   local xplo_frames =
+    flr(wall.anim_elapsed/4+
+    wall.explosions[i])
+   -- current frame index
+   local xplo_curframe =
+    xplo_frames%xplo_duration
+   -- plays explosion anim only 2 times
+   if xplo_frames >=0 and
+    xplo_frames < 
+    xplo_duration*1 and
+    xplo_curframe >= 0 and
+    xplo_curframe <= 3 then
+     local sprite_index=
+      explosion_frames[
+      xplo_curframe+1]
+     spr(
+      sprite_index,
+      wall.x+(i-1)*8-4,
+      wall.y+(wall.h-2)*8,
+      2,
+      2
+     )
+    end
+   end
   palt(0,false)
   palt(7,true)
-	end			
+ end   
 end
 
 function drawscrollmap(
 s,mx,my,x,y,w,h)
-		tx = flr(s/8)%w
+  tx = flr(s/8)%w
   dx = -(s%8)
   mapdraw(mx+tx,my,dx,y,w-tx,h)
   mapdraw(mx,my,(w-tx)*8+dx,y,tx+1,h)
@@ -685,16 +906,16 @@ function draw_title()
  end
 
  local wall_anim_y =
- 	flr((t/4)*(t/4))
+  flr((t/4)*(t/4))
  local wall_y =
   -- apply gravity at start
   title_wall_y+wall_anim_y
  
  local logo_t = max(0,t-5)
  local logo_anim_y =
- 	flr((logo_t/4)*(logo_t/4))
-	local logo_x = 13
-	local logo_y = 12+logo_anim_y
+  flr((logo_t/4)*(logo_t/4))
+ local logo_x = 13
+ local logo_y = 12+logo_anim_y
 
  -- wall in foreground
  map(0,17,-1,wall_y,18,15)
@@ -712,9 +933,37 @@ function draw_title()
  logo_x+border_offset_x+16,
  logo_y+border_offset_y-16,
  5,4)
+ 
+ -- score
+ if not (last_score == nil) then
+  local text = 'score: '..
+   last_score
+  print(
+   text,
+   64-#text*2,
+   8*9+wall_anim_y,
+   7
+  )
+ end
+ if (
+  not hi_score == nil and
+  (
+   not last_score == nil or
+   hi_score > 0
+  )
+ ) then
+  text = 'hi score: '..
+   hi_score
+  print(
+   text,
+   64-#text*2,
+   8*10+wall_anim_y,
+   7
+  )
+ end
 
  local message =
-   '  press ❎ to start'
+   'press 🅾️ or ❎ to start'
  local blink = true
  if (
   start_countdown or
@@ -774,9 +1023,9 @@ function _draw()
     flr(-1 + rnd(3))
   end
   camera(cam_x, cam_y)
-		
-		--s is the amount of scrolling
-	 local s = t*scroll_speed
+  
+  --s is the amount of scrolling
+  local s = t*scroll_speed
   cls()
   --sky
   rectfill (-8,-8,127+8,127+8,12)
@@ -800,13 +1049,13 @@ function _draw()
 
   --walls
   for i=1, #walls do
-  	draw_wall(walls[i])
-    if DEBUG then
+   draw_wall(walls[i])
+    if debug then
       draw_wall_outline(walls[i])
     end
   end
   for i=1, #walls do
-  	draw_wall_explosions(walls[i])
+   draw_wall_explosions(walls[i])
   end
 
   -- foreground
@@ -837,15 +1086,37 @@ function _draw()
     end
   end
   
+  ------------------------
+  -- u.i ☉☉
+  ------------------------
+  
   -- gauge
   draw_gauge(gauge)
+  
+  -- score
+  local text = tostr(score)
+  print(text,
+   gauge.x+gauge.width+4
+   ,121,6)
+  
+  -- timer
+  palt(0,true)
+  palt(7,false)
+  spr(53,2,121-2)
+  palt(0,false)
+  palt(7,true)
+  text = tostr(timer)
+  print(text,12,121,6)
 
-  if DEBUG then
+  if debug then
     print_debug_messages()
   end
 
   -- layer title screen on top
   draw_title()
+  
+  -- game over screen
+  --draw_game_over()
 end
 
 function _update60()
@@ -882,26 +1153,75 @@ function _update60()
   update_player(player)
   
   for i=1, #walls do
-  	update_wall(walls[i])
+   update_wall(walls[i])
   end
   
   if lastwall == nil or
-  	lastwall.x+lastwall.w*8 <= 
-  	128
+   lastwall.x+lastwall.w*8 <= 
+   128
   then
-  	local wallx = 128
-  	if lastwall then
-  		wallx = flr(lastwall.x+
-  		lastwall.w*8)
-  	end
-  	add_wall(wallx,4+flr(rnd(8)),
-  	5+flr(rnd(5)))
+   local wallx = 128
+   if lastwall then
+    wallx = flr(lastwall.x+
+    lastwall.w*8)
+   end
+   add_wall(
+    wallx,
+    min_wall_w +
+     flr(rnd(
+      max_wall_w -
+      min_wall_w
+     )),
+    min_wall_h +
+     flr(rnd(
+      max_wall_h -
+      min_wall_h
+     ))
+   )
   end
 
-  if game_started then
-   if t%360 == 0 then
-    break_all_walls()
-    set_gauge_value(gauge,gauge.value+1)
+  if game_over then
+   if go_transition_in then
+    if go_colindex >= 0 then
+     pal(go_colindex,0)
+     go_colindex -= 1
+    elseif go_t == 45 then
+     go_transition_in = false
+     go_colindex = 15
+     reset()
+    end
+   else --transition out
+    if go_colindex >=0 then
+     pal(go_colindex,go_colindex)
+     go_colindex -= 1
+    else
+     game_over = false
+    end 
+   end
+   go_t += 1
+  end
+  
+  if game_started 
+  then
+   if t%60 == 0 then
+    timer -= 1
+    if timer == 0 then
+     -- enter game over
+     -- set hi-score
+     last_score = score
+     if hi_score == nil or
+     last_score > hi_score then
+      hi_score = last_score
+      dset(0, hi_score)
+     end
+     game_over = true
+     game_started = false
+     go_transition_in = true
+     go_t = 0
+     go_colindex = 15
+     sfx(-1)
+     --music(-1)
+    end
    end
    t += 1
   end
@@ -929,25 +1249,25 @@ ffffffff015555555555555555555560fffff4444444444444444444444fffff0000000000000000
 ffffffff015555555555555555555560ffff444444444444444444444444ffff0000000000000000000000000000000088881f444fff4fffffff4ff44f888888
 ffffffff015555555555555555555560fff44444444444444444444444444fff00000000000000000000000000000000888881ff4fffff1111fffff441888888
 ffffffff015555555555555555555560ff4444444444444444444444444444ff00000000000000000000000000000000888888114ffff177771ffff418888888
-4444444401555555555555555555556044444444444444444444444444444444000000000000000000000000000000008888888114fff177771ffff418888888
-44444444015555555555555555555560444444444444444444444444444444440000000000000000000000000000000088888881114ffff44ffffff418888888
-44444444056666666666666666666660444444444444444444444444444444440000000000000000000000000000000088888881114fffffffffff4418888888
-44444444015555555555555555555560777777770000000000000000000000000000000000000000000000000000000088888881114fffffffffff4418888888
-444444440155555555555555555555607770077700000000000000000000000000000000000000000000000000000000888888811144ffffffffff4418888888
-4444444401555555555555555555556077077077000000000000000000000000000000000000000000000000000000008888888811441ffffffff44188888888
-44444444056666666666666666666660770770770000000000000000000000000000000000000000000000000000000088888888111441111114441188888888
-44444444015555555555555555555560770770770000000000000000000000000000000000000000000000000000000088888888811144444411111888888888
-44444444056666666666666666666660770770770000000000000000000000000000000000000000000000000000000081888888881111111111118888888818
-44444444056666666666666666666660777007770000000000000000000000000000000000000000000000000000000081188888888811111111888888888118
-44444444055555555555555555555550000770000000000000000000000000000000000000000000000000000000000088888888888888888888888888888888
-77700000000000777777777777777777777777777700007772222222222222222222222777777777777777777777777700000000000000000000000000000000
-77066666666666077777777777777777777777777056660727777777777777777777777277777777777777777777777700000007777777777700000000000000
-70155555555566607777777777777777777777770155556027777777777777777777777277777777777777777777777700000077777777777770000000000000
-01555555555555607700007777777777770007770155556027777777777777777777777277777777777777777777777700000077777777777770000000000000
-01555555555555507016660777000077701660770155556027777777777777777777777277777777777777777777777707777777777777777777770000000000
-01555555555555500155556070166607015556070155555027777777777777777777777277777777777777777777777777777777777777777777777777777700
-01555555555555500155556001556660015556077011110727777777777777777777777277777777777777777777777777777777777777777777777777777770
-01555555555555500155556001555550015555077700007772222222222222222222222777777777777777777777777707777777777777777777777777777700
+0000000001555555555555555555556044444444444444444444444444444444000000000000000000000000000000008888888114fff177771ffff418888888
+00000000015555555555555555555560444444444444444444444444444444440000000000000000000000000000000088888881114ffff44ffffff418888888
+00000000056666666666666666666660444444444444444444444444444444440000000000000000000000000000000088888881114fffffffffff4418888888
+00000000015555555555555555555560777777770066660000000000000000000000000000000000000000000000000088888881114fffffffffff4418888888
+000000000155555555555555555555607770077706000060000000000000000000000000000000000000000000000000888888811144ffffffffff4418888888
+0000000001555555555555555555556077077077600600060000000000000000000000000000000000000000000000008888888811441ffffffff44188888888
+00000000056666666666666666666660770770776006000600000000000000000000000000000000000000000000000088888888111441111114441188888888
+00000000015555555555555555555560770770776006660600000000000000000000000000000000000000000000000088888888811144444411111888888888
+00000000056666666666666666666660770770776000000600000000000000000000000000000000000000000000000081888888881111111111118888888818
+00000000056666666666666666666660777007770600006000000000000000000000000000000000000000000000000081188888888811111111888888888118
+00000000055555555555555555555550000770000066660000000000000000000000000000000000000000000000000088888888888888888888888888888888
+77700000000000777777777777777777777777777700007777777777555555557777777777777777777777777777777700000000000000000000000000000000
+77066666666666077777777777777777777777777056660757777777777777777777777277777777777777777777777700000007777777777700000000000000
+70155555555566607777777777777777777777770155556057777777777777777777777277777777777777777777777700000077777777777770000000000000
+01555555555555607700007777777777770007770155556057777777777777777777777277777777777777777777777700000077777777777770000000000000
+01555555555555507016660777000077701660770155556057777777777777777777777277777777777777777777777707777777777777777777770000000000
+01555555555555500155556070166607015556070155555057777777777777777777777277777777777777777777777777777777777777777777777777777700
+01555555555555500155556001556660015556077011110757777777777777777777777277777777777777777777777777777777777777777777777777777770
+01555555555555500155556001555550015555077700007777777777555555557777777777777777777777777777777707777777777777777777777777777700
 77777777777777777777777777777777777777777700077777777777777777777777777777777777777777777777777777777777777777777777777777777777
 77777777777777777777777777777777777777777049907777777777777777777777777777777777777777777777777777777777777777777777777777777777
 77777777777777777777777777777777777770000040077777777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -1224,7 +1544,7 @@ __sfx__
 0008000b086540965409654076540665406654096540b6540c6540c6540c6540e6540e6540e6540e6540e6540e6540e6541065411654146541565416654166541565412654116541165411654116541165413654
 010802203164519615206111f6111d6111c6111a6111a6111a6111e6111e6111e6111e6111f6111f6111f6111f6111f6111e6111b6111a611186111861118611186111861118611196111d6111f6112161121611
 0104000024645247502b6452b75025505000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-010600022b7232b7232b7032b7032b7032b7032b70315203150031d0031d0031d0031d0031d0031d0031d0031e0031e0031d0031c0031c0031e0031e0031e0031e0031e0031d0031d0031d0031d0031d0031d003
+0102000418605187301f7051f73018305187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f700
 011000001830018300183501b3501e3501f3501830018300183501b3501f3501e3501e3521e3421e3321e32537805378001f3501e3501d3501d3501b3501b3501a3521a3521a3521835217342173421433214325
 0110000030843308231a3501735014350133501235013350143501335514355173551a3551735217352173551a3501b3001835014300173501a350133001b3501b3001b100271421e1022a1422b1422b1422b142
 011000001830018300183501b3001b3501f300183501b350203501b3501e3501f3501f2003084330833308233081330803183001b3001e3001f3001d3001b3001d3501d3501d3501b3501a3501a3501835018350
