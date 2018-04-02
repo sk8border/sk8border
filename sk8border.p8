@@ -946,9 +946,9 @@ function draw_title()
   )
  end
  if (
-  not hi_score == nil and
+  (not (hi_score == nil)) and
   (
-   not last_score == nil or
+   (not (last_score == nil)) or
    hi_score > 0
   )
  ) then
