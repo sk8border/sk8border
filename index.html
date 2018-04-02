@@ -9,78 +9,83 @@
 
   <style>
     @font-face {
-      font-family: Pico8;
+      font-family: 'PICO-8';
       src: url('PICO-8 wide.ttf');
     }
-
+    @font-face {
+      font-family: Softsquare;
+      src: url('ChevyRay - Softsquare.ttf');
+    }
     body,
     html {
       margin: 0;
       width: 100%;
+      font-size: 20px;
     }
-
     body {
       background-color: #5e564e;
-      font-family: Pico8;
+      font-family: Softsquare;
       color: white;
       box-sizing: border-box;
     }
-
-    h1, p {
-      font-family: Pico8;
-      max-width: 900px;
-      margin-left: 2rem;
-      margin-right: 2rem;
+    body.using_touch {
+      overflow: hidden;
     }
-
     h1 {
-      line-height: 4rem;
-    }
-
-    p {
-      line-height: 1.8rem;
-    }
-
-    ul {
-      max-width: 500px;
-      text-align: left;
-    }
-
-    ul li {
+      font-family: Softsquare;
       line-height: 2rem;
     }
-
+    h1, h2, p, ul, #play_game {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+    h1, h2, p, ul {
+      max-width: 512px;
+    }
+    ul {
+      text-align: left;
+    }
+    ul li {
+      margin-bottom: 1rem;
+    }
+    a {
+      font-size: 1.1em;
+    }
     .main {
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 3rem;
     }
-
+    .pico-8 {
+      font-family: 'PICO-8';
+      font-size: 0.6em;
+    }
     .logo {
       width: 100%;
       margin-bottom: 3em;
     }
-
     .logo img {
       width: 100%;
     }
-
     canvas#canvas {
       width: 256px;
       height: 256px;
     }
-
-    @media screen and (min-width: 514px) {
+    @media screen and (min-width: 382px) and (min-height: 382px) {
+      canvas#canvas {
+        width: 384px;
+        height: 384px;
+      }
+    }
+    @media screen and (min-width: 514px) and (min-height: 514px) {
       canvas#canvas {
         width: 512px;
         height: 512px;
       }
     }
-
     .desktop_controls {
       width: 512px;
     }
-
     .pico8_el {
       float: left;
       width: 92px;
@@ -95,20 +100,16 @@
       cursor: pointer;
       cursor: hand;
     }
-
     .pico8_el a {
       text-decoration: none;
       color: #fff;
     }
-
     .pico8_el:hover {
       background-color: #aaa;
     }
-
     .pico8_el:link {
       background-color: #aaa;
     }
-
     canvas {
       image-rendering: optimizeSpeed;
       image-rendering: -moz-crisp-edges;
@@ -118,51 +119,43 @@
       -ms-interpolation-mode: nearest-neighbor;
       border: 0px
     }
-
     #play_game {
       font-size: 2rem;
       color: white;
-      padding: 1rem;
-      font-family: Pico8;
+      padding: 0.5rem 1rem;
+      font-family: Softsquare;
       background-color: rgb(255, 0, 77);
       border: 3px solid white;
       border-radius: 15px;
       cursor: pointer;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-      margin-left: 2rem;
-      margin-right: 2rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
       line-height: 3rem;
     }
-
     #play_game.hidden {
       display: none;
     }
-
     .dynamic_game_content.hidden {
       display: none;
     }
-
-    .game_container.using_touch {
+    .game_area {
+      position: relative;
+      margin-bottom: 3.6rem;
+    }
+    .using_touch .game_area {
+      margin-bottom: initial;
       background-color: rgba(0, 0, 0, 0.9);
-      pointer-events: none;
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
     }
-
-    .game_container:not(.using_touch) {
-      margin-bottom: 5rem;
-    }
-
-    .game_container canvas {
+    .game_area canvas {
       border: 1px solid white;
       margin: 1rem;
     }
-
-    .game_container.using_touch canvas {
+    .using_touch .game_area canvas {
       border: initial;
       margin: initial;
       position: absolute;
@@ -170,43 +163,41 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
-
     @media screen and (max-width: 800px) and (min-height: 460px) {
-      .game_container.using_touch canvas {
+      .using_touch .game_area canvas {
         transform: translate(-50%, -70%);
       }
     }
-
-    .game_container .touch_controls {
+    .game_area .touch_controls {
       display: none;
     }
-
-    .game_container.using_touch .touch_controls {
+    .using_touch .game_area .touch_controls {
       display: initial;
     }
-
-    .game_container.using_touch .desktop_controls {
+    .using_touch .game_area .desktop_controls {
       display: none;
     }
-
-    .game_container.using_touch button,
-    .game_container.using_touch .control_button,
-    .game_container.using_touch .meta_controls {
-      pointer-events: initial;
+    .using_touch .game_area button,
+    .using_touch .game_area .control_btn,
+    .using_touch .game_area
+     .meta_controls {
       -webkit-user-select: none;
          -moz-user-select: none;
           -ms-user-select: none;
               user-select: none;
-      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-touch-callout: none;
     }
-
-    .game_container .meta_controls {
+    .game_area .meta_controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
       margin: 0.5rem 1rem;
       display: flex;
       justify-content: space-between;
     }
-
-    .game_container .meta_button {
+    .game_area .meta_btn {
       color: white;
       background: none;
       border: none;
@@ -215,55 +206,46 @@
       height: 2rem;
       padding: 0;
     }
-
-    .game_container .meta_button.pause {
+    .game_area .meta_btn.pause {
       font-size: 1.2rem;
     }
-
-    .game_container .meta_button.reset {
+    .game_area .meta_btn.reset {
       font-size: 2rem;
     }
-
-    .game_container .meta_button.exit {
+    .game_area .meta_btn.exit {
       font-size: 2rem;
     }
-
-    .game_container .control_button {
+    .game_area .control_btn {
       position: fixed;
       padding-bottom: 3rem;
       padding-top: 5rem;
     }
-
-    .game_container .control_button.a {
+    .game_area .control_btn.a {
       bottom: 0;
       left: 0;
       padding-left: 3rem;
       padding-right: 4rem;
     }
-
-    .game_container .control_button.b {
+    .game_area .control_btn.b {
       bottom: 0;
       right: 0;
       padding-left: 4rem;
       padding-right: 3rem;
     }
-
-    .game_container .control_button button {
-      font-family: Pico8;
+    .game_area .control_btn button {
+      font-family: 'PICO-8';
       background-color: rgb(255, 0, 77);
       border: 2px solid white;
       border-radius: 50%;
-      width: 2.7rem;
-      height: 2.7rem;
+      width: 2.6rem;
+      height: 2.6rem;
       color: white;
       font-size: 1rem;
     }
-
-    .game_container .control_button button:focus {
+    .game_area .control_btn button:focus {
       outline: 0;
     }
   </style>
-
 </head>
 
 <body>
@@ -272,21 +254,21 @@
   </div>
   <center class="main">
     <h1>Bust Up the Border Wall!</h1>
-    <p>Sk8Border was created in Montreal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a>.</p>
+    <p>Sk8Border was created in Montréal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a>.</p>
     <p>TODO: plus d'infos</p>
     <p>This game runs in your web browser - even on your phone!</p>
     <button id="play_game">Let's Go!</button>
     <div class="dynamic_game_content hidden">
-      <div class="game_container">
+      <div class="game_area">
         <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
         <div class="touch_controls">
           <div class="meta_controls">
-            <button class="meta_button pause">▋▋</button>
-            <button class="meta_button reset">↻</button>
-            <button class="meta_button exit">×</button>
+            <button class="meta_btn pause">▋▋</button>
+            <button class="meta_btn reset">↻</button>
+            <button class="meta_btn exit">×</button>
           </div>
-          <div class="control_button a"><button>Î</button></div>
-          <div class="control_button b"><button>×</button></div>
+          <div class="control_btn a"><button>Î</button></div>
+          <div class="control_btn b"><button>×</button></div>
         </div>
         <div class="desktop_controls">
           <div class=pico8_el onclick="Module.pico8Reset();">
@@ -313,46 +295,33 @@
         </div>
       </div>
     </div>
-    <p>
-      Controls:
-      <ul>
-        <li>Hold Î (Z) or × (X) to crouch</li>
-        <li>Release both Î and × to do an ollie</li>
-        <li>Hold Î while above the wall to perform a 5-0 (tail) grind</li>
-        <li>Hold × to perform a nosegrind</li>
-        <li>Rack up more points by alternating grinds</li>
-        <li>Chain together grinds to max out your power meter - and blow that wall to smithereens!</li>
-      </ul>
-    </p>
-    <p>Thanks to <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href="https://twitter.com/lexaloffle">Zep</a> for developing it!</p>
+    <h2>Controls</h2>
+    <ul>
+      <li>Hold <span class="pico-8">Î</span> (Z) or <span class="pico-8">×</span> (X) while on the ground to crouch</li>
+      <li>Release both <span class="pico-8">Î</span> and <span class="pico-8">×</span> to do an ollie</li>
+      <li>Hold <span class="pico-8">Î</span> while above the wall to perform a 5-0 (tail) grind</li>
+      <li>Hold <span class="pico-8">×</span> to perform a nosegrind</li>
+      <li>Rack up more points by alternating grinds</li>
+      <li>Chain together grinds to max out your power meter... and blow that wall to smithereens!</li>
+    </ul>
+    <h2>Fonts on this page</h2>
+    <ul>
+      <li><a href="http://pixel-fonts.com/">Softsquare</a> font by <a href="https://twitter.com/chevyray">Chevy Ray Johnston</a></li>
+      <li>Thanks to <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href="https://twitter.com/lexaloffle">Zep</a> for developing it!</li>
+    </ul>
   </center>
 
   <script type="text/javascript">
+    // PICO-8 setup
     var canvas = document.getElementById("canvas");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // show Emscripten environment where the canvas is
-    // arguments are passed to PICO-8
-
     var Module = {};
     Module.canvas = canvas;
-
-    /*
-     // When pico8_buttons is defined, PICO-8 takes each int to be a live bitfield
-     // representing the state of each player's buttons
-
-     var pico8_buttons = [0, 0, 0, 0, 0, 0, 0, 0]; // max 8 players
-     pico8_buttons[0] = 2 | 16; // example: player 0, RIGHT and Z held down
-
-     // when pico8_gpio is defined, reading and writing to gpio pins will
-     // read and write to these values
-     var pico8_gpio = new Array(128);
-    */
   </script>
   <script>
     // key blocker. prevent cursor keys from scrolling page while playing cart.
-
     function onKeyDown_blocker(event) {
       event = event || window.event;
       var o = document.activeElement;
@@ -362,7 +331,6 @@
         }
       }
     }
-
     document.addEventListener('keydown', onKeyDown_blocker, false);
   </script>
   <script>
@@ -371,12 +339,16 @@
     (function() {
       var touch_activated = false;
       function activateTouch() {
-        if (touch_activated) {
-          return;
-        }
-        window.pico8_buttons = [0];
-        document.querySelector('.game_container').classList.add('using_touch');
         touch_activated = true;
+      }
+      function useTouch() {
+        if (touch_activated) {
+          window.pico8_buttons = [0];
+          document.body.classList.add('using_touch');
+        }
+      }
+      function stopUsingTouch() {
+        document.body.classList.remove('using_touch');
       }
       var game_started = false;
       var game_started_once = false;
@@ -384,6 +356,7 @@
         if (game_started) {
           return;
         }
+        useTouch();
         document
           .querySelector('.dynamic_game_content')
           .classList
@@ -411,6 +384,7 @@
         if (!game_paused) {
           toggleGamePaused();
         }
+        stopUsingTouch();
         game_started = false;
       }
       var audio_on = true;
@@ -438,56 +412,56 @@
       }
 
       // game controls
-      var button_a_code = 16;
-      var button_b_code = 32;
-      var button_a_pressed = false;
-      var button_b_pressed = false;
+      var btn_a_code = 16;
+      var btn_b_code = 32;
+      var btn_a_pressed = false;
+      var btn_b_pressed = false;
       function update_input() {
-        var code_a = button_a_pressed ? button_a_code : 0;
-        var code_b = button_b_pressed ? button_b_code : 0;
+        var code_a = btn_a_pressed ? btn_a_code : 0;
+        var code_b = btn_b_pressed ? btn_b_code : 0;
         pico8_buttons[0] = code_a | code_b;
       }
       function press_a() {
-        button_a_pressed = true;
+        btn_a_pressed = true;
         update_input();
         window.navigator.vibrate(10);
       }
       function press_b() {
-        button_b_pressed = true;
+        btn_b_pressed = true;
         update_input();
         window.navigator.vibrate(10);
       }
       function release_a() {
-        button_a_pressed = false;
+        btn_a_pressed = false;
         update_input();
       }
       function release_b() {
-        button_b_pressed = false;
+        btn_b_pressed = false;
         update_input();
       }
 
       // set up listeners
       document.addEventListener('touchstart', activateTouch);
 
-      var start_button = document.querySelector('#play_game');
-      start_button.addEventListener('click', startGame);
+      var start_btn = document.querySelector('#play_game');
+      start_btn.addEventListener('click', startGame);
 
-      var pause_button = document.querySelector('button.pause');
-      pause_button.addEventListener('click', toggleGamePaused);
+      var pause_btn = document.querySelector('button.pause');
+      pause_btn.addEventListener('click', toggleGamePaused);
 
-      var reset_button = document.querySelector('button.reset');
-      reset_button.addEventListener('click', resetGame);
+      var reset_btn = document.querySelector('button.reset');
+      reset_btn.addEventListener('click', resetGame);
 
-      var exit_button = document.querySelector('button.exit');
-      exit_button.addEventListener('click', stopGame);
+      var exit_btn = document.querySelector('button.exit');
+      exit_btn.addEventListener('click', stopGame);
 
-      var button_a = document.querySelector('.control_button.a');
-      button_a.addEventListener('touchstart', press_a);
-      button_a.addEventListener('touchend', release_a);
+      var btn_a = document.querySelector('.control_btn.a');
+      btn_a.addEventListener('touchstart', press_a);
+      btn_a.addEventListener('touchend', release_a);
 
-      var button_b = document.querySelector('.control_button.b');
-      button_b.addEventListener('touchstart', press_b);
-      button_b.addEventListener('touchend', release_b);
+      var btn_b = document.querySelector('.control_btn.b');
+      btn_b.addEventListener('touchstart', press_b);
+      btn_b.addEventListener('touchend', release_b);
     })();
   </script>
 </body>
