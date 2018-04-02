@@ -1,141 +1,426 @@
-﻿<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>PICO-8 Cartridge</title>
-        <meta name="description" content="">
+﻿<!DOCTYPE html>
+<html>
 
-<STYLE TYPE="text/css">
-<!--
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sk8Border</title>
+  <meta name="description" content="Sk8Border">
 
-canvas#canvas { width: 512px; height: 512px; }
+  <style>
+    @font-face {
+      font-family: Pico8;
+      src: url('PICO-8 wide.ttf');
+    }
 
-.pico8_el {
-	float:left;
-	width:92px;
-	display:inline-block; 
-  	margin: 1px;
-	padding: 4px;
-	text-align: center;
-	color:#fff;
-	background-color:#777;
-	font-family : verdana;
-	font-size: 9pt;
-	cursor: pointer;
-	cursor: hand;
-}
-.pico8_el a{
-	text-decoration: none;
-	color:#fff;
-}
+    body {
+      background-color: #5e564e;
+      font-family: Pico8;
+      color: white;
+      box-sizing: border-box;
+    }
 
-.pico8_el:hover{
-	background-color:#aaa;
-}
+    img {
+      max-width: 100%;
+    }
 
-.pico8_el:link{
-	background-color:#aaa;
-}
+    .logo {
+      width: 256px;
+      margin-top: 3em;
+      margin-bottom: 3em;
+    }
 
-canvas{
-    image-rendering: optimizeSpeed;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: optimize-contrast;
-    image-rendering: pixelated;
-    -ms-interpolation-mode: nearest-neighbor;
-    border: 0px
-}
+    canvas#canvas {
+      width: 256px;
+      height: 256px;
+    }
 
--->
-</STYLE>
-    
+    @media screen and (min-width: 514px) {
+      canvas#canvas {
+        width: 512px;
+        height: 512px;
+      }
+      .logo {
+        width: 512px;
+      }
+    }
+
+    .desktop_controls {
+      width: 512px;
+    }
+
+    .pico8_el {
+      float: left;
+      width: 92px;
+      display: inline-block;
+      margin: 1px;
+      padding: 4px;
+      text-align: center;
+      color: #fff;
+      background-color: #777;
+      font-family: verdana;
+      font-size: 9pt;
+      cursor: pointer;
+      cursor: hand;
+    }
+
+    .pico8_el a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .pico8_el:hover {
+      background-color: #aaa;
+    }
+
+    .pico8_el:link {
+      background-color: #aaa;
+    }
+
+    canvas {
+      image-rendering: optimizeSpeed;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: optimize-contrast;
+      image-rendering: pixelated;
+      -ms-interpolation-mode: nearest-neighbor;
+      border: 0px
+    }
+
+    #play_game.hidden {
+      display: none;
+    }
+
+    .dynamic_game_content.hidden {
+      display: none;
+    }
+
+    .game_container.using_touch {
+      background-color: rgba(0, 0, 0, 0.9);
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .game_container canvas {
+      border: 1px solid white;
+      margin: 1rem;
+    }
+
+    .game_container.using_touch canvas {
+      border: initial;
+      margin: initial;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @media screen and (max-width: 800px) and (min-height: 460px) {
+      .game_container.using_touch canvas {
+        transform: translate(-50%, -70%);
+      }
+    }
+
+    .game_container .touch_controls {
+      display: none;
+    }
+
+    .game_container.using_touch .touch_controls {
+      display: initial;
+    }
+
+    .game_container.using_touch .desktop_controls {
+      display: none;
+    }
+
+    .game_container.using_touch button,
+    .game_container.using_touch .control_button,
+    .game_container.using_touch .meta_controls {
+      pointer-events: initial;
+      user-select: none;
+      -webkit-touch-callout: none; /* iOS Safari */
+    }
+
+    .game_container .meta_controls {
+      margin: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .game_container .meta_button {
+      color: white;
+      background: none;
+      border: none;
+      line-height: 0;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+    }
+
+    .game_container .meta_button.pause {
+      font-size: 1.2rem;
+    }
+
+    .game_container .meta_button.reset {
+      font-size: 2rem;
+    }
+
+    .game_container .meta_button.exit {
+      font-size: 2rem;
+    }
+
+    .game_container .control_button {
+      position: fixed;
+      padding-bottom: 3rem;
+      padding-top: 5rem;
+    }
+
+    .game_container .control_button.a {
+      bottom: 0;
+      left: 0;
+      padding-left: 3rem;
+      padding-right: 4rem;
+    }
+
+    .game_container .control_button.b {
+      bottom: 0;
+      right: 0;
+      padding-left: 4rem;
+      padding-right: 3rem;
+    }
+
+    .game_container .control_button button {
+      font-family: Pico8;
+      background-color: rgb(255, 0, 77);
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 2.7rem;
+      height: 2.7rem;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .game_container .control_button button:focus {
+      outline: 0;
+    }
+  </style>
+
 </head>
 
-<body bgcolor=#303030>
+<body>
 
-	<br><br><br>
+  <center>
+    <div class="logo">
+      <img src="sk8border_logo.png">
+    </div>
 
-	<center><div style="width:512px;">
+    <button id="play_game">Play Game</button>
+    <div class="dynamic_game_content hidden">
+      <div class="game_container">
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+        <div class="touch_controls">
+          <div class="meta_controls">
+            <button class="meta_button pause">▋▋</button>
+            <button class="meta_button reset">↻</button>
+            <button class="meta_button exit">×</button>
+          </div>
+          <div class="control_button a"><button>Î</button></div>
+          <div class="control_button b"><button>×</button></div>
+        </div>
+        <div class="desktop_controls">
+          <div class=pico8_el onclick="Module.pico8Reset();">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Reset" width=12 height=1 2/> Reset
+          </div>
 
-	<canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+          <div class=pico8_el onclick="Module.pico8TogglePaused();">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Pause" width=12 height=12/> Pause
+          </div>
 
-	<script type="text/javascript">
-		var canvas = document.getElementById("canvas");
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
+          <div class=pico8_el onclick="Module.requestFullScreen(true, false);">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Fullscreen" width=12 height=12/> Fullscreen
+          </div>
 
-		// show Emscripten environment where the canvas is
-		// arguments are passed to PICO-8
-		
-		var Module = {};
-		Module.canvas = canvas;
-		
-		/*
-			// When pico8_buttons is defined, PICO-8 takes each int to be a live bitfield
-			// representing the state of each player's buttons
-			
-			var pico8_buttons = [0, 0, 0, 0, 0, 0, 0, 0]; // max 8 players
-			pico8_buttons[0] = 2 | 16; // example: player 0, RIGHT and Z held down
-			
-			// when pico8_gpio is defined, reading and writing to gpio pins will
-			// read and write to these values
-			var pico8_gpio = new Array(128);
-		*/
-	</script>
+          <div class=pico8_el onclick="Module.pico8ToggleSound();">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Toggle Sound" width=12 height=12/> Sound
+          </div>
 
-	<script async type="text/javascript" src="index.js"></script>
-	  
-	<script>
-		// key blocker. prevent cursor keys from scrolling page while playing cart.
-		
-		function onKeyDown_blocker(event) {
-			event = event || window.event;
-			var o = document.activeElement;
-			if (!o || o == document.body || o.tagName == "canvas")
-			{
-				if ([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1)
-				{
-					if (event.preventDefault) event.preventDefault();
-				}
-			}
-		}
+          <div class=pico8_el>
+            <a target="_new" href="http://www.lexaloffle.com/bbs/?cat=7&sub=2">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAlElEQVR4Ae2dMQ5FQBCGh6jcwAkkateg3DiAa+iQUGqVKi95FQfAJRQOoHeBUf8JyQqKjZ1uMzuz2e/LTE3KhyF7kSlgLOykas23f6D+A9Yp84aAOYU15pcJnfji0Il2ID8HzC4y38ZrnfIBGxeRoR3c3EWrACdsV5BOsx7OSRnrOXh4F5HzA6bevwUn8wlz7eCDsQM99B3ks0s/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="More Carts" width=12 height=12/> Carts
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </center>
 
-		document.addEventListener('keydown', onKeyDown_blocker, false);
+  <script type="text/javascript">
+    var canvas = document.getElementById("canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-	</script>
-        
-	<br>
+    // show Emscripten environment where the canvas is
+    // arguments are passed to PICO-8
 
-	<div class=pico8_el onclick="Module.pico8Reset();">
+    var Module = {};
+    Module.canvas = canvas;
 
-	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Reset" width=12 height=	12/>
+    /*
+     // When pico8_buttons is defined, PICO-8 takes each int to be a live bitfield
+     // representing the state of each player's buttons
 
-	Reset</div>
+     var pico8_buttons = [0, 0, 0, 0, 0, 0, 0, 0]; // max 8 players
+     pico8_buttons[0] = 2 | 16; // example: player 0, RIGHT and Z held down
 
-	<div class=pico8_el onclick="Module.pico8TogglePaused();">
+     // when pico8_gpio is defined, reading and writing to gpio pins will
+     // read and write to these values
+     var pico8_gpio = new Array(128);
+    */
+  </script>
+  <script>
+    // key blocker. prevent cursor keys from scrolling page while playing cart.
 
-	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Pause" width=12 height=12/>
+    function onKeyDown_blocker(event) {
+      event = event || window.event;
+      var o = document.activeElement;
+      if (!o || o == document.body || o.tagName == "canvas") {
+        if ([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+          if (event.preventDefault) event.preventDefault();
+        }
+      }
+    }
 
-	Pause</div>
-	<div class=pico8_el onclick="Module.requestFullScreen(true, false);">
-	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Fullscreen" width=12 height=12/>
+    document.addEventListener('keydown', onKeyDown_blocker, false);
+  </script>
+  <script>
+    // meta functionality
+    // Using undocumented features in PICO-8 v0.1.11g
+    (function() {
+      var touch_activated = false;
+      function activateTouch() {
+        if (touch_activated) {
+          return;
+        }
+        window.pico8_buttons = [0];
+        document.querySelector('.game_container').classList.add('using_touch');
+        touch_activated = true;
+      }
+      var game_started = false;
+      var game_started_once = false;
+      function startGame() {
+        if (game_started) {
+          return;
+        }
+        document
+          .querySelector('.dynamic_game_content')
+          .classList
+          .remove('hidden');
+        document.querySelector('#play_game').classList.add('hidden');
+        if (!game_started_once) {
+          // attach game script to document to start
+          var script = document.createElement('script');
+          script.src = 'index.js';
+          document.body.appendChild(script);
+        }
+        game_started = true;
+        game_started_once = true;
+        if (game_paused) {
+          toggleGamePaused();
+        }
+      }
+      // only used for touch mode
+      function stopGame() {
+        if (!game_started) {
+          return;
+        }
+        document.querySelector('.dynamic_game_content').classList.add('hidden');
+        document.querySelector('#play_game').classList.remove('hidden');
+        if (!game_paused) {
+          toggleGamePaused();
+        }
+        game_started = false;
+      }
+      var audio_on = true;
+      function toggleAudio() {
+        if (!game_started) {
+          return;
+        }
+        audio_on = !audio_on;
+        // there's a setter checking mutations I guess!
+        window.codo_command = 3;
+      }
+      var game_paused = false;
+      function toggleGamePaused() {
+        if (!game_started) {
+          return;
+        }
+        game_paused = !game_paused;
+        window.codo_command = 4;
+      }
+      function resetGame() {
+        if (!game_started) {
+          return;
+        }
+        window.codo_command = 1;
+      }
 
-	Fullscreen</div>
-	<div class=pico8_el onclick="Module.pico8ToggleSound();">
-	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Toggle Sound" width=12 height=12/>
-	
-	Sound</div>
-	<div class=pico8_el ><a target="_new" href="http://www.lexaloffle.com/bbs/?cat=7&sub=2">
-	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAlElEQVR4Ae2dMQ5FQBCGh6jcwAkkateg3DiAa+iQUGqVKi95FQfAJRQOoHeBUf8JyQqKjZ1uMzuz2e/LTE3KhyF7kSlgLOykas23f6D+A9Yp84aAOYU15pcJnfji0Il2ID8HzC4y38ZrnfIBGxeRoR3c3EWrACdsV5BOsx7OSRnrOXh4F5HzA6bevwUn8wlz7eCDsQM99B3ks0s/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="More Carts" width=12 height=12/>
+      // game controls
+      var button_a_code = 16;
+      var button_b_code = 32;
+      var button_a_pressed = false;
+      var button_b_pressed = false;
+      function update_input() {
+        var code_a = button_a_pressed ? button_a_code : 0;
+        var code_b = button_b_pressed ? button_b_code : 0;
+        pico8_buttons[0] = code_a | code_b;
+      }
+      function press_a() {
+        button_a_pressed = true;
+        update_input();
+        window.navigator.vibrate(10);
+      }
+      function press_b() {
+        button_b_pressed = true;
+        update_input();
+        window.navigator.vibrate(10);
+      }
+      function release_a() {
+        button_a_pressed = false;
+        update_input();
+      }
+      function release_b() {
+        button_b_pressed = false;
+        update_input();
+      }
 
-	Carts</a></div>
+      // set up listeners
+      document.addEventListener('touchstart', activateTouch);
 
-	<br>	
+      var start_button = document.querySelector('#play_game');
+      start_button.addEventListener('click', startGame);
 
-	</div></center>
-	<br><br>
+      var pause_button = document.querySelector('button.pause');
+      pause_button.addEventListener('click', toggleGamePaused);
 
-</body></html>
+      var reset_button = document.querySelector('button.reset');
+      reset_button.addEventListener('click', resetGame);
 
+      var exit_button = document.querySelector('button.exit');
+      exit_button.addEventListener('click', stopGame);
 
+      var button_a = document.querySelector('.control_button.a');
+      button_a.addEventListener('touchstart', press_a);
+      button_a.addEventListener('touchend', release_a);
+
+      var button_b = document.querySelector('.control_button.b');
+      button_b.addEventListener('touchstart', press_b);
+      button_b.addEventListener('touchend', release_b);
+    })();
+  </script>
+</body>
+
+</html>

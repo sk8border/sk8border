@@ -3,3 +3,4 @@
 *.jpg
 *.wav
 *.gal
+!sk8border_logo.png
