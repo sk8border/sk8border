@@ -13,6 +13,12 @@
       src: url('PICO-8 wide.ttf');
     }
 
+    body,
+    html {
+      margin: 0;
+      width: 100%;
+    }
+
     body {
       background-color: #5e564e;
       font-family: Pico8;
@@ -25,8 +31,7 @@
     }
 
     .logo {
-      width: 256px;
-      margin-top: 3em;
+      width: 100%;
       margin-bottom: 3em;
     }
 
@@ -39,9 +44,6 @@
       canvas#canvas {
         width: 512px;
         height: 512px;
-      }
-      .logo {
-        width: 512px;
       }
     }
 
@@ -212,12 +214,10 @@
 </head>
 
 <body>
-
+  <div class="logo">
+    <img src="sk8border_logo.png">
+  </div>
   <center>
-    <div class="logo">
-      <img src="sk8border_logo.png">
-    </div>
-
     <button id="play_game">Play Game</button>
     <div class="dynamic_game_content hidden">
       <div class="game_container">
