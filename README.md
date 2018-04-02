@@ -23,7 +23,7 @@ git merge master
 Create a new web build from PICO-8 with:
 
 ```console
-export index.html
+export index.js
 ```
 
 Push:
