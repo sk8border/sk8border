@@ -945,7 +945,13 @@ function draw_title()
    7
   )
  end
- if not (hi_score == nil) then
+ if (
+  not hi_score == nil and
+  (
+   not last_score == nil or
+   hi_score > 0
+  )
+ ) then
   text = 'hi score: '..
    hi_score
   print(
@@ -957,7 +963,7 @@ function draw_title()
  end
 
  local message =
-   '  press ❎ to start'
+   'press 🅾️ or ❎ to start'
  local blink = true
  if (
   start_countdown or
