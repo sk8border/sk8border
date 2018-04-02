@@ -26,13 +26,34 @@
       box-sizing: border-box;
     }
 
-    img {
-      max-width: 100%;
+    h1, p {
+      font-family: Pico8;
+      max-width: 900px;
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+
+    h1 {
+      line-height: 4rem;
+    }
+
+    p {
+      line-height: 1.8rem;
+    }
+
+    .main {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3rem;
     }
 
     .logo {
       width: 100%;
       margin-bottom: 3em;
+    }
+
+    .logo img {
+      width: 100%;
     }
 
     canvas#canvas {
@@ -87,6 +108,22 @@
       image-rendering: pixelated;
       -ms-interpolation-mode: nearest-neighbor;
       border: 0px
+    }
+
+    #play_game {
+      font-size: 2rem;
+      color: white;
+      padding: 1rem;
+      font-family: Pico8;
+      background-color: rgb(255, 0, 77);
+      border: 3px solid white;
+      border-radius: 15px;
+      cursor: pointer;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      margin-left: 2rem;
+      margin-right: 2rem;
+      line-height: 3rem;
     }
 
     #play_game.hidden {
@@ -147,7 +184,10 @@
     .game_container.using_touch .control_button,
     .game_container.using_touch .meta_controls {
       pointer-events: initial;
-      user-select: none;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
       -webkit-touch-callout: none; /* iOS Safari */
     }
 
@@ -221,8 +261,12 @@
   <div class="logo">
     <img src="sk8border_logo.png">
   </div>
-  <center>
-    <button id="play_game">Play Game</button>
+  <center class="main">
+    <h1>Bust Up the Border Wall!</h1>
+    <p>Sk8Border was created in Montreal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a>.</p>
+    <p>TODO: plus d'infos</p>
+    <p>This game runs in your web browser - even on your phone!</p>
+    <button id="play_game">Let's Go!</button>
     <div class="dynamic_game_content hidden">
       <div class="game_container">
         <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
@@ -260,6 +304,7 @@
         </div>
       </div>
     </div>
+    <p>Thanks to <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href="https://twitter.com/lexaloffle">Zep</a> for developing it!</p>
   </center>
 
   <script type="text/javascript">
