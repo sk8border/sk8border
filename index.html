@@ -63,6 +63,16 @@
       margin-right: auto;
       margin-bottom: 3rem;
     }
+    .using_touch .main {
+      /* weird magic solution fixes mobile address bar woes...
+       * https://stackoverflow.com/a/33953987/4956731
+       */
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow-y:scroll;
+      -webkit-overflow-scrolling: touch; /* iOS velocity scrolling */
+    }
     .pico-8 {
       font-family: 'PICO-8';
       font-size: 0.6em;
