@@ -445,12 +445,16 @@
       function press_a() {
         btn_a_pressed = true;
         update_input();
-        window.navigator.vibrate(10);
+        if (navigator.vibrate) {
+          navigator.vibrate(10);
+        }
       }
       function press_b() {
         btn_b_pressed = true;
         update_input();
-        window.navigator.vibrate(10);
+        if (navigator.vibrate) {
+          navigator.vibrate(10);
+        }
       }
       function release_a() {
         btn_a_pressed = false;
