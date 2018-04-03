@@ -178,11 +178,13 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
     }
     @media screen and (max-width: 800px) and (min-height: 460px) {
       .using_touch .game_area canvas {
-        transform: translate(-50%, -70%);
+        -webkit-transform: translate(-50%, -70%);
+                transform: translate(-50%, -70%);
       }
     }
     .game_area .touch_controls {
@@ -211,8 +213,10 @@
       right: 0;
       z-index: 1000;
       margin: 0.5rem 1rem;
+      display: -webkit-box;
       display: flex;
-      justify-content: space-between;
+      -webkit-box-pack: justify;
+              justify-content: space-between;
     }
     .game_area .meta_btn {
       color: white;
