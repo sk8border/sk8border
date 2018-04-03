@@ -336,7 +336,11 @@
 
     var Module = {};
     Module.canvas = canvas;
+
+    // disable autostart
+    Module.noInitialRun = true;
   </script>
+  <script src="index.js"></script>
   <script>
     // key blocker. prevent cursor keys from scrolling page while playing cart.
     function onKeyDown_blocker(event) {
@@ -380,10 +384,10 @@
           .remove('hidden');
         document.querySelector('#play_game').classList.add('hidden');
         if (!game_started_once) {
-          // attach game script to document to start
-          var script = document.createElement('script');
-          script.src = 'index.js';
-          document.body.appendChild(script);
+          // run the game
+          Module.calledRun = false;
+          window.shouldRunNow = true;
+          run();
         }
         game_started = true;
         game_started_once = true;
