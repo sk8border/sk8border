@@ -217,24 +217,13 @@
       display: flex;
       -webkit-box-pack: justify;
               justify-content: space-between;
-    }
-    .game_area .meta_btn {
-      color: white;
-      background: none;
-      border: none;
-      line-height: 0;
-      width: 2rem;
-      height: 2rem;
-      padding: 0;
-    }
-    .game_area .meta_btn.pause {
-      font-size: 1.2rem;
-    }
-    .game_area .meta_btn.reset {
-      font-size: 2rem;
+      -webkit-box-align: center;
+              align-items: center;
     }
     .game_area .meta_btn.exit {
-      font-size: 2rem;
+      color: white;
+      font-size: 1.8rem;
+      font-family: initial;
     }
     .game_area .control_btn {
       position: fixed;
@@ -284,20 +273,20 @@
         <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
         <div class="touch_controls">
           <div class="meta_controls">
-            <button class="meta_btn pause">▋▋</button>
-            <button class="meta_btn reset">↻</button>
-            <button class="meta_btn exit">×</button>
+            <img class="meta_btn pause">
+            <img class="meta_btn reset">
+            <span class="meta_btn exit">×</span>
           </div>
           <div class="control_btn a"><button>Î</button></div>
           <div class="control_btn b"><button>×</button></div>
         </div>
         <div class="desktop_controls">
           <div class=pico8_el onclick="Module.pico8Reset();">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Reset" width=12 height=12/> Reset
+            <img class="reset" alt="Reset" width=12 height=12/> Reset
           </div>
 
           <div class=pico8_el onclick="Module.pico8TogglePaused();">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Pause" width=12 height=12/> Pause
+            <img class="pause" alt="Pause" width=12 height=12/> Pause
           </div>
 
           <div class=pico8_el onclick="Module.requestFullScreen(true, false);">
@@ -332,7 +321,19 @@
     </ul>
   </center>
 
-  <script type="text/javascript">
+  <script>
+    var sharedSrcs = {
+      pause: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      reset: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII='
+    };
+    Object.keys(sharedSrcs).forEach(function(className) {
+      var imgs = document.getElementsByClassName(className);
+      for (var i = 0; i < imgs.length; i++) {
+        imgs[i].src = sharedSrcs[className];
+      }
+    });
+  </script>
+  <script>
     // PICO-8 setup
     var canvas = document.getElementById("canvas");
     canvas.width = window.innerWidth;
@@ -475,13 +476,13 @@
       var start_btn = document.querySelector('#play_game');
       start_btn.addEventListener('click', startGame);
 
-      var pause_btn = document.querySelector('button.pause');
+      var pause_btn = document.querySelector('.meta_btn.pause');
       pause_btn.addEventListener('click', toggleGamePaused);
 
-      var reset_btn = document.querySelector('button.reset');
+      var reset_btn = document.querySelector('.meta_btn.reset');
       reset_btn.addEventListener('click', resetGame);
 
-      var exit_btn = document.querySelector('button.exit');
+      var exit_btn = document.querySelector('.meta_btn.exit');
       exit_btn.addEventListener('click', stopGame);
 
       var btn_a = document.querySelector('.control_btn.a');
