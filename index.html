@@ -192,6 +192,9 @@
       -webkit-box-align: center;
               align-items: center;
     }
+    .meta_btn {
+      padding: 0 1rem 3rem;
+    }
     .meta_btn.exit {
       color: white;
       font-size: 1.8rem;
@@ -327,7 +330,6 @@
     var Module = {};
     // disable autostart
     Module.noInitialRun = true;
-    window.pico8_buttons = [0];
   </script>
   <script src="index.js"></script>
   <script>
@@ -453,6 +455,10 @@
 
       // set up listeners
       document.addEventListener('touchstart', activateTouch);
+
+      qS('.touch_game').addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      }, true);
 
       var start_btn = qS('#play_game');
       start_btn.addEventListener('click', startGame);
