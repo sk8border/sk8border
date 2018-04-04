@@ -431,14 +431,16 @@
         var code_b = btn_b_pressed ? btn_b_code : 0;
         pico8_buttons[0] = code_a | code_b;
       }
-      function press_a() {
+      function press_a(e) {
+        e.preventDefault();
         btn_a_pressed = true;
         update_input();
         if (navigator.vibrate) {
           navigator.vibrate(10);
         }
       }
-      function press_b() {
+      function press_b(e) {
+        e.preventDefault();
         btn_b_pressed = true;
         update_input();
         if (navigator.vibrate) {
