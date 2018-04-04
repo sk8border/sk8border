@@ -28,9 +28,6 @@
       color: white;
       box-sizing: border-box;
     }
-    body.using_touch {
-      overflow: hidden;
-    }
     h1 {
       font-family: Softsquare;
       line-height: 2rem;
@@ -63,15 +60,8 @@
       margin-right: auto;
       margin-bottom: 3rem;
     }
-    .using_touch .main {
-      /* weird magic solution fixes mobile address bar woes...
-       * https://stackoverflow.com/a/33953987/4956731
-       */
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      overflow-y:scroll;
-      -webkit-overflow-scrolling: touch; /* iOS velocity scrolling */
+    .playing.using_touch .main {
+      display: none;
     }
     .pico-8 {
       font-family: 'PICO-8';
@@ -84,23 +74,29 @@
     .logo img {
       width: 100%;
     }
-    canvas#canvas {
+    canvas {
       width: 256px;
       height: 256px;
+      image-rendering: optimizeSpeed;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: optimize-contrast;
+      image-rendering: pixelated;
+      -ms-interpolation-mode: nearest-neighbor;
     }
     @media screen and (min-width: 382px) and (min-height: 382px) {
-      canvas#canvas {
+      canvas {
         width: 384px;
         height: 384px;
       }
     }
     @media screen and (min-width: 514px) and (min-height: 514px) {
-      canvas#canvas {
+      canvas {
         width: 512px;
         height: 512px;
       }
     }
-    .desktop_controls {
+    .desk_controls {
       width: 512px;
     }
     .pico8_el {
@@ -127,15 +123,6 @@
     .pico8_el:link {
       background-color: #aaa;
     }
-    canvas {
-      image-rendering: optimizeSpeed;
-      image-rendering: -moz-crisp-edges;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: optimize-contrast;
-      image-rendering: pixelated;
-      -ms-interpolation-mode: nearest-neighbor;
-      border: 0px
-    }
     #play_game {
       font-size: 2rem;
       color: white;
@@ -152,29 +139,28 @@
     #play_game.hidden {
       display: none;
     }
-    .dynamic_game_content.hidden {
+    .touch_game, .desk_game {
       display: none;
     }
-    .game_area {
-      position: relative;
-      margin-bottom: 3.6rem;
+    .playing.using_touch .touch_game,
+    .playing:not(.using_touch) .desk_game {
+      display: initial;
     }
-    .using_touch .game_area {
-      margin-bottom: initial;
+    .touch_game {
       background-color: rgba(0, 0, 0, 0.9);
       position: fixed;
       top: 0;
       bottom: 0;
       left: 0;
       right: 0;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+      -webkit-touch-callout: none;
     }
-    .game_area canvas {
-      border: 1px solid white;
-      margin: 1rem;
-    }
-    .using_touch .game_area canvas {
-      border: initial;
-      margin: initial;
+    .touch_game canvas,
+    .touch_game .status {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -182,31 +168,17 @@
               transform: translate(-50%, -50%);
     }
     @media screen and (max-width: 800px) and (min-height: 460px) {
-      .using_touch .game_area canvas {
+      .touch_game canvas,
+      .touch_game .status {
         -webkit-transform: translate(-50%, -70%);
                 transform: translate(-50%, -70%);
       }
     }
-    .game_area .touch_controls {
-      display: none;
+    .desk_game canvas {
+      border: 1px solid white;
+      margin: 1rem;
     }
-    .using_touch .game_area .touch_controls {
-      display: initial;
-    }
-    .using_touch .game_area .desktop_controls {
-      display: none;
-    }
-    .using_touch .game_area button,
-    .using_touch .game_area .control_btn,
-    .using_touch .game_area
-     .meta_controls {
-      -webkit-user-select: none;
-         -moz-user-select: none;
-          -ms-user-select: none;
-              user-select: none;
-      -webkit-touch-callout: none;
-    }
-    .game_area .meta_controls {
+    .meta_controls {
       position: absolute;
       top: 0;
       left: 0;
@@ -220,40 +192,54 @@
       -webkit-box-align: center;
               align-items: center;
     }
-    .game_area .meta_btn.exit {
+    .meta_btn.exit {
       color: white;
       font-size: 1.8rem;
-      font-family: initial;
+      font-family: verdana;
     }
-    .game_area .control_btn {
+    .control_btn {
       position: fixed;
-      padding-bottom: 3rem;
+      padding-bottom: 2.5rem;
       padding-top: 5rem;
     }
-    .game_area .control_btn.a {
+    .control_btn.a {
       bottom: 0;
       left: 0;
-      padding-left: 3rem;
-      padding-right: 4rem;
-    }
-    .game_area .control_btn.b {
-      bottom: 0;
-      right: 0;
-      padding-left: 4rem;
+      padding-left: 2.5rem;
       padding-right: 3rem;
     }
-    .game_area .control_btn button {
+    .control_btn.b {
+      bottom: 0;
+      right: 0;
+      padding-left: 3rem;
+      padding-right: 2.5rem;
+    }
+    .control_btn button {
       font-family: 'PICO-8';
-      background-color: #ff004d; /* pico-8 red */
       border: 2px solid white;
       border-radius: 50%;
       width: 2.6rem;
-      height: 2.6rem;
+      padding: 1.3rem 0;
       color: white;
-      font-size: 1rem;
+      font-size: 0.8rem;
+      line-height: 0;
     }
-    .game_area .control_btn button:focus {
+    .control_btn.a button {
+      background-color: #ff004d; /* pico-8 red */
+    }
+    .control_btn.b button {
+      background-color: #83769c; /* pico-8 indigo */
+    }
+    .control_btn button::before {
+      font-family: verdana;
+      font-size: 14px;
+      content: '\00a0'; /* space */
+    }
+    .control_btn button:focus {
       outline: 0;
+    }
+    .playing #controls {
+      margin-top: 3.6rem;
     }
   </style>
 </head>
@@ -262,50 +248,50 @@
   <div class="logo">
     <img src="sk8border_logo.png">
   </div>
+  <div class="touch_game">
+    <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
+    <div class="meta_controls">
+      <img class="meta_btn pause">
+      <img class="meta_btn reset">
+      <span class="meta_btn exit">×</span>
+    </div>
+    <div class="control_btn a"><button>Î</button></div>
+    <div class="control_btn b"><button>×</button></div>
+    <div class="status"></div>
+  </div>
   <center class="main">
-    <h1>Bust Up the Border Wall!</h1>
+    <h1 id="slogan">Bust Up the Border Wall!</h1>
     <p>Sk8Border was created in Montréal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a>.</p>
     <p>TODO: plus d'infos</p>
     <p>This game runs in your web browser - even on your phone!</p>
     <button id="play_game">Let's Go!</button>
-    <div class="dynamic_game_content hidden">
-      <div class="game_area">
-        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-        <div class="touch_controls">
-          <div class="meta_controls">
-            <img class="meta_btn pause">
-            <img class="meta_btn reset">
-            <span class="meta_btn exit">×</span>
-          </div>
-          <div class="control_btn a"><button>Î</button></div>
-          <div class="control_btn b"><button>×</button></div>
+    <div class="desk_game">
+      <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
+      <div class="desk_controls">
+        <div class=pico8_el onclick="Module.pico8Reset();">
+          <img class="reset" alt="Reset" width=12 height=12/> Reset
         </div>
-        <div class="desktop_controls">
-          <div class=pico8_el onclick="Module.pico8Reset();">
-            <img class="reset" alt="Reset" width=12 height=12/> Reset
-          </div>
 
-          <div class=pico8_el onclick="Module.pico8TogglePaused();">
-            <img class="pause" alt="Pause" width=12 height=12/> Pause
-          </div>
+        <div class=pico8_el onclick="Module.pico8TogglePaused();">
+          <img class="pause" alt="Pause" width=12 height=12/> Pause
+        </div>
 
-          <div class=pico8_el onclick="Module.requestFullScreen(true, false);">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Fullscreen" width=12 height=12/> Fullscreen
-          </div>
+        <div class=pico8_el onclick="Module.requestFullScreen(true, false);">
+          <img class="fullscreen" alt="Fullscreen" width=12 height=12/> Fullscreen
+        </div>
 
-          <div class=pico8_el onclick="Module.pico8ToggleSound();">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="Toggle Sound" width=12 height=12/> Sound
-          </div>
+        <div class=pico8_el onclick="Module.pico8ToggleSound();">
+          <img class="sound" alt="Toggle Sound" width=12 height=12/> Sound
+        </div>
 
-          <div class=pico8_el>
-            <a target="_new" href="http://www.lexaloffle.com/bbs/?cat=7&sub=2">
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAlElEQVR4Ae2dMQ5FQBCGh6jcwAkkateg3DiAa+iQUGqVKi95FQfAJRQOoHeBUf8JyQqKjZ1uMzuz2e/LTE3KhyF7kSlgLOykas23f6D+A9Yp84aAOYU15pcJnfji0Il2ID8HzC4y38ZrnfIBGxeRoR3c3EWrACdsV5BOsx7OSRnrOXh4F5HzA6bevwUn8wlz7eCDsQM99B3ks0s/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=" alt="More Carts" width=12 height=12/> Carts
-            </a>
-          </div>
+        <div class=pico8_el>
+          <a target="_new" href="http://www.lexaloffle.com/bbs/?cat=7&sub=2">
+            <img class="carts" alt="More Carts" width=12 height=12/> Carts
+          </a>
         </div>
       </div>
     </div>
-    <h2>Controls</h2>
+    <h2 id="controls">Controls</h2>
     <ul>
       <li>Hold <span class="pico-8">Î</span> (Z) or <span class="pico-8">×</span> (X) while on the ground to crouch</li>
       <li>Release both <span class="pico-8">Î</span> and <span class="pico-8">×</span> to do an ollie</li>
@@ -314,7 +300,7 @@
       <li>Rack up more points by alternating grinds</li>
       <li>Chain together grinds to max out your power meter... and blow that wall to smithereens!</li>
     </ul>
-    <h2>Fonts on this page</h2>
+    <h2 id="fonts">Fonts on this page</h2>
     <ul>
       <li><a href="http://pixel-fonts.com/">Softsquare</a> font by <a href="https://twitter.com/chevyray">Chevy Ray Johnston</a></li>
       <li>Thanks to <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href="https://twitter.com/lexaloffle">Zep</a> for developing it!</li>
@@ -322,28 +308,26 @@
   </center>
 
   <script>
-    var sharedSrcs = {
+    var imgSrcs = {
       pause: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
-      reset: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII='
+      reset: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      fullscreen: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      sound: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      carts: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAlElEQVR4Ae2dMQ5FQBCGh6jcwAkkateg3DiAa+iQUGqVKi95FQfAJRQOoHeBUf8JyQqKjZ1uMzuz2e/LTE3KhyF7kSlgLOykas23f6D+A9Yp84aAOYU15pcJnfji0Il2ID8HzC4y38ZrnfIBGxeRoR3c3EWrACdsV5BOsx7OSRnrOXh4F5HzA6bevwUn8wlz7eCDsQM99B3ks0s/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII='
     };
-    Object.keys(sharedSrcs).forEach(function(className) {
+    Object.keys(imgSrcs).forEach(function(className) {
       var imgs = document.getElementsByClassName(className);
       for (var i = 0; i < imgs.length; i++) {
-        imgs[i].src = sharedSrcs[className];
+        imgs[i].src = imgSrcs[className];
       }
     });
   </script>
   <script>
     // PICO-8 setup
-    var canvas = document.getElementById("canvas");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
     var Module = {};
-    Module.canvas = canvas;
-
     // disable autostart
     Module.noInitialRun = true;
+    window.pico8_buttons = [0];
   </script>
   <script src="index.js"></script>
   <script>
@@ -363,18 +347,13 @@
     // meta functionality
     // Using undocumented features in PICO-8 v0.1.11g
     (function() {
-      var touch_activated = false;
+      var qS = document.querySelector.bind(document);
+
+      var using_touch = false;
       function activateTouch() {
-        touch_activated = true;
-      }
-      function useTouch() {
-        if (touch_activated) {
-          window.pico8_buttons = [0];
-          document.body.classList.add('using_touch');
-        }
-      }
-      function stopUsingTouch() {
-        document.body.classList.remove('using_touch');
+        using_touch = true;
+        window.pico8_buttons = [0];
+        document.body.classList.add('using_touch');
       }
       var game_started = false;
       var game_started_once = false;
@@ -382,13 +361,16 @@
         if (game_started) {
           return;
         }
-        useTouch();
-        document
-          .querySelector('.dynamic_game_content')
-          .classList
-          .remove('hidden');
-        document.querySelector('#play_game').classList.add('hidden');
+        document.body.classList.add('playing');
+        qS('#play_game').classList.add('hidden');
         if (!game_started_once) {
+          // choose canvas
+          var namespace = using_touch ? '.touch_game' : '.desk_game';
+          Module.canvas = qS(namespace + ' canvas');
+          // display status messages
+          Module.setStatus = function(msg) {
+            qS('.touch_game .status').innerText = msg;
+          };
           // run the game
           Module.calledRun = false;
           window.shouldRunNow = true;
@@ -405,12 +387,11 @@
         if (!game_started) {
           return;
         }
-        document.querySelector('.dynamic_game_content').classList.add('hidden');
-        document.querySelector('#play_game').classList.remove('hidden');
+        qS('#play_game').classList.remove('hidden');
         if (!game_paused) {
           toggleGamePaused();
         }
-        stopUsingTouch();
+        document.body.classList.remove('playing');
         game_started = false;
       }
       var audio_on = true;
@@ -473,23 +454,23 @@
       // set up listeners
       document.addEventListener('touchstart', activateTouch);
 
-      var start_btn = document.querySelector('#play_game');
+      var start_btn = qS('#play_game');
       start_btn.addEventListener('click', startGame);
 
-      var pause_btn = document.querySelector('.meta_btn.pause');
+      var pause_btn = qS('.meta_btn.pause');
       pause_btn.addEventListener('click', toggleGamePaused);
 
-      var reset_btn = document.querySelector('.meta_btn.reset');
+      var reset_btn = qS('.meta_btn.reset');
       reset_btn.addEventListener('click', resetGame);
 
-      var exit_btn = document.querySelector('.meta_btn.exit');
+      var exit_btn = qS('.meta_btn.exit');
       exit_btn.addEventListener('click', stopGame);
 
-      var btn_a = document.querySelector('.control_btn.a');
+      var btn_a = qS('.control_btn.a');
       btn_a.addEventListener('touchstart', press_a);
       btn_a.addEventListener('touchend', release_a);
 
-      var btn_b = document.querySelector('.control_btn.b');
+      var btn_b = qS('.control_btn.b');
       btn_b.addEventListener('touchstart', press_b);
       btn_b.addEventListener('touchend', release_b);
     })();
