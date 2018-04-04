@@ -353,6 +353,7 @@
 
       var using_touch = false;
       function activateTouch() {
+        if (using_touch) return;
         using_touch = true;
         window.pico8_buttons = [0];
         document.body.classList.add('using_touch');
