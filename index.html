@@ -346,11 +346,11 @@
     document.addEventListener('keydown', onKeyDown_blocker, false);
   </script>
   <script>
-    // meta functionality
-    // Using undocumented features in PICO-8 v0.1.11g
     (function() {
       var qS = document.querySelector.bind(document);
 
+      // meta functionality
+      // Using undocumented features in PICO-8 v0.1.11g
       var using_touch = false;
       function activateTouch() {
         if (using_touch) return;
