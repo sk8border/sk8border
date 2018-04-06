@@ -161,7 +161,43 @@ land_t = nil
 p_state = states.idle
 lastwall = nil
 start_countdown = nil
+
+-- for rumble - goes from 0-6
+destruct_level = 0
+
 -- end global variables
+
+-- returns binary string
+function to_binary(num, bits)
+ -- thanks!
+ -- http://www.c4learn.com/c-programs/decimal-to-binary-using-bitwise-and.html
+ local mask = 2^(bits-1)
+ local bin_str = ''
+ while (
+  #bin_str < bits and
+  mask > 0
+ ) do
+  if band(num, mask) == 0 then
+   bin_str = bin_str..'0'
+  else
+   bin_str = bin_str..'1'
+  end
+  mask = shr(mask, 1)
+ end
+ return bin_str
+end
+
+function write_gpio(num,i,bits)
+ local bin_str =
+  to_binary(num, bits)
+ for j=1,bits do
+  local val = 0
+  if sub(bin_str,j,j)=='1' then
+   val = 255
+  end
+  poke(0x5f80+j+i-1, val)
+ end
+end
 
 function make_player(x,y)
   local p = {}
@@ -302,7 +338,14 @@ function update_player(p)
        p_state = states.grind
        player.dy = 0
        play_snd(snd.grind)
-
+       
+       destruct_level =
+        gauge.multiplier
+       write_gpio(
+        destruct_level,
+        5,
+        3
+       )
       end
       current_wall = walls[i]
       break
@@ -419,6 +462,23 @@ function update_player(p)
   end
 
   compute_frame(p)
+  
+  if ps != p_state then
+   write_gpio(p_state, 2, 3)
+  end
+  
+  if (
+   destruct_level > 0 and
+   p_state != states.grind and
+   (not is_a_wall_moving())
+  ) then
+   destruct_level = 0
+   write_gpio(
+    destruct_level,
+    5,
+    3
+   )
+  end
 end
 
 function compute_frame(p)
@@ -497,6 +557,7 @@ function reset()
  p_state = states.idle
  lastwall = nil
  start_countdown = nil
+ destruct_level = 0
  --------------------
  t = 0
  score = 0
@@ -508,6 +569,9 @@ function reset()
  -- title music
  music(14)
  walls = {}
+ -- reset gpio pins
+ write_gpio(p_state,2,3)
+ write_gpio(destruct_level,5,3)
 end
 
 function _init()
@@ -573,6 +637,19 @@ gauge,value)
  flr(4*(gauge.value/
  gauge.max_value))+1
  mult = min(mult,4)
+ if destruct_level < 6 then
+  -- don't mess with it if the
+  -- wall is collapsing
+  if gauge.maxed then
+   destruct_level = 5
+   write_gpio(destruct_level,5,3)
+  elseif (
+   mult!=gauge.multiplier
+  ) then
+   destruct_level = mult
+   write_gpio(destruct_level,5,3)
+  end
+ end
  gauge.multiplier = mult
 end
 
@@ -723,6 +800,8 @@ function break_wall(wall)
    rubble[1+flr(rnd(3))]
  end
  play_snd(snd.explode)
+ destruct_level = 6
+ write_gpio(destruct_level,5,3)
 end
 
 function update_wall(wall)
@@ -1544,7 +1623,7 @@ __sfx__
 0008000b086540965409654076540665406654096540b6540c6540c6540c6540e6540e6540e6540e6540e6540e6540e6541065411654146541565416654166541565412654116541165411654116541165413654
 010802203164519615206111f6111d6111c6111a6111a6111a6111e6111e6111e6111e6111f6111f6111f6111f6111f6111e6111b6111a611186111861118611186111861118611196111d6111f6112161121611
 0104000024645247502b6452b75025505000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0102000418605187301f7051f73018305187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f700
+0102000418605187401f7051f74018305187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f70018605187001f6051f700
 011000001830018300183501b3501e3501f3501830018300183501b3501f3501e3501e3521e3421e3321e32537805378001f3501e3501d3501d3501b3501b3501a3521a3521a3521835217342173421433214325
 0110000030843308231a3501735014350133501235013350143501335514355173551a3551735217352173551a3501b3001835014300173501a350133001b3501b3001b100271421e1022a1422b1422b1422b142
 011000001830018300183501b3001b3501f300183501b350203501b3501e3501f3501f2003084330833308233081330803183001b3001e3001f3001d3001b3001d3501d3501d3501b3501a3501a3501835018350
