@@ -390,6 +390,8 @@
         if (!game_started) {
           return;
         }
+        clearInterval(window.vibrateInterval);
+        if (navigator.vibrate) navigator.vibrate(0);
         qS('#play_game').classList.remove('hidden');
         if (!game_paused) {
           toggleGamePaused();
@@ -412,6 +414,10 @@
           return;
         }
         game_paused = !game_paused;
+        if (game_paused) {
+          window.clearInterval(window.vibrateInterval);
+          if (navigator.vibrate) navigator.vibrate(0);
+        }
         window.codo_command = 4;
       }
       function resetGame() {
@@ -482,6 +488,116 @@
       var btn_b = qS('.control_btn.b');
       btn_b.addEventListener('touchstart', press_b);
       btn_b.addEventListener('touchend', release_b);
+    })();
+  </script>
+  <script src="https://unpkg.com/pico8-gpio-listener@0.2.1/pico8-gpio-listener.js"></script>
+  <script>
+    (function() {
+      function getNumberFromBinaryGpio(gpio, pinIndex, bits) {
+        var binaryString = gpio
+          .slice(pinIndex, pinIndex + bits)
+          .map(function(value) {
+            // stored as 255 or 0, but we want binary (1 or 0)
+            return value ? 1 : 0;
+          })
+          .join('');
+
+        // to decimal
+        return parseInt(binaryString, 2);
+      }
+
+      function groundVibration() {
+        // TODO: implement a ground vibration? maybe?
+        // navigator.vibrate([1, 300, 1]);
+      }
+
+      function grindVibration(level) {
+        navigator.vibrate(0);
+        var length = 5 * level;
+        var vibrations = [];
+        for (var i = 0; i < 12; i++) {
+          vibrations.push(length);
+          vibrations.push(80 - length);
+        }
+        navigator.vibrate(vibrations);
+      }
+
+      var playerStates = {
+        0: 'idle',
+        1: 'crouch',
+        2: 'launch',
+        3: 'jump',
+        4: 'grind',
+        5: 'down',
+        6: 'land'
+      };
+
+      var playerState = 0;
+      var destructionLevel = 0;
+
+      window.vibrateInterval = null;
+
+      var gpio = getP8Gpio();
+      gpio.subscribe(function() {
+        // don't waste time doing this if we can't vibrate!
+        if (!navigator.vibrate) return;
+
+        var _playerState = getNumberFromBinaryGpio(gpio, 2, 3);
+        var _destructionLevel = getNumberFromBinaryGpio(gpio, 5, 3);
+        if (
+          _playerState === playerState &&
+          _destructionLevel === destructionLevel ||
+          (
+            (
+              // same vibration pattern for both of these
+              playerStates[playerState] === 'idle' ||
+              playerStates[playerState] === 'crouch'
+            ) &&
+            (
+              playerStates[_playerState] === 'idle' ||
+              playerStates[_playerState] === 'crouch'
+            )
+          )
+        ) {
+          // no need to change anything
+          return;
+        }
+
+        clearInterval(vibrateInterval);
+        navigator.vibrate(0);
+
+        if (_destructionLevel) {
+          // vibrate based on destruction level
+          if (_destructionLevel === 6) {
+            // wall is falling
+            navigator.vibrate([40, 10, 40, 10, 40, 10, 40, 10, 60]);
+          } else {
+            vibrateInterval =
+              setInterval(grindVibration(_destructionLevel), 960);
+          }
+        } else if (_playerState !== playerState) {
+          switch (playerStates[_playerState]) {
+            case 'idle':
+            case 'crouch':
+              // vibrateInterval = setInterval(groundVibration, 1000);
+              break;
+            case 'launch':
+              navigator.vibrate([20, 40, 20]);
+              break;
+            case 'land':
+              // it feels a bit early without the timeout
+              setTimeout(function() {
+                navigator.vibrate(40);
+              }, 40);
+              break;
+            default:
+              break;
+          }
+        }
+
+        playerState = _playerState;
+        destructionLevel = _destructionLevel;
+      })
     })();
   </script>
 </body>
