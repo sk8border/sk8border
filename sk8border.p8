@@ -289,7 +289,8 @@ function update_player(p)
       walls[i].exists and
       not walls[i].breaking and
       player.x + 16 >= walls[i].x and
-      player.x <= walls[i].x + 8*walls[i].w
+      player.x <= walls[i].x + 8*walls[i].w and 
+      player.y <= find_grind_y(walls[i])
      ) then
       local grind_y =
        find_grind_y(walls[i])
@@ -347,8 +348,11 @@ function update_player(p)
         3
        )
       end
-      current_wall = walls[i]
-      break
+      if current_wall == nil or
+      walls[i].y < current_wall.y 
+      then
+      	current_wall = walls[i]
+      end
      end
     end
    end
