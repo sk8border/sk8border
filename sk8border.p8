@@ -322,7 +322,7 @@ function update_player(p)
         gauge.multiplier
        write_gpio(
         destruct_level,
-        5,
+        4,
         3
        )
       end
@@ -446,7 +446,7 @@ function update_player(p)
   compute_frame(p)
   
   if ps != p_state then
-   write_gpio(p_state, 2, 3)
+   write_gpio(p_state, 1, 3)
   end
   
   if (
@@ -457,7 +457,7 @@ function update_player(p)
    destruct_level = 0
    write_gpio(
     destruct_level,
-    5,
+    4,
     3
    )
   end
@@ -552,8 +552,8 @@ function reset()
  music(14)
  walls = {}
  -- reset gpio pins
- write_gpio(p_state,2,3)
- write_gpio(destruct_level,5,3)
+ write_gpio(p_state,1,3)
+ write_gpio(destruct_level,4,3)
 end
 
 function _init()
@@ -624,12 +624,12 @@ gauge,value)
   -- wall is collapsing
   if gauge.maxed then
    destruct_level = 5
-   write_gpio(destruct_level,5,3)
+   write_gpio(destruct_level,4,3)
   elseif (
    mult!=gauge.multiplier
   ) then
    destruct_level = mult
-   write_gpio(destruct_level,5,3)
+   write_gpio(destruct_level,4,3)
   end
  end
  gauge.multiplier = mult
@@ -783,7 +783,7 @@ function break_wall(wall)
  end
  play_snd(snd.explode)
  destruct_level = 6
- write_gpio(destruct_level,5,3)
+ write_gpio(destruct_level,4,3)
 end
 
 function update_wall(wall)
