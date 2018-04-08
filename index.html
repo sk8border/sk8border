@@ -497,17 +497,16 @@
   <script src="https://unpkg.com/pico8-gpio-listener@0.2.1/pico8-gpio-listener.js"></script>
   <script>
     (function() {
-      function getNumberFromBinaryGpio(gpio, pinIndex, bits) {
-        var binaryString = gpio
+      function readNumberFromGpio(gpio, pinIndex, bits) {
+        return gpio
           .slice(pinIndex, pinIndex + bits)
-          .map(function(value) {
-            // stored as 255 or 0, but we want binary (1 or 0)
-            return value ? 1 : 0;
-          })
-          .join('');
-
-        // to decimal
-        return parseInt(binaryString, 2);
+          .reduce(function (num, val, i) {
+            return num + (
+              val
+                ? Math.pow(2, bits - 1 - i)
+                : 0
+            );
+          }, 0);
       }
 
       function groundVibration() {
@@ -546,8 +545,8 @@
         // don't waste time doing this if we can't vibrate!
         if (!navigator.vibrate) return;
 
-        var _playerState = getNumberFromBinaryGpio(gpio, 2, 3);
-        var _destructionLevel = getNumberFromBinaryGpio(gpio, 5, 3);
+        var _playerState = readNumberFromGpio(gpio, 2, 3);
+        var _destructionLevel = readNumberFromGpio(gpio, 5, 3);
         if (
           _playerState === playerState &&
           _destructionLevel === destructionLevel ||
