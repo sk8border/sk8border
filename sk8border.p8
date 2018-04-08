@@ -167,35 +167,13 @@ destruct_level = 0
 
 -- end global variables
 
--- returns binary string
-function to_binary(num, bits)
- -- thanks!
- -- http://www.c4learn.com/c-programs/decimal-to-binary-using-bitwise-and.html
- local mask = 2^(bits-1)
- local bin_str = ''
- while (
-  #bin_str < bits and
-  mask > 0
- ) do
-  if band(num, mask) == 0 then
-   bin_str = bin_str..'0'
-  else
-   bin_str = bin_str..'1'
-  end
-  mask = shr(mask, 1)
- end
- return bin_str
-end
-
 function write_gpio(num,i,bits)
- local bin_str =
-  to_binary(num, bits)
- for j=1,bits do
-  local val = 0
-  if sub(bin_str,j,j)=='1' then
-   val = 255
-  end
-  poke(0x5f80+j+i-1, val)
+ local lastbit_i = 0x5f80+i+bits-1
+ local mask = 1
+ for j=0,bits-1 do
+  local bit = shr(band(num, mask), j)
+  poke(lastbit_i-j, bit*255)
+  mask = shl(mask, 1)
  end
 end
 
