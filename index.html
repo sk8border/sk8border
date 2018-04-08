@@ -545,8 +545,8 @@
         // don't waste time doing this if we can't vibrate!
         if (!navigator.vibrate) return;
 
-        var _playerState = readNumberFromGpio(gpio, 2, 3);
-        var _destructionLevel = readNumberFromGpio(gpio, 5, 3);
+        var _playerState = readNumberFromGpio(gpio, 1, 3);
+        var _destructionLevel = readNumberFromGpio(gpio, 4, 3);
         if (
           _playerState === playerState &&
           _destructionLevel === destructionLevel ||
