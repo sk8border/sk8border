@@ -124,6 +124,25 @@ scoring = {
  destroy_on_fall=true
 }
 
+wall_height_weights = {
+  [5]=1, -- min_wall_h
+  [6]=1,
+  [7]=1,
+  [8]=1,
+  [9]=1  -- max_wall_h - 1
+}
+
+wall_width_weights = {
+  [4]=1, -- min_wall_w
+  [5]=1,
+  [6]=1,
+  [7]=1,
+  [8]=1,
+  [9]=1,
+  [10]=1,
+  [11]=1 -- max_wall_w - 1
+}
+
   -- acceleration due to gravity
 game_duration = 90
 g = 0.2
@@ -164,6 +183,9 @@ start_countdown = nil
 
 -- for rumble - goes from 0-6
 destruct_level = 0
+
+wall_height_drawing_box = nil
+wall_width_drawing_box = nil
 
 -- end global variables
 
@@ -568,9 +590,23 @@ function _init()
   gauge.x = 64-gauge.width/2
 
   palt(0,false)
-  palt(7,true)
-  
+  palt(7,true) 
+
+  wall_height_drawing_box = {}
+  wall_width_drawing_box = {}
+
+  fill_drawing_box(wall_height_weights, wall_height_drawing_box)
+  fill_drawing_box(wall_width_weights, wall_width_drawing_box)
+ 
   reset()
+end
+
+function fill_drawing_box(weights, drawing_box)
+  for value, weight in pairs(weights) do
+    for i=1,weight do
+      add(drawing_box, value)
+    end
+  end
 end
 
 function make_gauge(
@@ -697,7 +733,7 @@ function draw_gauge(gauge)
  
 end
 
-function add_wall(x,w,h)
+function add_wall(x)
  local wall = nil
  for i=1,#walls do
   if not walls[i].exists then
@@ -709,10 +745,11 @@ function add_wall(x,w,h)
   wall = {}
   walls[#walls+1] = wall
  end
+ wall.w = generate_wall_width()
+ wall.h = generate_wall_height()
  wall.x = x
- wall.y = 112-h*8
- wall.w = w
- wall.h = h
+ wall.y = 112-(wall.h)*8
+
  wall.anim_x = 0
  wall.anim_y = 0
  wall.anim_elapsed = 0
@@ -727,10 +764,10 @@ function add_wall(x,w,h)
  if barbwire_on then
   if rnd(1) < 0.2 then
    local numbarbs =
-    min(4,2+flr(rnd(w-4+1)))
+    min(4,2+flr(rnd(wall.w-4+1)))
    local barbstart =
-    1+flr(rnd(w-numbarbs+1))
-   for i=1,w do
+    1+flr(rnd(wall.w-numbarbs+1))
+   for i=1,wall.w do
     wall.barbwire[i] =
      i >=barbstart and
      i < barbstart+numbarbs
@@ -744,15 +781,15 @@ function add_wall(x,w,h)
  -- to post it on the wall
  for i=1,#posters do
   local p = posters[i]
-  if w >= p.w+2 and
-  h >= p.h+2 then
+  if wall.w >= p.w+2 and
+  wall.h >= p.h+2 then
    if rnd(1)<0.3 then
     wall.posters[
     #wall.posters+1]=
     {
      i=p.i,w=p.w,h=p.h,
-     x=8+rnd(8*(w-p.w-2)),
-     y=8+rnd(8*(h-p.h-2))
+     x=8+rnd(8*(wall.w-p.w-2)),
+     y=8+rnd(8*(wall.h-p.h-2))
     }
     break
    end
@@ -760,6 +797,19 @@ function add_wall(x,w,h)
  end
  lastwall = wall
  return wall
+end
+
+function generate_wall_width()
+  return random_draw(wall_width_drawing_box)
+end
+
+function generate_wall_height()
+  return random_draw(wall_height_drawing_box)
+end
+
+function random_draw(drawing_box)
+  local index = flr(rnd(#drawing_box)) + 1
+  return drawing_box[index]
 end
 
 function break_all_walls()
@@ -1226,19 +1276,7 @@ function _update60()
     wallx = flr(lastwall.x+
     lastwall.w*8)
    end
-   add_wall(
-    wallx,
-    min_wall_w +
-     flr(rnd(
-      max_wall_w -
-      min_wall_w
-     )),
-    min_wall_h +
-     flr(rnd(
-      max_wall_h -
-      min_wall_h
-     ))
-   )
+   add_wall(wallx)
   end
 
   if game_over then
