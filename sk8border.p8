@@ -125,22 +125,22 @@ scoring = {
 }
 
 wall_height_weights = {
-  [5]=1, -- min_wall_h
+  [5]=1,
   [6]=1,
   [7]=1,
   [8]=1,
-  [9]=1  -- max_wall_h - 1
+  [9]=1
 }
 
 wall_width_weights = {
-  [4]=1, -- min_wall_w
+  [4]=1,
   [5]=1,
   [6]=1,
   [7]=1,
   [8]=1,
   [9]=1,
   [10]=1,
-  [11]=1 -- max_wall_w - 1
+  [11]=1
 }
 
   -- acceleration due to gravity
@@ -159,10 +159,6 @@ idle_bob_time = 8
 title_wall_y = 8 * 8
 start_delay = 40
 scroll_speed = 1.5
-min_wall_w = 4
-max_wall_w = 12
-min_wall_h = 5
-max_wall_h = 10
 barbwire_on = false
 -- end constants
 
