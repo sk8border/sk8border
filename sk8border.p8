@@ -175,6 +175,11 @@ start_countdown = nil
 -- for rumble - goes from 0-6
 destruct_level = 0
 
+-- for debug info
+max_dy = nil
+max_y = nil
+min_y = nil
+
 -- end global variables
 
 function write_gpio(num,i,bits)
@@ -1063,7 +1068,7 @@ function draw_wall_outline(wall)
   if (
     wall.exists and
     not wall.breaking
-    and player.x >= wall.x
+    and player.x + 16 >= wall.x
     and player.x <= wall.x + width
   ) then
     line(wall.x, wall.y, wall.x, wall.y + height, 11)
@@ -1074,10 +1079,26 @@ function draw_wall_outline(wall)
 end
 
 function print_debug_messages()
+  if max_dy == nil or max_dy < player.dy then
+    max_dy = player.dy
+  end
+
+  if max_y == nil or max_y < player.y then
+    max_y = player.y
+  end
+
+  if min_y == nil or min_y > player.y then
+    min_y = player.y
+  end
+
   local debug_messages = {
     "walls: "..tostr(#walls),
     "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
-    "player state: "..tostr(p_state)
+    "player state: "..tostr(p_state),
+    "player dy: "..tostr(player.dy),
+    "max y: "..tostr(max_y),
+    "min y: "..tostr(min_y),
+    "max dy: "..tostr(max_dy)
   }
   for i=1,#debug_messages do
     print(debug_messages[i], 1, (i-1)*6 + 16, 1)
