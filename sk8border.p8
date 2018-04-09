@@ -1204,7 +1204,7 @@ function _update60()
    start_countdown -= 1
    if start_countdown == 0 then
     game_started = true
-    --music(0)
+    music(0)
     play_snd(snd.skate)
    end
   end
