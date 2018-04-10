@@ -161,7 +161,7 @@ game_duration = 90
 g = 0.2
 ground_jump_speed = 5
 grind_jump_speed = 4.1
-explosion_jump_speed = 4.7
+explosion_jump_speed = 5
 playerheight = 24
 ground_y = 8*14.5
 launch_frm_time = 8
@@ -175,6 +175,7 @@ start_delay = 40
 scroll_speed = 1.5
 barbwire_on = false
 floating_speed = 0.3
+min_player_screen_y = 70
 -- end constants
 
 
@@ -581,12 +582,22 @@ function apply_gravity(p)
   return true
 end
 
+-- offset used to push player,
+-- foreground and walls down
+-- when player jumps high
+function get_fg_offset()
+ return max(
+  0,
+  min_player_screen_y - player.y
+ )
+end
 
 function drawskater(p)
  spr(
    p.frame,
    p.x,
-   p.y - playerheight,
+   p.y - playerheight +
+    get_fg_offset(),
    p.framew,
    p.frameh
   )
@@ -924,7 +935,8 @@ function draw_wall(wall)
  local x = wall.x+
   wall.anim_x
  local y = wall.y+
-  wall.anim_y
+  wall.anim_y +
+  get_fg_offset()
  local indexes = {1,17,33,49}
  local col_index = 0
  
@@ -970,7 +982,7 @@ function draw_wall(wall)
     spr(
      rubble.i,
      wall.x+(i-0.5-rubble.w/2)*8,
-     wall.y+(wall.h-rubble.h)*8,
+     wall.y+(wall.h-rubble.h)*8 + get_fg_offset(),
      rubble.w,
      rubble.h
     )
@@ -1021,7 +1033,8 @@ wall)
      spr(
       sprite_index,
       wall.x+(i-1)*8-4,
-      wall.y+(wall.h-2)*8,
+      wall.y+(wall.h-2)*8 +
+       get_fg_offset(),
       2,
       2
      )
@@ -1163,10 +1176,11 @@ function draw_wall_outline(wall)
     and player.x + 16 >= wall.x
     and player.x <= wall.x + width
   ) then
-    line(wall.x, wall.y, wall.x, wall.y + height, 11)
-    line(wall.x, wall.y, wall.x + width, wall.y, 11)
-    line(wall.x, wall.y + height, wall.x + width, wall.y + height, 11)
-    line(wall.x + width, wall.y, wall.x + width, wall.y + height, 11)
+    local o = get_fg_offset()
+    line(wall.x, wall.y+o, wall.x, wall.y+o + height, 11)
+    line(wall.x, wall.y+o, wall.x + width, wall.y+o, 11)
+    line(wall.x, wall.y+o + height, wall.x + width, wall.y+o + height, 11)
+    line(wall.x + width, wall.y+o, wall.x + width, wall.y+o + height, 11)
   end
 end
 
