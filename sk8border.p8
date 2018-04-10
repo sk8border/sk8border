@@ -1291,7 +1291,7 @@ function _draw()
   print(text,12,121,6)
 
   if gauge.maxed and
-   flr(time() * 2) % 2 == 0
+   flr(time() * 4) % 2 == 0
   then
    print('jump!', 30, 30, 7)
   end
