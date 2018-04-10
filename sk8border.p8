@@ -160,6 +160,7 @@ game_duration = 90
 g = 0.2
 ground_jump_speed = 5
 grind_jump_speed = 4.1
+explosion_jump_speed = 4.7
 playerheight = 24
 ground_y = 8*14.5
 launch_frm_time = 8
@@ -172,6 +173,7 @@ title_wall_y = 8 * 8
 start_delay = 40
 scroll_speed = 1.5
 barbwire_on = false
+floating_speed = 0.3
 -- end constants
 
 
@@ -199,6 +201,8 @@ min_y = nil
 
 wall_height_drawing_box = nil
 wall_width_drawing_box = nil
+
+floating_after_jump = false
 
 -- end global variables
 
@@ -293,10 +297,12 @@ function update_player(p)
     ground_y-p.y < max_grind_y
    ) then
     p_state = states.down
+    floating_after_jump = false
    elseif (
     p.dy >= 0 and
     (btn(keys.a) or btn(keys.b))
    ) then
+    floating_after_jump = false
     for i=1,#walls do
      if (
       walls[i].exists and
@@ -415,7 +421,13 @@ function update_player(p)
      end
     end
     ------------
-    check_for_jump(grind_jump_speed)
+    if gauge.maxed then
+     -- extra boost on destroy wall!
+     check_for_jump(explosion_jump_speed)
+     floating_after_jump = true
+    else
+     check_for_jump(grind_jump_speed)
+    end
    end
   elseif ps == states.down then
    -- todo: special handling ?
@@ -544,12 +556,17 @@ end
 -- returns false if no effect,
 -- else true
 function apply_gravity(p)
-  p.dy += p.ddy
-  p.y += p.dy
+  if floating_after_jump and p.dy >= 0 then
+    p.y += floating_speed
+  else
+    p.dy += p.ddy
+    p.y += p.dy
+  end
   if (p.y >= ground_y) then
     -- we are on the ground
     p.y = ground_y
     p.dy = 0
+    floating_after_jump = false
     return false
   end
   return true
