@@ -203,6 +203,7 @@ wall_height_drawing_box = nil
 wall_width_drawing_box = nil
 
 floating_after_jump = false
+grind_halted_post_explode = false
 
 -- end global variables
 
@@ -271,7 +272,16 @@ function update_player(p)
     then
      play_snd(snd.jump)
     end
+    return true
    end
+   return false
+  end
+
+  if (
+   not (btn(keys.a) or btn(keys.b))
+   and player.dy >= 0
+  ) then
+   grind_halted_post_explode = false
   end
 
   -- used for grinding
@@ -298,9 +308,11 @@ function update_player(p)
    ) then
     p_state = states.down
     floating_after_jump = false
+    grind_halted_post_explode = false
    elseif (
     p.dy >= 0 and
-    (btn(keys.a) or btn(keys.b))
+    (btn(keys.a) or btn(keys.b)) and
+    not grind_halted_post_explode
    ) then
     floating_after_jump = false
     for i=1,#walls do
@@ -423,8 +435,12 @@ function update_player(p)
     ------------
     if gauge.maxed then
      -- extra boost on destroy wall!
-     check_for_jump(explosion_jump_speed)
-     floating_after_jump = true
+     if check_for_jump(
+      explosion_jump_speed
+     ) then
+      floating_after_jump = true
+      grind_halted_post_explode = true
+     end
     else
      check_for_jump(grind_jump_speed)
     end
