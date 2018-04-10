@@ -72,7 +72,8 @@ snd = {
  explode=19,
  skate=22,
  jump=23,
- grind=24
+ grind=24,
+ ticker=47
 }
 
 rubble = {
@@ -693,10 +694,15 @@ end
 
 function set_gauge_value(
 gauge,value)
+ local _maxed = gauge.maxed
  gauge.value = min(
   gauge.max_value,value)
  gauge.maxed = gauge.value==
-  gauge.max_value 
+  gauge.max_value
+ if not _maxed and gauge.maxed
+ then
+  play_snd(snd.ticker)
+ end
  local mult =
  flr(4*(gauge.value/
  gauge.max_value))+1
@@ -913,7 +919,10 @@ function update_wall(wall)
    (wall.anim_elapsed/4)+
    rnd(2)-1
  end
- wall.x -= scroll_speed
+ if not gauge.maxed then
+  -- don't move walls if gauge maxed!
+  wall.x -= scroll_speed
+ end
  if wall.x+wall.w*8 < -16 then
   wall.exists = false
  end
@@ -1281,6 +1290,12 @@ function _draw()
   text = tostr(timer)
   print(text,12,121,6)
 
+  if gauge.maxed and
+   flr(time() * 2) % 2 == 0
+  then
+   print('jump!', 30, 30, 7)
+  end
+
   if debug then
     print_debug_messages()
   end
@@ -1325,8 +1340,10 @@ function _update60()
 
   update_player(player)
   
-  for i=1, #walls do
-   update_wall(walls[i])
+  if not gauge.maxed or true then
+   for i=1, #walls do
+    update_wall(walls[i])
+   end
   end
   
   if lastwall == nil or
@@ -1384,7 +1401,10 @@ function _update60()
      --music(-1)
     end
    end
-   t += 1
+   if not gauge.maxed then
+    -- pause time if gauge maxed!
+    t += 1
+   end
   end
 end
 
@@ -1728,6 +1748,7 @@ __sfx__
 01080000100000f4450e4450d4450c4450b4550a4550945508455074650646505465044650347502475014750f0000e0000f4010f4050e4010e4010e4010e4050d4010d4010d4010d4050c4010c4010c4010c405
 010400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 01080000100001b4551a455194551843517435164351544514445134451245511455104550f4650e4650d46500000000000000000000000000000000000000000000000000000000000000000000000000000000
+0107081030055370053000537005300553700530055370053005530055300553005530055300553005530055300053000530005300053000530005300053000537005370053700537005370052b0052b0052b005
 __music__
 00 2d2c6e44
 00 01421244
