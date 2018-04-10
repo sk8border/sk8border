@@ -687,13 +687,12 @@ end
 
 function set_gauge_value(
 gauge,value)
- local _maxed = gauge.maxed
  gauge.value = min(
   gauge.max_value,value)
+ local _maxed = gauge.maxed
  gauge.maxed = gauge.value==
-  gauge.max_value
- if not _maxed and gauge.maxed
- then
+  gauge.max_value 
+ if not _maxed and gauge.maxed then
   play_snd(snd.ticker)
  end
  local mult =
@@ -912,10 +911,7 @@ function update_wall(wall)
    (wall.anim_elapsed/4)+
    rnd(2)-1
  end
- if not gauge.maxed then
-  -- don't move walls if gauge maxed!
-  wall.x -= scroll_speed
- end
+ wall.x -= scroll_speed
  if wall.x+wall.w*8 < -16 then
   wall.exists = false
  end
@@ -1346,10 +1342,8 @@ function _update60()
 
   update_player(player)
   
-  if not gauge.maxed or true then
-   for i=1, #walls do
-    update_wall(walls[i])
-   end
+  for i=1, #walls do
+   update_wall(walls[i])
   end
   
   if lastwall == nil or
@@ -1407,10 +1401,7 @@ function _update60()
      --music(-1)
     end
    end
-   if not gauge.maxed then
-    -- pause time if gauge maxed!
-    t += 1
-   end
+   t += 1
   end
 end
 
