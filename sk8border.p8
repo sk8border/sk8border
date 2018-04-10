@@ -204,7 +204,6 @@ wall_height_drawing_box = nil
 wall_width_drawing_box = nil
 
 floating_after_jump = false
-grind_halted_post_explode = false
 
 -- end global variables
 
@@ -278,13 +277,6 @@ function update_player(p)
    return false
   end
 
-  if (
-   not (btn(keys.a) or btn(keys.b))
-   and player.dy >= 0
-  ) then
-   grind_halted_post_explode = false
-  end
-
   -- used for grinding
   local current_wall = nil
 
@@ -309,11 +301,10 @@ function update_player(p)
    ) then
     p_state = states.down
     floating_after_jump = false
-    grind_halted_post_explode = false
    elseif (
-    p.dy >= 0 and
-    (btn(keys.a) or btn(keys.b)) and
-    not grind_halted_post_explode
+    get_first_grindable_x() < p.x+16
+    and
+    (btn(keys.a) or btn(keys.b)) 
    ) then
     floating_after_jump = false
     for i=1,#walls do
@@ -440,7 +431,6 @@ function update_player(p)
       explosion_jump_speed
      ) then
       floating_after_jump = true
-      grind_halted_post_explode = true
      end
     else
      check_for_jump(grind_jump_speed)
@@ -546,9 +536,11 @@ function compute_frame(p)
     frm = 3
    end
   elseif ps == states.jump then
-   if btn(keys.a) then
+   if not floating_after_jump and
+   btn(keys.a) then
     frm = 3
-   elseif btn(keys.b) then
+   elseif not floating_after_jump and
+   btn(keys.b) then
     frm = 5
    else
     frm = 4
@@ -602,6 +594,7 @@ end
 
 function reset()
  --------------
+ floating_after_jump = false
  frm = 0
  launch_t = nil
  land_t = nil
@@ -1066,6 +1059,19 @@ function is_a_wall_moving()
  return false
 end
 
+function get_first_grindable_x()
+ local firstx = 1000
+ for i=1, #walls do
+  local wall = walls[i]
+  if wall.exists and not
+  wall.breaking and
+  wall.x < firstx then
+   firstx = wall.x
+  end
+ end
+ return firstx
+end
+
 function draw_title()
  if t > 60 then
   return
@@ -1439,7 +1445,7 @@ ffffffff015555555555555555555560777777777877778788188188881881881888788788887888
 00000000056666666666666666666660770770776006000681118111111811181888887787877878778788778888111188888888111441111114441188888888
 00000000015555555555555555555560770770776006660681188111111881181888887787877878777888887888111188888888811144444411111888888888
 00000000056666666666666666666660770770776000000681188181181881181188887787877878778787787888111181888888881111111111118888888818
-00000000056666666666666666666660777007770600006081188181181881180188888778887788778787778888111181188888888811111111888888888118
+00000000056666666666666666666660777007770600006081188181181881181188888778887788778787778888111181188888888811111111888888888118
 00000000055555555555555555555550000770000066660011111111111111111118888888888888888888888881111188888888888888888888888888888888
 77700000000000777777777777777777777777777700007777777777555555551111888888888888888888888881111100000000000000000000000000000000
 77066666666666077777777777777777777777777056660757777777777777771111118888888888888888888811111100000007777777777700000000000000
