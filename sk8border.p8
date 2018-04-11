@@ -73,7 +73,8 @@ snd = {
  skate=22,
  jump=23,
  grind=24,
- ticker=47
+ ticker=47,
+ thrust=48
 }
 
 rubble = {
@@ -248,6 +249,7 @@ wall_height_drawing_box = nil
 wall_width_drawing_box = nil
 
 floating_after_jump = false
+awaiting_thrust_after_jump=false
 
 -- end global variables
 
@@ -345,12 +347,14 @@ function update_player(p)
    ) then
     p_state = states.down
     floating_after_jump = false
+    play_snd(-1) -- stop thrust
    elseif (
     get_first_grindable_x() < p.x+16
     and
     (btn(keys.a) or btn(keys.b)) 
    ) then
     floating_after_jump = false
+    play_snd(-1) -- stop thrust
     for i=1,#walls do
      if (
       walls[i].exists and
@@ -480,6 +484,8 @@ function update_player(p)
       jump_speed
      ) then
       floating_after_jump = true
+      awaiting_thrust_after_jump
+       = true
      end
     else
      check_for_jump(grind_jump_speed)
@@ -523,6 +529,13 @@ function update_player(p)
       -- works on next turn
       p.y = grind_y
      end
+    elseif (
+     awaiting_thrust_after_jump and
+     p.dy >= 0
+    ) then
+     play_snd(snd.thrust)
+     awaiting_thrust_after_jump
+      = false
     end
    else
     -- just landed
@@ -2004,6 +2017,7 @@ __sfx__
 010400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 01080000100001b4551a455194551843517435164351544514445134451245511455104550f4650e4650d46500000000000000000000000000000000000000000000000000000000000000000000000000000000
 0105000830030300003003030000300303000030030300003000030000300003000030000300003000030000300053000530005300053000530005300053000537005370053700537005370052b0052b0052b005
+010900202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620
 __music__
 00 2d2c6e44
 00 01421244
