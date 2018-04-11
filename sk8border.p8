@@ -200,7 +200,7 @@ wall_width_weights = {
 diff_level_duration = 15
 
   -- acceleration due to gravity
-game_duration = 90
+game_duration = 60
 g = 0.2
 ground_jump_speed = 5
 grind_jump_speed = 4.1
@@ -1547,12 +1547,6 @@ function _draw()
   text = tostr(timer)
   print(text,12,121,6)
 
-  if gauge.maxed and
-   flr(time() * 5) % 2 == 0
-  then
-   print('jump!', 30, 30, 7)
-  end
-
   if debug then
     print_debug_messages()
   end
@@ -1636,25 +1630,34 @@ function _update60()
   
   if game_started 
   then
-   if t%60 == 0 then
+   if t%60==0 and timer>0 then
     timer -= 1
-    if timer == 0 then
-     -- enter game over
-     -- set hi-score
-     last_score = score
-     if hi_score == nil or
-     last_score > hi_score then
-      hi_score = last_score
-      dset(0, hi_score)
-     end
-     game_over = true
-     game_started = false
-     go_transition_in = true
-     go_t = 0
-     go_colindex = 15
-     sfx(-1)
-     --music(-1)
+   end
+   if (
+    timer == 0 and
+    -- let player skate until
+    -- they touch down on the
+    -- ground!
+    (
+     p_state == states.idle or
+     p_state == states.crouch
+    )
+   ) then
+    -- enter game over
+    -- set hi-score
+    last_score = score
+    if hi_score == nil or
+    last_score > hi_score then
+     hi_score = last_score
+     dset(0, hi_score)
     end
+    game_over = true
+    game_started = false
+    go_transition_in = true
+    go_t = 0
+    go_colindex = 15
+    sfx(-1)
+    --music(-1)
    end
    t += 1
   end
