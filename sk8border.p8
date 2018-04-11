@@ -220,6 +220,7 @@ scroll_speed = 1.5
 barbwire_on = false
 floating_speed = 0.15
 propaganda_probability = 0.5
+explosion_jump_y = 12
 -- end constants
 
 
@@ -270,6 +271,17 @@ function make_player(x,y)
   p.dy = 0
   p.ddy = g  -- acceleration due to gravity
   return p
+end
+
+function find_explosion_jump_speed()
+ -- extra boost on destroy wall!
+ -- https://stackoverflow.com/a/19870766/4956731
+ -- ^ calculate speed to
+ -- hit pre-determined y
+ return sqrt((
+   player.y -
+   explosion_jump_y
+  )*2*g)
 end
 
 function add_to_score(points)
@@ -452,7 +464,14 @@ function update_player(p)
     p_state = states.jump
     play_snd(-1) -- stop grind noise
     if sc.destroy_on_fall then
-     check_for_destruction()
+     if check_for_destruction()
+     then
+      floating_after_jump = true
+      awaiting_thrust_after_jump
+       = true
+      p.dy =
+       -find_explosion_jump_speed()
+     end
     end
    else
    
@@ -474,14 +493,8 @@ function update_player(p)
     end
     ------------
     if gauge.maxed then
-     -- extra boost on destroy wall!
-     -- https://stackoverflow.com/a/19870766/4956731
-     -- ^ calculate speed to
-     -- hit pre-determined y
-     local jump_speed =
-      sqrt((player.y - 12)*2*g)
      if check_for_jump(
-      jump_speed
+      find_explosion_jump_speed()
      ) then
       floating_after_jump = true
       awaiting_thrust_after_jump
