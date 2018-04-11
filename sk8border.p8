@@ -1547,12 +1547,6 @@ function _draw()
   text = tostr(timer)
   print(text,12,121,6)
 
-  if gauge.maxed and
-   flr(time() * 5) % 2 == 0
-  then
-   print('jump!', 30, 30, 7)
-  end
-
   if debug then
     print_debug_messages()
   end
