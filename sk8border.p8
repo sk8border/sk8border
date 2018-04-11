@@ -144,23 +144,60 @@ scoring = {
 }
 
 wall_height_weights = {
-  [5]=1,
-  [6]=1,
-  [7]=1,
-  [8]=1,
-  [9]=1
+  normal={
+   [5]=1,
+   [6]=1,
+   [7]=1,
+   [8]=1,
+   [9]=1
+  },
+  ground={
+   [5]=3,
+   [6]=3,
+   [7]=3,
+   [8]=1,
+   [9]=1
+  }
 }
 
 wall_width_weights = {
-  [4]=1,
-  [5]=1,
-  [6]=1,
-  [7]=1,
-  [8]=1,
-  [9]=1,
-  [10]=1,
-  [11]=1
+  { -- diff level 1
+   [4]=0,
+   [5]=0,
+   [6]=0,
+   [7]=1,
+   [8]=1,
+   [9]=2,
+   [10]=3,
+   [11]=4
+  },
+  { -- diff level 2
+   [4]=0,
+   [5]=0,
+   [6]=1,
+   [7]=1,
+   [8]=1,
+   [9]=2,
+   [10]=2,
+   [11]=2
+  },
+  { -- diff level 3 (original)
+   [4]=1,
+   [5]=1,
+   [6]=1,
+   [7]=1,
+   [8]=1,
+   [9]=1,
+   [10]=1,
+   [11]=1
+  }
 }
+
+-- for wall width progression
+-- in seconds
+-- (duration of each set
+-- of weights)
+diff_level_duration = 15
 
   -- acceleration due to gravity
 game_duration = 90
@@ -180,7 +217,7 @@ title_wall_y = 8 * 8
 start_delay = 40
 scroll_speed = 1.5
 barbwire_on = false
-floating_speed = 0.3
+floating_speed = 0.15
 propaganda_probability = 0.5
 -- end constants
 
@@ -630,6 +667,8 @@ function reset()
  do p.walls_without = 0
  end
  --------------
+ set_diff_level(1)
+ --------------
  floating_after_jump = false
  frm = 0
  launch_t = nil
@@ -668,21 +707,38 @@ function _init()
   palt(0,false)
   palt(7,true) 
 
-  wall_height_drawing_box = {}
-  wall_width_drawing_box = {}
+  wall_height_drawing_box = {
+   normal=fill_drawing_box(
+    wall_height_weights.normal
+   ),
+   ground=fill_drawing_box(
+    wall_height_weights.ground
+   )
+  }
 
-  fill_drawing_box(wall_height_weights, wall_height_drawing_box)
-  fill_drawing_box(wall_width_weights, wall_width_drawing_box)
- 
   reset()
 end
 
+function set_diff_level(lvl)
+ if diff_level == lvl then
+  return
+ end
+ diff_level = lvl
+ wall_width_drawing_box =
+ fill_drawing_box(
+  wall_width_weights[lvl]
+ )
+end 
+
+
 function fill_drawing_box(weights, drawing_box)
+  drawing_box = {}
   for value, weight in pairs(weights) do
     for i=1,weight do
       add(drawing_box, value)
     end
   end
+  return drawing_box
 end
 
 function make_gauge(
@@ -938,6 +994,12 @@ function add_wall(x)
   poster
  end
  
+ local new_level = 
+ 1+flr(t/(60*diff_level_duration))
+ new_level = min(
+  #wall_width_weights,new_level)
+ set_diff_level(new_level)
+ 
  lastwall = wall
  return wall
 end
@@ -947,7 +1009,12 @@ function generate_wall_width()
 end
 
 function generate_wall_height()
-  return random_draw(wall_height_drawing_box)
+  local box = 
+  player.y >= ground_y and
+  wall_height_drawing_box.ground
+  or
+  wall_height_drawing_box.normal
+  return random_draw(box)
 end
 
 function random_draw(drawing_box)
@@ -956,6 +1023,17 @@ function random_draw(drawing_box)
 end
 
 function break_all_walls()
+ ------ add the next wall
+ ------ right away
+ local wallx = 128
+ if lastwall then
+  wallx = flr(lastwall.x+
+  lastwall.w*8)
+ end
+ add_wall(wallx)
+ -----------------
+ -- break em all!
+ -----------------
  for i=1, #walls do
   break_wall(walls[i])
  end
