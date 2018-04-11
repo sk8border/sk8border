@@ -432,8 +432,13 @@ function update_player(p)
     ------------
     if gauge.maxed then
      -- extra boost on destroy wall!
+     -- https://stackoverflow.com/a/19870766/4956731
+     -- ^ calculate speed to
+     -- hit pre-determined y
+     local jump_speed =
+      sqrt((player.y - 12)*2*g)
      if check_for_jump(
-      explosion_jump_speed
+      jump_speed
      ) then
       floating_after_jump = true
      end
