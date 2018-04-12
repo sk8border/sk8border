@@ -1,7 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 16
 __lua__
--- bust up the border wall!
+-- lay that wall to waste!
 
 cartdata('sk8border')
 
