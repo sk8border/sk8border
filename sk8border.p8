@@ -132,7 +132,7 @@ scoring = {
  -- stop raking points when
  -- grinding for over this many
  -- ticks uninterrupted
- max_grind_ticks=60,
+ max_grind_ticks=9001,
  -- points when grinding starts
  grind_start_pts=1,
  -- points when walls are destroyed
@@ -156,8 +156,8 @@ wall_height_weights = {
    [5]=3,
    [6]=3,
    [7]=3,
-   [8]=1,
-   [9]=1
+   [8]=0,
+   [9]=0
   }
 }
 
@@ -408,6 +408,7 @@ function update_player(p)
         adown and 'a' or 'b'
 
        p_state = states.grind
+       trying_to_grind = false
        player.dy = 0
        play_snd(snd.grind)
        
@@ -542,6 +543,7 @@ function update_player(p)
     p_last_grind = nil
     reset_gauge(gauge)
     p_state = states.land
+    trying_to_grind = true
     land_t = t
     play_snd(snd.skate)
    end
@@ -682,6 +684,7 @@ function reset()
  --------------
  set_diff_level(1)
  --------------
+ trying_to_grind = true
  floating_after_jump = false
  frm = 0
  launch_t = nil
@@ -1023,7 +1026,7 @@ end
 
 function generate_wall_height()
   local box = 
-  player.y >= ground_y and
+  trying_to_grind and
   wall_height_drawing_box.ground
   or
   wall_height_drawing_box.normal
