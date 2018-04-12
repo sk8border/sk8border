@@ -221,6 +221,9 @@ barbwire_on = false
 floating_speed = 0.15
 propaganda_probability = 0.5
 explosion_jump_y = 12
+t_loop_duration = 1800
+t_loop_end = 32767
+t_loop_start = t_loop_end - t_loop_duration
 -- end constants
 
 
@@ -232,8 +235,8 @@ game_over = false
 t = nil
 player = nil
 frm = 0
-launch_t = nil
-land_t = nil
+launch_t = 0
+land_t = 0
 p_state = states.idle
 lastwall = nil
 start_countdown = nil
@@ -324,7 +327,7 @@ function update_player(p)
     btn(keys.a) or btn(keys.b)
    ) then
     p_state = states.launch
-    launch_t = t
+    launch_t = launch_time
     p.dy = -jump_speed
     if not check_for_destruction()
     then
@@ -347,9 +350,7 @@ function update_player(p)
   elseif ps == states.crouch then
    check_for_jump(ground_jump_speed)
   elseif ps == states.launch then
-   if (
-    t - launch_t >= launch_time
-   ) then
+   if launch_t > 0 then
     p_state = states.jump
    end
   elseif ps == states.jump then
@@ -508,9 +509,7 @@ function update_player(p)
   elseif ps == states.down then
    -- todo: special handling ?
   else  -- states.land
-   if (
-    t - land_t >= land_time
-   ) then
+   if land_t > 0 then
     p_state = states.idle
     if (
     btn(keys.a) or btn(keys.b)
@@ -557,7 +556,7 @@ function update_player(p)
     reset_gauge(gauge)
     p_state = states.land
     trying_to_grind = true
-    land_t = t
+    land_t = land_time
     play_snd(snd.skate)
    end
   end
@@ -605,7 +604,7 @@ function compute_frame(p)
    frm = 1
   elseif ps == states.launch then
    if (
-    t - launch_t <
+    launch_time - launch_t <
     launch_frm_time
    ) then
     frm = 2
@@ -700,14 +699,14 @@ function reset()
  trying_to_grind = true
  floating_after_jump = false
  frm = 0
- launch_t = nil
- land_t = nil
+ launch_t = 0
+ land_t = 0
  p_state = states.idle
  lastwall = nil
  start_countdown = nil
  destruct_level = 0
  --------------------
- t = 0
+ t = t_loop_end - 500
  score = 0
  game_started = false
  timer = game_duration
@@ -1028,7 +1027,7 @@ function add_wall(x)
  new_level = min(
   #wall_width_weights,new_level)
  set_diff_level(new_level)
- 
+
  lastwall = wall
  return wall
 end
@@ -1696,6 +1695,15 @@ function _update60()
     --music(-1)
    end
    t += 1
+   if launch_t > 0 then
+    launch_t -= 1
+   end
+   if land_t > 0 then
+    land_t -= 1
+   end
+   if t >= t_loop_end then
+    t = t_loop_start
+   end
   end
 end
 
