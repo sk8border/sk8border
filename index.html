@@ -267,6 +267,7 @@
     <div class="status"></div>
   </div>
   <center class="main">
+	<h3>(Le français suit)</h3>
     <h1 id="slogan">Lay that Wall to Waste!</h1>
     <p>Sk8Border was created in Montréal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a>. It is built with <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
     <p>TODO: plus d'infos</p>
@@ -310,7 +311,55 @@
     <h2 id="fonts">Fonts on this page</h2>
     <ul>
       <li><a href="http://pixel-fonts.com/">Softsquare</a> font by <a href="https://twitter.com/chevyray">Chevy Ray Johnston</a></li>
-      <li>Thanks to <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href="https://twitter.com/lexaloffle">Zep</a> for developing it!</li>
+      <li>Thanks to <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href="https://twitter.com/lexaloffle">Zep</a> d'avoir créé cet outil!</li>
+    </ul>
+  </center>
+  
+  <center class="main">
+	<h3>==============<br/>FRANÇAIS<br/>==============</h3>
+    <h1 id="slogan">Détruisez ce mur!</h1>
+    <p>Sk8Border a été créé à Montréal en mars/avril 2018 pour le <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a>. Il est fait avec <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
+    <p>Ce jeu fonctionne dans le navigateur - même sur les téléphones!</p>
+    <button id="play_game">Allons-y!</button>
+    <div class="desk_game">
+      <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
+      <div class="desk_controls">
+        <div class=pico8_el onclick="Module.pico8Reset();">
+          <img class="reset" alt="Reset" width=12 height=12/> Reset
+        </div>
+
+        <div class=pico8_el onclick="Module.pico8TogglePaused();">
+          <img class="pause" alt="Pause" width=12 height=12/> Pause
+        </div>
+
+        <div class=pico8_el onclick="Module.requestFullScreen(true, false);">
+          <img class="fullscreen" alt="Fullscreen" width=12 height=12/> Fullscreen
+        </div>
+
+        <div class=pico8_el onclick="Module.pico8ToggleSound();">
+          <img class="sound" alt="Toggle Sound" width=12 height=12/> Sound
+        </div>
+
+        <div class=pico8_el>
+          <a target="_new" href="http://www.lexaloffle.com/bbs/?cat=7&sub=2">
+            <img class="carts" alt="More Carts" width=12 height=12/> Carts
+          </a>
+        </div>
+      </div>
+    </div>
+    <h2 id="controls">Controls</h2>
+    <ul>
+      <li>Tenez <span class="pico-8">Î</span> (Z) ou <span class="pico-8">×</span> (X) lorsque vous êtes au sol pour vous pencher</li>
+      <li>Relâchez à la fois <span class="pico-8">Î</span> and <span class="pico-8">×</span> pour faire un ollie (sauter)</li>
+      <li>Tenez <span class="pico-8">Î</span> lorsqu'au-dessus du mur pour faire un 5-0 (tail) grind</li>
+      <li>Tenez <span class="pico-8">×</span> pour faire un nosegrind</li>
+      <li>Obtenez plus de points en alternant les grinds</li>
+      <li>Enchaînez les grinds sur le mur pour remplir la jauge de puissance... et faire voler ce mur en éclats!</li>
+    </ul>
+    <h2 id="fonts">Polices de caractères sur cette page</h2>
+    <ul>
+      <li><a href="http://pixel-fonts.com/">Softsquare</a> par <a href="https://twitter.com/chevyray">Chevy Ray Johnston</a></li>
+      <li>Merci à <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> d'avoir rendu la police de PICO-8 disponible sur the web, and à <a href="https://twitter.com/lexaloffle">Zep</a>, développeur de cet outil!</li>
     </ul>
   </center>
 
