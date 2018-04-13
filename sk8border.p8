@@ -751,6 +751,14 @@ function reset()
  -- title music
  music(14)
  walls = {}
+ -- scroll positions
+ bg_1_offset = 0
+ bg_2_offset = 0
+ bg_3_offset = 0
+ bg_4_offset = 0
+ fg_1_offset = 0
+ cloud_1_offset = 6520/64
+ cloud_2_offset = 11960/72
  -- reset gpio pins
  write_gpio(p_state,1,3)
  write_gpio(destruct_level,4,3)
