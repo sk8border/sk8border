@@ -229,6 +229,16 @@ idle_bob_time = 8
 title_wall_y = 8 * 8
 start_delay = 40
 scroll_speed = 1.5
+bg_1_scroll_speed
+ = scroll_speed/200
+bg_2_scroll_speed
+ = scroll_speed/8
+bg_3_scroll_speed
+ = scroll_speed/4
+bg_4_scroll_speed
+ = scroll_speed/2
+bg_scroll_width = 24
+fg_scroll_width = 18
 barbwire_on = false
 floating_speed = 0.15
 propaganda_probability = 0.5
@@ -266,6 +276,12 @@ wall_width_drawing_box = nil
 
 floating_after_jump = false
 awaiting_thrust_after_jump=false
+
+bg_1_offset = 0
+bg_2_offset = 0
+bg_3_offset = 0
+bg_4_offset = 0
+fg_1_offset = 0
 
 -- end global variables
 
@@ -1426,11 +1442,21 @@ wall)
 end
 
 function drawscrollmap(
-s,mx,my,x,y,w,h)
-  tx = flr(s/8)%w
-  dx = -(s%8)
-  mapdraw(mx+tx,my,dx,y,w-tx,h)
-  mapdraw(mx,my,(w-tx)*8+dx,y,tx+1,h)
+ x_offset,
+ mx,
+ my,
+ x,
+ y,
+ w,
+ h
+)
+ -- map tile start offset
+ tx = flr(x_offset/8)%w
+ -- where to start drawing
+ -- in the world (-7..0)
+ dx = -(x_offset%8)
+ mapdraw(mx+tx,my,dx,y,w-tx,h)
+ mapdraw(mx,my,(w-tx)*8+dx,y,tx+1,h)
 end
 
 function is_a_wall_moving()
@@ -1633,12 +1659,12 @@ function _draw()
   palt(0,false)
   palt(7,true)
   -- far far mountains
-  drawscrollmap(s/200,32,2,-8,4*8+3,24,2)
+  drawscrollmap(bg_1_offset,32,2,-8,4*8+3,bg_scroll_width,2)
   --mapdraw(32,2,0,4*8+3,32,2)
   -- background
-  drawscrollmap(s/8,32,5,-8,5*8+3,24,2);
-  drawscrollmap(s/4,32,7,-8,7*8,24,2);
-  drawscrollmap(s/2,32,9,-8,9*8,24,5);
+  drawscrollmap(bg_2_offset,32,5,-8,5*8+3,bg_scroll_width,2);
+  drawscrollmap(bg_3_offset,32,7,-8,7*8,bg_scroll_width,2);
+  drawscrollmap(bg_4_offset,32,9,-8,9*8,bg_scroll_width,5);
 
   --walls
   for i=1, #walls do
@@ -1652,7 +1678,7 @@ function _draw()
   end
 
   -- foreground
-  drawscrollmap(s,0,14,-8,14*8,18,3)
+  drawscrollmap(fg_1_offset,0,14,-8,14*8,fg_scroll_width,3)
   rectfill(-8, 120, 136, 136, 0)
   drawskater(player)
   
@@ -1854,13 +1880,37 @@ function _update60()
     sfx(-1)
     --music(-1)
    end
-   t += 1
+
    if launch_t > 0 then
     launch_t -= 1
    end
    if land_t > 0 then
     land_t -= 1
    end
+
+   -- scroll bg/fg
+   bg_1_offset = (
+    bg_1_offset +
+    bg_1_scroll_speed
+   ) % (bg_scroll_width*8)
+   bg_2_offset = (
+    bg_2_offset +
+    bg_2_scroll_speed
+   ) % (bg_scroll_width*8)
+   bg_3_offset = (
+    bg_3_offset +
+    bg_3_scroll_speed
+   ) % (bg_scroll_width*8)
+   bg_4_offset = (
+    bg_4_offset +
+    bg_4_scroll_speed
+   ) % (bg_scroll_width*8)
+   fg_1_offset = (
+    fg_1_offset +
+    scroll_speed
+   ) % (fg_scroll_width*8)
+
+   t += 1
    if t >= t_loop_end then
     t = t_loop_start
    end
