@@ -1649,8 +1649,6 @@ function _draw()
   end
   camera(cam_x, cam_y)
   
-  --s is the amount of scrolling
-  local s = t*scroll_speed
   cls()
   --sky
   rectfill (-8,-8,127+8,127+8,12)
