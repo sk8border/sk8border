@@ -239,6 +239,10 @@ bg_4_scroll_speed
  = scroll_speed/2
 bg_scroll_width = 24
 fg_scroll_width = 18
+cloud_base_offset = -49
+cloud_range = 180
+cloud_1_speed = 1/64
+cloud_2_speed = 1/72
 barbwire_on = false
 floating_speed = 0.15
 propaganda_probability = 0.5
@@ -282,6 +286,8 @@ bg_2_offset = 0
 bg_3_offset = 0
 bg_4_offset = 0
 fg_1_offset = 0
+cloud_1_offset = 6520/64
+cloud_2_offset = 11960/72
 
 -- end global variables
 
@@ -1652,9 +1658,9 @@ function _draw()
   palt(0,true)
   palt(7,false)
   local cloudx
-  cloudx= 130-((t+5000)/64)%180
+  cloudx = cloud_base_offset + cloud_1_offset
   spr(76,cloudx,16,4,1)
-  cloudx= 130-((t+1000)/72)%180
+  cloudx = cloud_base_offset + cloud_2_offset
   spr(76,cloudx,24,4,1)
   palt(0,false)
   palt(7,true)
@@ -1909,6 +1915,16 @@ function _update60()
     fg_1_offset +
     scroll_speed
    ) % (fg_scroll_width*8)
+
+   -- move clouds
+   cloud_1_offset = (
+    cloud_1_offset -
+    cloud_1_speed
+   ) % cloud_range
+   cloud_2_offset = (
+    cloud_2_offset -
+    cloud_2_speed
+   ) % cloud_range
 
    t += 1
    if t >= t_loop_end then
