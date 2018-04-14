@@ -53,6 +53,9 @@
       font-size: 1.1em;
       color: #29adff; /* pico-8 blue */
     }
+    #lang a {
+      font-size: inherit;
+    }
     a:active {
       color: #ffa300 !important; /* pico-8 orange */
     }
@@ -268,7 +271,7 @@
   </div>
   <center class="main">
 	<img src="./img/sk8border_screenshot_4.gif">
-	<h3>====================<br/>[ENGLISH] - <a href="./fr.html">FRANÇAIS</a><br>====================<h3>
+	<h3 id="lang">====================<br/>[ENGLISH] - <a href="./fr.html">FRANÇAIS</a><br>====================<h3>
     <h1 id="slogan">Lay that Wall to Waste!</h1>
     <p>Sk8Border was created in Montréal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a> as a collaborative effort by Leif Halldór Ásgeirsson, <a href="http://uncanard.com">Marc-André Toupin</a> and <a href="https://twitter.com/Benwiley4000">Ben Wiley</a>. It is built with <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
     <p>This game runs in your web browser - even on your phone!</p>
@@ -310,10 +313,10 @@
     </ul>
 	<h3 id="separator">==============================</h3>
 	<h2>Download</h2>
-	<p>Binaries for Linux, Windows and Mac are available on <a href="https://sk8border.itch.io/sk8border">ITCH.IO</a></p>
+	<p>Binaries for Linux, Windows and Mac are available from <a href="" id="itch">ITCH.IO</a></p>
 	<h2 id="opensource">This game is open source. Woah!</h2>
 	<p><a href="https://github.com/sk8border/sk8border/">GITHUB REPOSITORY</a></p>
-	<p><small>Or load this png in PICO-8!</small></br></br><img src = "./sk8border.p8.png"></img></p>
+	<p><small>Or load this cart in PICO-8!</small></br></br><img src = "./sk8border.p8.png"></img></p>
     <h2 id="fonts">Fonts on this page</h2>
     <ul>
       <li><a href="http://pixel-fonts.com/">Softsquare</a> font by <a href="https://twitter.com/chevyray">Chevy Ray Johnston</a></li>
@@ -609,6 +612,13 @@
         destructionLevel = _destructionLevel;
       })
     })();
+  </script>
+  <script type="text/javascript" src="https://static.itch.io/api.js"></script>
+  <script type="text/javascript">
+    Itch.attachBuyButton(document.getElementById('itch'), {
+      user: 'sk8border',
+      game: 'sk8border'
+    });
   </script>
 </body>
 
