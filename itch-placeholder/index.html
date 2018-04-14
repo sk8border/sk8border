@@ -37,7 +37,7 @@
 	<div id="main">
 		<h1><a href="http://sk8border.github.io/sk8border" target="_blank">Play here! (english)</a></h1>
 		<h1><a href="http://sk8border.github.io/sk8border/fr" target="_blank">Jouez ici! (français)</a></h1>
-		<h1 id="back"><a href="javascript:location.reload()" target="_blank">Go back / Sortir d'ici</a></h1>
+		<h1 id="back"><a href="" target="_blank">Go back / Sortir d'ici</a></h1>
 	</div>	
 	<script>
 		if (/Mobile|Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
@@ -45,6 +45,10 @@
 		} else {
 			document.getElementById("back").style.display="none";
 		}
+		document.querySelector('#back').addEventListener('click', function() {
+			window.location.href = '/sk8border';
+			window.location.reload(true);
+		});
 	</script>
 </body>
 </html>
