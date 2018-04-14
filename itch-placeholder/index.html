@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<style>
+		@font-face {
+			font-family: Softsquare;
+			src: url('ChevyRay - Softsquare FR.ttf');
+		}
+		p {
+			font-family: Softsquare;
+		}
+		h1 {
+			font-family: Softsquare;
+			line-height: 2rem;
+		}
+		h1, h2, p, ul, #play_game {
+			text-align: center;
+			margin-left: 1rem;
+			margin-right: 1rem;
+		}
+		a:link {
+			color: Orange;
+		}
+		a:visited {
+			color: Orange;
+		}
+		a:hover {
+			color: White;
+		}
+		a:active {
+			color: OrangeRed;
+		} 
+	</style>
+</head>
+<body style="background-color:#5e564e">
+	<div id="main">
+		<h1><a href="http://sk8border.github.io/sk8border" target="_blank">Play here!</a></h1>
+		<h1><a href="http://sk8border.github.io/sk8border/fr" target="_blank">Jouez ici!</a></h1>
+		<h1 id="back"><a href="javascript:history.back()" target="_blank">Go back / Sortir d'ici</a></h1>
+	</div>	
+	<script>
+		if (/Mobile|Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+			document.getElementById("back").style.display="block";// Take the user to a different screen here.
+		} else {
+			document.getElementById("back").style.display="none";
+		}
+	</script>
+</body>
+</html>
