@@ -1,5 +1,7 @@
 # sk8border
 
+![sk8border preview GIF](img/preview_gif_compressed.gif)
+
 (Le français suit)
 
 Lay that wall to waste! [#antifagamejam](https://twitter.com/search?q=%23antifagamejam)
