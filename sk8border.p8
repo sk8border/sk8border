@@ -835,7 +835,7 @@ function reset()
  set_gauge_value(gauge,0)
  player.y = ground_y
  -- title music
- music(14)
+ music(22)
  walls = {}
  -- initial walls
  local last_wall_right = -4
@@ -2442,6 +2442,14 @@ __music__
 00 061a1244
 00 141b1244
 02 091c1244
+00 40404040
+00 40404040
+00 40404040
+00 40404040
+00 40404040
+00 40404040
+00 40404040
+00 40404040
 00 211e521d
 00 221f2920
 01 2326241d
