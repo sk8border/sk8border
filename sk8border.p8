@@ -344,6 +344,48 @@ function write_gpio(num,i,bits)
  end
 end
 
+
+music_start_address = 0x3100
+pattern_byte_size = 4
+-- specifically "end loop"
+loop_byte_offset = 1
+
+function address_for_pattern(i)
+ address =
+  music_start_address +
+  pattern_byte_size * i +
+  loop_byte_offset
+ return address
+end
+
+function has_end_loop(pattern_i)
+ address =
+  address_for_pattern(pattern_i)
+ byte = peek(address)
+ return band(byte, 0b10000000)
+end
+
+function unloop_pattern(pattern_i)
+ address =
+  address_for_pattern(pattern_i)
+ byte = peek(address)
+ -- set loop bit to 0
+ poke(address, band(byte, 0b01111111))
+end
+
+function break_music_loop()
+ curr_pattern = stat(24)
+ while (
+  curr_pattern < 64 and
+  not has_end_loop(curr_pattern)
+ ) do
+  curr_pattern += 1
+ end
+ if curr_pattern < 64 then
+  unloop_pattern(curr_pattern)
+ end
+end
+
 function make_player(x,y)
   local p = {}
   p.x = x
@@ -403,6 +445,7 @@ function update_player(p)
    if not (
     btn(keys.a) or btn(keys.b)
    ) then
+    break_music_loop()
     p_state = states.launch
     launch_t = launch_time
     p.dy = -jump_speed
@@ -2386,7 +2429,7 @@ __sfx__
 010900202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620246202462024620
 __music__
 00 2d2c6e44
-00 01421244
+03 01421244
 01 01021244
 00 04031244
 00 05071244
