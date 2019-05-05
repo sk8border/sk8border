@@ -344,14 +344,13 @@ function write_gpio(num,i,bits)
  end
 end
 
-
 music_start_address = 0x3100
 pattern_byte_size = 4
 -- specifically "end loop"
 loop_byte_offset = 1
 
 function address_for_pattern(i)
- address =
+ local address =
   music_start_address +
   pattern_byte_size * i +
   loop_byte_offset
@@ -359,22 +358,22 @@ function address_for_pattern(i)
 end
 
 function has_end_loop(pattern_i)
- address =
+ local address =
   address_for_pattern(pattern_i)
- byte = peek(address)
+ local byte = peek(address)
  return band(byte, 0b10000000)
 end
 
 function unloop_pattern(pattern_i)
- address =
+ local address =
   address_for_pattern(pattern_i)
- byte = peek(address)
+ local byte = peek(address)
  -- set loop bit to 0
  poke(address, band(byte, 0b01111111))
 end
 
 function break_music_loop()
- curr_pattern = stat(24)
+ local curr_pattern = stat(24)
  while (
   curr_pattern < 64 and
   not has_end_loop(curr_pattern)
