@@ -293,6 +293,8 @@ explosion_jump_y = 12
 t_loop_duration = 1800
 t_loop_end = 32767
 t_loop_start = t_loop_end - t_loop_duration
+-- in frames
+tut_intro_duration = 300
 -- end constants
 
 
@@ -309,7 +311,58 @@ land_t = 0
 p_state = states.idle
 lastwall = nil
 start_countdown = nil
+num_jumps = 0
+prev_grind_y = -1
+p_falling = false
 
+-- for tutorial
+tut_t = 0
+tut_running = false
+tut_complete = false
+--if dget(1) then
+  --tut_complete = true
+--end
+tut_current_step = 1
+tut_successes = {false,false,
+false,false,false,false}
+tut_prompts = {
+  {
+  "let's learn how to",
+  "play sk8border!"
+  },
+  {
+  "hold 🅾️ (z) or ❎ (x)",
+  "to crouch",
+  "...and release to jump!"
+  },
+  {
+  "hold 🅾️ (z) or ❎ (x)",
+  "while jumping to land",
+  "and grind on a wall."
+  },
+  {
+    "release to jump off the wall,",
+    "then land on a higher",
+    "wall segment."
+  },
+  { 
+    "continue holding at the",
+    "end of a high wall to land",
+    "on the wall below it."
+  },
+  { 
+    "alternate between",
+    "a nosegrind with 🅾️ (z)",
+    "and a 5-0 with ❎ (x) to fill",
+    "your power meter faster!"
+  },
+  { 
+    "now your final challenge:",
+    "grind long enough to knock",
+    "down that wall!"
+  }
+}
+  
 -- for rumble - goes from 0-6
 destruct_level = 0
 
@@ -333,6 +386,40 @@ cloud_1_offset = 6520/64
 cloud_2_offset = 11960/72
 
 -- end global variables
+function tutorial_start()
+  tut_running = true
+  tut_current_step = 1
+  tut_t = 0
+  local le = #tut_successes
+  for i=1, le do
+    tut_successes[i] = false
+  end
+end
+
+function tutorial_achieve(step)
+  tut_successes[step]=true
+  tutorial_refresh()
+end
+
+function tutorial_refresh()
+  -- find the lowest
+  -- uncompleted step
+  local le = #tut_successes
+  local lowest = le
+  for i=1, le do
+    if not tut_successes[i] then
+      lowest = i
+      break
+    end
+  end
+  if lowest == le then
+    tut_complete = true
+    tut_running = false
+    dset(1, 1)
+  else
+    tut_current_step = lowest
+  end
+end       
 
 function write_gpio(num,i,bits)
  local lastbit_i = 0x5f80+i+bits-1
@@ -450,7 +537,13 @@ function update_player(p)
     p.dy = -jump_speed
     if not check_for_destruction()
     then
+      -- jump achieved
+      num_jumps += 1
+      if num_jumps >= 2 then
+        tutorial_achieve(1)
+     end
      play_snd(snd.jump)
+     p_falling = false
     end
     return true
    end
@@ -501,6 +594,26 @@ function update_player(p)
 
        -- just entered
        -- grind state
+       
+       -- grind achieved
+       tutorial_achieve(2)
+       if prev_grind_y > 0 then
+        if grind_y <
+        prev_grind_y then
+          -- jump on a higher
+          -- wall achieved
+          tutorial_achieve(3)
+        elseif grind_y >
+        prev_grind_y and
+        p_falling then
+          -- fall on a lower
+          -- wall achieved
+          tutorial_achieve(4)
+        end
+       end
+       
+       prev_grind_y = grind_y
+       
        add_to_score(
        sc.grind_start_pts)
 
@@ -582,6 +695,7 @@ function update_player(p)
 
    if player_should_fall then
     -- fallllllllllllllll
+    p_falling = true
     p_state = states.jump
     play_snd(-1) -- stop grind noise
     if sc.destroy_on_fall then
@@ -1706,7 +1820,7 @@ function draw_title()
  end
 
  local message =
-   'press 🅾️ or ❎ to start'
+   'press 🅾️ (z) or ❎ (x)'
  local blink = true
  if (
   start_countdown or
@@ -1825,29 +1939,57 @@ function _draw()
    draw_spark(sparks[i])
   end
  
- -- lyric cursor
-  local lc =
-    --(t-lst)%(let-lst) + lyric_t_offset
-    (t-lst)+lyric_t_offset //verse 1 only
-
-  for _,lyric in pairs(lyrics)
-  do
-    for _,off in pairs(lyric[3])
-    do
-      if
-        lc >= lyric[2][1] + off and
-        lc < lyric[2][2] + off then
-          text = lyric[1]
-          print(
-            text,
-            8*8 - (#text*4)/2,
-            8,
-            7
-          )
-          break
-      end
+  -- tutorial or lyrics
+  -----------------------
+  -- tutorial
+  if tut_running then
+    -- draw tutorial prompt
+    tut_t += 1
+    local prompt_i
+    if tut_t < 
+    tut_intro_duration then
+      prompt_i = 1
+    else
+      prompt_i = 
+      tut_current_step+1
     end
+    local prompt = 
+    tut_prompts[prompt_i]
+    for i=1, #prompt do
+      local text = prompt[i]
+    print(
+      text,
+      8*8 - (#text*4)/2,
+     8+8*(i-1),
+     7
+    )
+   end
+  else
+    -- lyric cursor
+   local lc =
+     --(t-lst)%(let-lst) + lyric_t_offset
+     (t-lst)+lyric_t_offset //verse 1 only
+ 
+   for _,lyric in pairs(lyrics)
+   do
+     for _,off in pairs(lyric[3])
+     do
+       if
+         lc >= lyric[2][1] + off and
+         lc < lyric[2][2] + off then
+           text = lyric[1]
+           print(
+             text,
+             8*8 - (#text*4)/2,
+             8,
+             7
+           )
+           break
+       end
+     end
+   end
   end
+  -- end tutorial or lyrics
   
   ------------------------
   -- u.i ☉☉
@@ -1902,6 +2044,9 @@ function _update60()
    start_countdown -= 1
    if start_countdown == 0 then
     game_started = true
+    if not tut_complete then
+      tutorial_start()
+    end
     music(0)
     play_snd(snd.skate)
    end
@@ -1917,6 +2062,12 @@ function _update60()
    start_countdown = start_delay
    music(-1)
    play_snd(43)
+   
+   -- reset some globals
+   -- for tutorializing
+   num_jumps = 0
+      prev_grind_y = -1
+      p_falling = false
   end
 
   update_player(player)
