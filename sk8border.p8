@@ -170,6 +170,9 @@ wall_height_weights = {
    [7]=3,
    [8]=0,
    [9]=0
+  },
+  tutorial_ground={
+  	[5]=1
   }
 }
 
@@ -405,14 +408,14 @@ function tutorial_refresh()
   -- find the lowest
   -- uncompleted step
   local le = #tut_successes
-  local lowest = le
+  local lowest = le + 1
   for i=1, le do
     if not tut_successes[i] then
       lowest = i
       break
     end
   end
-  if lowest == le then
+  if lowest == le + 1 then
     tut_complete = true
     tut_running = false
     dset(1, 1)
@@ -502,6 +505,9 @@ end
 
 function check_for_destruction()
  if gauge.maxed then
+  -- break wall achieved
+  -- tutorial complete
+  tutorial_achieve(6)
   break_all_walls()
   score += scoring.destruction_pts
   reset_gauge(gauge)
@@ -639,6 +645,9 @@ function update_player(p)
        (adown == false and
        p_last_grind == 'a') 
        then
+       	-- alternate grind
+       	-- achieved
+       	tutorial_achieve(5)
         p_grindinterval = 
         sc.interval_alt
        else
@@ -994,6 +1003,11 @@ function _init()
    ),
    ground=fill_drawing_box(
     wall_height_weights.ground
+   ),
+   tutorial_ground=
+   fill_drawing_box(
+   	wall_height_weights.
+   	tutorial_ground
    )
   }
   
@@ -1407,6 +1421,11 @@ end
 
 function generate_wall_height()
   local box = 
+  tut_running and
+  trying_to_grind and
+  wall_height_drawing_box.
+  tutorial_ground
+  or
   trying_to_grind and
   wall_height_drawing_box.ground
   or
