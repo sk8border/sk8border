@@ -297,7 +297,11 @@ t_loop_duration = 1800
 t_loop_end = 32767
 t_loop_start = t_loop_end - t_loop_duration
 -- in frames
-tut_intro_duration = 300
+tut_success_duration = 60
+tut_complete_duration = 120
+tut_intro_starttime = 30
+tut_intro_endtime =
+ tut_intro_starttime + 120
 -- end constants
 
 
@@ -321,7 +325,9 @@ p_falling = false
 -- for tutorial
 tut_t = 0
 tut_running = false
+tut_displaying = false
 tut_complete = false
+tut_success_t = 0
 --if dget(1) then
   --tut_complete = true
 --end
@@ -365,6 +371,15 @@ tut_prompts = {
     "down that wall!"
   }
 }
+
+tut_success_prompts = {
+	{ 
+	 "good!"
+ },
+ {
+ 	"tutorial complete!"
+ }
+}
   
 -- for rumble - goes from 0-6
 destruct_level = 0
@@ -391,6 +406,7 @@ cloud_2_offset = 11960/72
 -- end global variables
 function tutorial_start()
   tut_running = true
+  tut_displaying = true
   tut_current_step = 1
   tut_t = 0
   local le = #tut_successes
@@ -400,11 +416,41 @@ function tutorial_start()
 end
 
 function tutorial_achieve(step)
+  local prev = tut_successes[step]
   tut_successes[step]=true
+  if step >= tut_current_step
+  and not prev then 
+   tut_success_t =
+    tut_success_duration
+  end
   tutorial_refresh()
+  if tut_complete then
+  	tut_success_t =
+  	tut_complete_duration
+  end
 end
 
 function tutorial_refresh()
+	-- find the highest
+	-- completed step
+	local highest = 0
+	local le = #tut_successes
+	for i=1, le do
+		if tut_successes[i] then
+			highest = i
+		end
+	end
+	if highest == le then
+		tut_complete = true
+		tut_running = false
+		dset(1,1)
+	else
+		tut_current_step = highest+1
+	end
+end
+
+-- old way for backup
+function tutorial_refresh_old()
   -- find the lowest
   -- uncompleted step
   local le = #tut_successes
@@ -496,7 +542,9 @@ function find_explosion_jump_speed()
 end
 
 function add_to_score(points)
- score += points*gauge.multiplier
+	if not tut_running then
+ 	score += points*gauge.multiplier
+ end
  set_gauge_value(
   gauge,
   gauge.value+points
@@ -507,10 +555,13 @@ function check_for_destruction()
  if gauge.maxed then
   -- break wall achieved
   -- tutorial complete
-  tutorial_achieve(6)
   break_all_walls()
-  score += scoring.destruction_pts
+  add_to_score(
+   scoring.destruction_pts
+  )
+  --score += scoring.destruction_pts
   reset_gauge(gauge)
+  tutorial_achieve(6)
   return true
  end
  return false
@@ -1961,27 +2012,84 @@ function _draw()
   -- tutorial or lyrics
   -----------------------
   -- tutorial
-  if tut_running then
+  if tut_displaying then
+  	tut_t += 1
+  	if tut_t > tut_intro_starttime then
     -- draw tutorial prompt
-    tut_t += 1
     local prompt_i
+    local use_success_prompt
+     = false
     if tut_t < 
-    tut_intro_duration then
+    tut_intro_endtime 
+    and tut_current_step == 1
+    then
       prompt_i = 1
+    -- success prompt
+    elseif tut_success_t > 0 
+    then
+    	tut_success_t -= 1
+    	use_success_prompt = true
+    	if tut_complete then
+    	 prompt_i = 2
+    	 -- end the tutorial
+    	 -- display
+     	-- after the end of tue
+     	-- tutorial complete
+     	-- message
+     	if tut_success_t == 0 then
+     		tut_displaying = false
+     	end
+    	else
+    	 prompt_i = 1
+    	end
     else
+    -- regular prompt
       prompt_i = 
       tut_current_step+1
     end
-    local prompt = 
-    tut_prompts[prompt_i]
+    local prompt
+    if use_success_prompt then
+     prompt =
+      tut_success_prompts[prompt_i]
+    else
+     prompt = 
+      tut_prompts[prompt_i]
+    end
+    local backcol = 2
     for i=1, #prompt do
       local text = prompt[i]
-    print(
-      text,
-      8*8 - (#text*4)/2,
-     8+8*(i-1),
-     7
-    )
+     	print(
+       text,
+       8*8 - (#text*4)/2+1,
+      8+8*(i-1),
+      backcol
+     )
+     print(
+       text,
+       8*8 - (#text*4)/2-1,
+      8+8*(i-1),
+      backcol
+     )
+     print(
+       text,
+       8*8 - (#text*4)/2,
+      8+8*(i-1)-1,
+      backcol
+     )
+     print(
+       text,
+       8*8 - (#text*4)/2,
+      8+8*(i-1)+1,
+      backcol
+     )
+     -----
+     print(
+       text,
+       8*8 - (#text*4)/2,
+      8+8*(i-1),
+      7
+     )
+    end
    end
   else
     -- lyric cursor
@@ -2169,9 +2277,9 @@ function _update60()
    go_t += 1
   end
   
-  if game_started 
-  then
-   if t%60==0 and timer>0 then
+  if game_started then
+   if t%60==0 and timer>0
+   and not tut_running then
     timer -= 1
    end
    if (
