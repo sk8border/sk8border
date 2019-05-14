@@ -299,6 +299,7 @@ t_loop_start = t_loop_end - t_loop_duration
 -- in frames
 tut_success_duration = 60
 tut_complete_duration = 120
+post_tut_msg_duration = 60
 tut_intro_starttime = 30
 tut_intro_endtime =
  tut_intro_starttime + 120
@@ -328,6 +329,7 @@ tut_running = false
 tut_displaying = false
 tut_complete = false
 tut_success_t = 0
+post_tut_msg_t = 0
 tut_theme_triggers_done = {}
 --if dget(1) then
   --tut_complete = true
@@ -393,6 +395,9 @@ tut_success_prompts = {
  },
  {
  	"tutorial complete!"
+ },
+ {
+  "let's go!"
  }
 }
 
@@ -433,6 +438,9 @@ function tutorial_start()
 end
 
 function tutorial_achieve(step)
+  if tut_complete then
+   return
+  end
   local prev_achieved =
    tut_successes[step]
   if step >= tut_current_step
@@ -2073,18 +2081,28 @@ function _draw()
     then
       prompt_i = 1
     -- success prompt
-    elseif tut_success_t > 0 
+    elseif
+     tut_success_t > 0 or
+     post_tut_msg_t > 0
     then
     	tut_success_t -= 1
+     post_tut_msg_t -= 1
     	use_success_prompt = true
     	if tut_complete then
-    	 prompt_i = 2
+      if timer_ready then
+       prompt_i = 3
+      else
+       prompt_i = 2
+      end
     	 -- end the tutorial
     	 -- display
      	-- after the end of tue
      	-- tutorial complete
      	-- message
-     	if tut_success_t == 0 then
+      if
+       tut_success_t <= 0 and
+       post_tut_msg_t <= 0
+       then
      		tut_displaying = false
      	end
     	else
@@ -2337,6 +2355,9 @@ function _update60()
    )
   ) then
    timer_ready = true
+   tut_success_t = 0
+   post_tut_msg_t = post_tut_msg_duration
+   tut_displaying = true
   end
 
   if game_started then
