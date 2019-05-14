@@ -328,12 +328,27 @@ tut_running = false
 tut_displaying = false
 tut_complete = false
 tut_success_t = 0
+tut_theme_triggers_done = {}
 --if dget(1) then
   --tut_complete = true
 --end
 tut_current_step = 1
 tut_successes = {false,false,
 false,false,false,false}
+tut_steps = {
+ jump=1,
+ grind=2,
+ wall_up=3,
+ wall_down=4,
+ grind_switch=5,
+ destroy=6
+}
+tut_theme_triggers={
+ tut_steps.grind,
+ tut_steps.wall_down,
+ tut_steps.grind_switch,
+ tut_steps.destroy
+}
 tut_prompts = {
   {
   "let's learn how to",
@@ -380,7 +395,7 @@ tut_success_prompts = {
  	"tutorial complete!"
  }
 }
-  
+
 -- for rumble - goes from 0-6
 destruct_level = 0
 
@@ -416,12 +431,30 @@ function tutorial_start()
 end
 
 function tutorial_achieve(step)
-  local prev = tut_successes[step]
-  tut_successes[step]=true
+  local prev_achieved =
+   tut_successes[step]
   if step >= tut_current_step
-  and not prev then 
+  and not prev_achieved then
+   tut_successes[step]=true
    tut_success_t =
     tut_success_duration
+   to_break = 0
+   for s in all(
+    tut_theme_triggers
+   ) do
+    if (
+     (
+      not
+      tut_theme_triggers_done[s]
+     )
+     and step >= s
+    ) then
+     tut_theme_triggers_done[s]
+      = true
+     to_break += 1
+    end
+   end
+   break_music_loop(to_break)
   end
   tutorial_refresh()
   if tut_complete then
@@ -497,7 +530,7 @@ function has_end_loop(pattern_i)
  local address =
   address_for_pattern(pattern_i)
  local byte = peek(address)
- return band(byte, 0b10000000)
+ return band(byte, 0b10000000) > 0
 end
 
 function unloop_pattern(pattern_i)
@@ -508,16 +541,30 @@ function unloop_pattern(pattern_i)
  poke(address, band(byte, 0b01111111))
 end
 
-function break_music_loop()
+function break_music_loop(n)
  local curr_pattern = stat(24)
- while (
-  curr_pattern < 64 and
-  not has_end_loop(curr_pattern)
- ) do
+ while n > 0 do
+  while (
+   curr_pattern < 64 and
+   not has_end_loop(
+    curr_pattern
+   )
+  ) do
+   curr_pattern += 1
+  end
+  if curr_pattern < 64 then
+   unloop_pattern(curr_pattern)
+  end
   curr_pattern += 1
+  n -= 1
  end
- if curr_pattern < 64 then
-  unloop_pattern(curr_pattern)
+end
+
+function get_theme_start()
+ if tut_complete then
+  return 0
+ else
+  return 22
  end
 end
 
@@ -561,7 +608,7 @@ function check_for_destruction()
   )
   --score += scoring.destruction_pts
   reset_gauge(gauge)
-  tutorial_achieve(6)
+  tutorial_achieve(tut_steps.destroy)
   return true
  end
  return false
@@ -588,7 +635,6 @@ function update_player(p)
    if not (
     btn(keys.a) or btn(keys.b)
    ) then
-    break_music_loop()
     p_state = states.launch
     launch_t = launch_time
     p.dy = -jump_speed
@@ -597,7 +643,7 @@ function update_player(p)
       -- jump achieved
       num_jumps += 1
       if num_jumps >= 2 then
-        tutorial_achieve(1)
+        tutorial_achieve(tut_steps.jump)
      end
      play_snd(snd.jump)
      p_falling = false
@@ -653,19 +699,19 @@ function update_player(p)
        -- grind state
        
        -- grind achieved
-       tutorial_achieve(2)
+       tutorial_achieve(tut_steps.grind)
        if prev_grind_y > 0 then
         if grind_y <
         prev_grind_y then
           -- jump on a higher
           -- wall achieved
-          tutorial_achieve(3)
+          tutorial_achieve(tut_steps.wall_up)
         elseif grind_y >
         prev_grind_y and
         p_falling then
           -- fall on a lower
           -- wall achieved
-          tutorial_achieve(4)
+          tutorial_achieve(tut_steps.wall_down)
         end
        end
        
@@ -698,7 +744,7 @@ function update_player(p)
        then
        	-- alternate grind
        	-- achieved
-       	tutorial_achieve(5)
+        tutorial_achieve(tut_steps.grind_switch)
         p_grindinterval = 
         sc.interval_alt
        else
@@ -2174,7 +2220,7 @@ function _update60()
     if not tut_complete then
       tutorial_start()
     end
-    music(0)
+    music(get_theme_start())
     play_snd(snd.skate)
    end
   end
