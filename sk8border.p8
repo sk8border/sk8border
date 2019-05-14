@@ -525,27 +525,33 @@ end
 
 music_start_address = 0x3100
 pattern_byte_size = 4
--- specifically "end loop"
-loop_byte_offset = 1
+start_loop_byte_offset = 0
+end_loop_byte_offset = 1
 
-function address_for_pattern(i)
+function address_for_pattern(i, offset)
  local address =
   music_start_address +
   pattern_byte_size * i +
-  loop_byte_offset
+  offset
  return address
 end
 
 function has_end_loop(pattern_i)
  local address =
-  address_for_pattern(pattern_i)
+  address_for_pattern(
+   pattern_i,
+   end_loop_byte_offset
+  )
  local byte = peek(address)
  return band(byte, 0b10000000) > 0
 end
 
 function unloop_pattern(pattern_i)
  local address =
-  address_for_pattern(pattern_i)
+  address_for_pattern(
+   pattern_i,
+   end_loop_byte_offset
+  )
  local byte = peek(address)
  -- set loop bit to 0
  poke(address, band(byte, 0b01111111))
