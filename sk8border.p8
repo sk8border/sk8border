@@ -396,6 +396,8 @@ tut_success_prompts = {
  }
 }
 
+timer_ready = tut_complete
+
 -- for rumble - goes from 0-6
 destruct_level = 0
 
@@ -2178,19 +2180,21 @@ function _draw()
    ,121,6)
   
   -- timer
-  local timer_sprite = 53
-  local timer_color = 6
-  if timer <= 10 then
-   timer_sprite = 48
-   timer_color = 8
+  if timer_ready then
+   local timer_sprite = 53
+   local timer_color = 6
+   if timer <= 10 then
+    timer_sprite = 48
+    timer_color = 8
+   end
+   palt(0,true)
+   palt(7,false)
+   spr(timer_sprite,2,121-2)
+   palt(0,false)
+   palt(7,true)
+   text = tostr(timer)
+   print(text,12,121,timer_color)
   end
-  palt(0,true)
-  palt(7,false)
-  spr(timer_sprite,2,121-2)
-  palt(0,false)
-  palt(7,true)
-  text = tostr(timer)
-  print(text,12,121,timer_color)
 
   if debug then
     print_debug_messages()
@@ -2322,10 +2326,23 @@ function _update60()
    end
    go_t += 1
   end
-  
+
+  if (
+   (not timer_ready) and
+   tut_complete and
+   (
+    p_state == states.idle or
+    p_state == states.crouch or
+    p_state == states.grind
+   )
+  ) then
+   timer_ready = true
+  end
+
   if game_started then
    if t%60==0 and timer>0
-   and not tut_running then
+   and not tut_running
+   and timer_ready then
     timer -= 1
    end
    if (
