@@ -9,43 +9,38 @@ debug = false
 
 -- constants
 tpb=16 // ticks per beat
-lst=16*tpb // loopstart tick
-let=lst+176*tpb // loopend tick
-theme_intro_delay = 4 * tpb
-early = 8 // early display ticks
-lyric_t_offset =
- early - theme_intro_delay
+lyric_early = 8 // early display ticks
 v1_recur = {0, 32*tpb}
 lyrics = {
  {"♪we're gonna take♪",
   -- span of time to display
-  {32*tpb, 36*tpb},
+  {0*tpb, 4*tpb},
   -- list of time offsets for
   -- recurring display
   v1_recur},
  {"♪down that wall♪",
-  {36*tpb, 39*tpb},
+  {4*tpb, 7*tpb},
   v1_recur},
  {"♪down that wall♪",
-  {40*tpb, 43*tpb},
+  {8*tpb, 11*tpb},
   v1_recur},
  {"♪down that wall♪",
-  {44*tpb, 46.5*tpb},
+  {12*tpb, 14.5*tpb},
   v1_recur},
  {"♪break it!♪",
-  {46.5*tpb, 49*tpb},
+  {14.5*tpb, 17*tpb},
   v1_recur},
  {"♪we will tear♪",
-  {49*tpb, 52*tpb},
+  {17*tpb, 20*tpb},
   v1_recur},
  {"♪down that wall♪",
-  {52*tpb, 56*tpb},
+  {20*tpb, 24*tpb},
   v1_recur},
  {"♪that wall is comin down♪",
-  {56*tpb, 60*tpb},
+  {24*tpb, 28*tpb},
   v1_recur},
  {"*interlude harmonique*",
-  {96*tpb, 112*tpb},
+  {64*tpb, 80*tpb},
   {0}},
 }
 
@@ -580,8 +575,9 @@ function remove_music_section(
   source_address,
   len
  )
- removed_pattern_offset
-  -= pattern_end + 1 - pattern_start
+ removed_pattern_offset =
+  removed_pattern_offset
+  - (pattern_end + 1 - pattern_start)
 end
 
 function break_music_loop(n)
@@ -617,6 +613,15 @@ function get_theme_start()
  else
   return 22
  end
+end
+
+t_at_lyric_start = nil
+
+function lyric_t_offset()
+ if t_at_lyric_start == nil then
+  return nil
+ end
+ return t_at_lyric_start - lyric_early
 end
 
 function make_player(x,y)
@@ -2198,12 +2203,9 @@ function _draw()
      )
     end
    end
-  else
+  elseif lyric_t_offset() ~= nil then
     -- lyric cursor
-   local lc =
-     --(t-lst)%(let-lst) + lyric_t_offset
-     (t-lst)+lyric_t_offset //verse 1 only
- 
+   local lc = t-lyric_t_offset() -- verse 1 only
    for _,lyric in pairs(lyrics)
    do
      for _,off in pairs(lyric[3])
@@ -2402,6 +2404,17 @@ function _update60()
   end
 
   if game_started then
+   if t_at_lyric_start == nil then
+    local curr_pattern =
+     stat(24) - removed_pattern_offset
+    if (
+     curr_pattern == 4 or
+     curr_pattern == 31
+    ) then
+     t_at_lyric_start = t
+    end
+   end
+
    if t%60==0 and timer>0
    and not tut_running
    and timer_ready then
@@ -2431,6 +2444,7 @@ function _update60()
     go_t = 0
     go_colindex = 15
     sfx(-1)
+    t_at_lyric_start = nil
     --music(-1)
    end
 
