@@ -26,6 +26,8 @@ Binaries for Linux, Windows and Mac are available on the Itch.io: https://sk8bor
 
 ## exportation
 
+### Check out the build branch
+
 Checkout `gh-pages`
 
 ```console
@@ -33,11 +35,32 @@ git checkout gh-pages
 git merge master
 ```
 
+### Standard build (won't work currently)
+
 Create a new web build from PICO-8 with:
 
 ```console
 export index.js
 ```
+
+### Minified build (because we have too much code!)
+
+0. Make sure you have python3 installed on your OS
+1. Download [picotool](https://github.com/dansanderson/picotool)
+2. Generate a lua-minified version of our p8 file:
+  ```console
+  /path/to/picotool/p8tool luamin ./sk8border.p8
+  ```
+3. Now we'll have a new file called `sk8border_fmt.p8`. Don't save this, but we'll load it in PICO-8!
+4. Inside of PICO-8 run:
+  ```console
+  load sk8border_fmt.p8
+  export index.js
+  load sk8border.p8
+  ```
+5. Delete the minified file: `rm sk8border_fmt.p8`
+
+### Finish up
 
 Push:
 
