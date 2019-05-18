@@ -331,6 +331,7 @@ tut_complete = false
 tut_success_t = 0
 post_tut_msg_t = 0
 tut_theme_triggers_done = {}
+removed_pattern_offset = 0
 --if dget(1) then
   --tut_complete = true
 --end
@@ -525,6 +526,9 @@ end
 
 music_start_address = 0x3100
 pattern_byte_size = 4
+music_end_address =
+ music_start_address +
+ 64 * pattern_byte_size
 start_loop_byte_offset = 0
 end_loop_byte_offset = 1
 
@@ -557,21 +561,52 @@ function unloop_pattern(pattern_i)
  poke(address, band(byte, 0b01111111))
 end
 
+function remove_music_section(
+ pattern_start, pattern_end
+)
+ local dest_address =
+  music_start_address +
+  pattern_start *
+  pattern_byte_size
+ local source_address =
+  music_start_address +
+  (pattern_end + 1) *
+  pattern_byte_size
+ local len =
+  music_end_address -
+  source_address
+ memcpy(
+  dest_address,
+  source_address,
+  len
+ )
+ removed_pattern_offset
+  -= pattern_end + 1 - pattern_start
+end
+
 function break_music_loop(n)
  local curr_pattern = stat(24)
+ local pattern = curr_pattern
  while n > 0 do
   while (
-   curr_pattern < 64 and
+   pattern < 64 and
    not has_end_loop(
-    curr_pattern
+    pattern
    )
   ) do
-   curr_pattern += 1
+   pattern += 1
   end
-  if curr_pattern < 64 then
-   unloop_pattern(curr_pattern)
+  if pattern < 64 then
+   if pattern > curr_pattern then
+    remove_music_section(
+     curr_pattern + 1,
+     pattern
+    )
+   else
+    unloop_pattern(pattern)
+   end
   end
-  curr_pattern += 1
+  pattern += 1
   n -= 1
  end
 end
