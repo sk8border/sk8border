@@ -953,6 +953,7 @@ function update_player(p)
     trying_to_grind = true
     land_t = land_time
     play_snd(snd.skate)
+    prev_grind_y = 0
    end
   end
 
