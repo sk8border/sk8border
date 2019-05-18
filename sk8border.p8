@@ -2231,15 +2231,15 @@ function _draw()
   
   -- gauge
   draw_gauge(gauge)
-  
-  -- score
-  local text = tostr(display_score)
-  print(text,
-   gauge.x+gauge.width+4
-   ,121,6)
-  
-  -- timer
+
   if timer_ready then
+   -- score
+   local text = tostr(display_score)
+   print(text,
+    gauge.x+gauge.width+4
+    ,121,6)
+
+   -- timer
    local timer_sprite = 53
    local timer_color = 6
    if timer <= 10 then
