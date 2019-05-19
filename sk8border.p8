@@ -2344,12 +2344,14 @@ function _update60()
   -----------------
   -- diff level
   -----------------
-  diff_level_elapsed += 1
-  if diff_level_elapsed >=
-  diff_level_duration*60  then
-   set_diff_level(diff_level+1)
+  if timer_ready then
+   diff_level_elapsed += 1
+   if diff_level_elapsed >=
+   diff_level_duration*60  then
+    set_diff_level(diff_level+1)
+   end
   end
-  
+
   -- walls !!
   
   for i=1, #walls do
