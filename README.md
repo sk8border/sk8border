@@ -73,3 +73,11 @@ Back to master:
 ```console
 git checkout master
 ```
+
+## html
+
+If you need to update the html content in the `web_template` directory, you can build the html pages by:
+
+0. Install Node.js
+1. Run `npm install` in the project directory
+2. `npm run build`

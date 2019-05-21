@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "mustache": "^3.0.1"
+  },
+  "scripts": {
+    "build": "node web_build.js"
+  }
+}
