@@ -7,39 +7,166 @@ cartdata('sk8border')
 
 debug = false
 
+-- i18n
+lang = "en"
+function i18n(key)
+ if lang == "fr" then
+  return i18n_fr[key]
+ else
+  return i18n_en[key]
+ end
+end
+i18n_en = {
+ lyric_1="♪we're gonna take♪",
+ lyric_2="♪down that wall♪",
+ lyric_3="♪break it!♪",
+ lyric_4="♪we will tear♪",
+ lyric_5="♪down that wall♪",
+ lyric_6="♪that wall is comin down♪",
+ lyric_7="*interlude harmonique*",
+ tut_prompt_start={
+  "let's learn how to",
+  "play sk8border!"
+ },
+ tut_prompt_jump={
+  "hold 🅾️ (z) or ❎ (x)",
+  "to crouch",
+  "...and release to jump!"
+ },
+ tut_prompt_grind={
+  "hold 🅾️ (z) or ❎ (x)",
+  "while jumping to land",
+  "and grind on a wall."
+ },
+ tut_prompt_wall_up={
+  "release to jump off the wall,",
+  "then land on a higher",
+  "wall segment."
+ },
+ tut_prompt_wall_down={
+  "continue holding at the",
+  "end of a high wall to land",
+  "on the wall below it."
+ },
+ tut_prompt_grind_switch={
+  "alternate between",
+  "a nosegrind with 🅾️ (z)",
+  "and a 5-0 with ❎ (x) to fill",
+  "your power meter faster!"
+ },
+ tut_prompt_destroy={
+  "now your final challenge:",
+  "grind long enough to knock",
+  "down that wall!"
+ },
+ tut_prompt_good={
+  "good!"
+ },
+ tut_prompt_complete={
+  "tutorial complete!"
+ },
+ tut_prompt_go={
+  "let's go!"
+ },
+ bring_it_down="bring_it_down!",
+ score="score:",
+ hi_score="hi score:",
+ press_buttons="press 🅾️ (z) or ❎ (x)",
+ wreck_that_wall="let's wreck that wall!"
+}
+
+i18n_fr = {
+ lyric_1="♪աҽ'ɾҽ ցօղղą էąҟҽ♪",
+ lyric_2="♪ժօաղ էհąէ աąӀӀ♪",
+ lyric_3="♪ҍɾҽąҟ ìէ!♪",
+ lyric_4="♪աҽ աìӀӀ էҽąɾ♪",
+ lyric_5="♪ժօաղ էհąէ աąӀӀ♪",
+ lyric_6="♪էհąէ աąӀӀ ìʂ çօʍìղ ժօաղ♪",
+ lyric_7="*ìղէҽɾӀմժҽ հąɾʍօղìզմҽ*",
+ tut_prompt_start={
+  "Ӏҽէ'ʂ Ӏҽąɾղ հօա էօ",
+  "քӀąվ ʂҟ��ҍօɾժҽɾ!"
+ },
+ tut_prompt_jump={
+  "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
+  "էօ çɾօմçհ",
+  "...ąղժ ɾҽӀҽąʂҽ էօ ʝմʍք!"
+ },
+ tut_prompt_grind={
+  "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
+  "ահìӀҽ ʝմʍքìղց էօ Ӏąղժ",
+  "ąղժ ցɾìղժ օղ ą աąӀӀ."
+ },
+ tut_prompt_wall_up={
+  "ɾҽӀҽąʂҽ էօ ʝմʍք օƒƒ էհҽ աąӀӀ,",
+  "էհҽղ Ӏąղժ օղ ą հìցհҽɾ",
+  "աąӀӀ ʂҽցʍҽղէ."
+ },
+ tut_prompt_wall_down={
+  "çօղէìղմҽ հօӀժìղց ąէ էհҽ",
+  "ҽղժ օƒ ą հìցհ աąӀӀ էօ Ӏąղժ",
+  "օղ էհҽ աąӀӀ ҍҽӀօա ìէ."
+ },
+ tut_prompt_grind_switch={
+  "ąӀէҽɾղąէҽ ҍҽէաҽҽղ",
+  "ą ղօʂҽցɾìղժ աìէհ 🅾️ {Հ}",
+  "ąղժ ą Ƽ-⊘ աìէհ ❎ {×} էօ ƒìӀӀ",
+  "վօմɾ քօաҽɾ ʍҽէҽɾ ƒąʂէҽɾ!"
+ },
+ tut_prompt_destroy={
+  "ղօա վօմɾ ƒìղąӀ çհąӀӀҽղցҽ:",
+  "ցɾìղժ Ӏօղց ҽղօմցհ էօ ҟղօçҟ",
+  "ժօաղ էհąէ աąӀӀ!"
+ },
+ tut_prompt_good={
+  "ցօօժ!"
+ },
+ tut_prompt_complete={
+  "էմէօɾìąӀ çօʍքӀҽէҽ!"
+ },
+ tut_prompt_go={
+  "Ӏҽէ'ʂ ցօ!"
+ },
+ bring_it_down="ҍɾìղց ìէ ժօաղ!",
+ score="ʂçօɾҽ:",
+ hi_score="հì ʂçօɾҽ:",
+ press_buttons="քɾҽʂʂ 🅾️ {Հ} օɾ ❎ {×}",
+ wreck_that_wall="Ӏҽէ'ʂ աɾҽçҟ էհąէ աąӀӀ!"
+}
+
 -- constants
 tpb=16 // ticks per beat
 lyric_early = 8 // early display ticks
 v1_recur = {0, 32*tpb}
 lyrics = {
- {"♪we're gonna take♪",
+ {i18n("lyric_1"),
   -- span of time to display
   {0*tpb, 4*tpb},
   -- list of time offsets for
   -- recurring display
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_2"),
   {4*tpb, 7*tpb},
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_2"),
   {8*tpb, 11*tpb},
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_2"),
   {12*tpb, 14.5*tpb},
   v1_recur},
- {"♪break it!♪",
+ {i18n("lyric_3"),
   {14.5*tpb, 17*tpb},
   v1_recur},
- {"♪we will tear♪",
+ {i18n("lyric_4"),
   {17*tpb, 20*tpb},
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_5"),
   {20*tpb, 24*tpb},
   v1_recur},
- {"♪that wall is comin down♪",
+ {i18n("lyric_6"),
   {24*tpb, 28*tpb},
   v1_recur},
- {"*interlude harmonique*",
+ {i18n("lyric_7"),
   {64*tpb, 80*tpb},
   {0}},
 }
@@ -356,53 +483,19 @@ tut_theme_triggers={
  tut_steps.destroy
 }
 tut_prompts = {
-  {
-  "let's learn how to",
-  "play sk8border!"
-  },
-  {
-  "hold 🅾️ (z) or ❎ (x)",
-  "to crouch",
-  "...and release to jump!"
-  },
-  {
-  "hold 🅾️ (z) or ❎ (x)",
-  "while jumping to land",
-  "and grind on a wall."
-  },
-  {
-    "release to jump off the wall,",
-    "then land on a higher",
-    "wall segment."
-  },
-  { 
-    "continue holding at the",
-    "end of a high wall to land",
-    "on the wall below it."
-  },
-  { 
-    "alternate between",
-    "a nosegrind with 🅾️ (z)",
-    "and a 5-0 with ❎ (x) to fill",
-    "your power meter faster!"
-  },
-  { 
-    "now your final challenge:",
-    "grind long enough to knock",
-    "down that wall!"
-  }
+ i18n("tut_prompt_start"),
+ i18n("tut_prompt_jump"),
+ i18n("tut_prompt_grind"),
+ i18n("tut_prompt_wall_up"),
+ i18n("tut_prompt_wall_down"),
+ i18n("tut_prompt_grind_switch"),
+ i18n("tut_prompt_destroy")
 }
 
 tut_success_prompts = {
-	{ 
-	 "good!"
- },
- {
- 	"tutorial complete!"
- },
- {
-  "let's go!"
- }
+ i18n("tut_prompt_good"),
+ i18n("tut_prompt_complete"),
+ i18n("tut_prompt_go")
 }
 
 timer_ready = tut_complete
@@ -1384,7 +1477,7 @@ function draw_gauge(gauge)
  end
  
  if gauge.maxed then
-  local text = "bring it down!"
+  local text = i18n("bring_it_down")
   print(
    text,
    x+gauge.width/2-
@@ -1991,7 +2084,7 @@ function draw_title()
  
  -- score
  if not (last_score == nil) then
-  local text = 'score: '..
+  local text = i18n("score").." "..
    last_score
   print(
    text,
@@ -2007,7 +2100,7 @@ function draw_title()
    hi_score > 0
   )
  ) then
-  text = 'hi score: '..
+  text = i18n("hi_score").." "..
    hi_score
   print(
    text,
@@ -2018,14 +2111,14 @@ function draw_title()
  end
 
  local message =
-   'press 🅾️ (z) or ❎ (x)'
+   i18n("press_buttons")
  local blink = true
  if (
   start_countdown or
   game_started
  ) then
   message =
-   'let\'s wreck that wall!'
+   i18n("wreck_that_wall")
   blink = false
  end
  if (
