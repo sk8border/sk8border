@@ -1,0 +1,22 @@
+{
+  "title": "Sk8Border",
+  "description": "Fracassez la frontière!",
+  "curr_lang": "FRANÇAIS",
+  "other_lang": "ENGLISH",
+  "about_sk8border": "Sk8Border a été créé à Montréal en mars/avril 2018 pour le <a href=\"https://itch.io/jam/antifa-game-jam\">Game Jam Antifasciste</a>, par Leif Halldór Ásgeirsson, <a href=\"http://uncanard.com\">Marc-André Toupin</a> et <a href=\"https://benwiley.org\">Ben Wiley</a>. Il est fait avec <a href=\"https://www.lexaloffle.com/pico-8.php\">PICO-8</a>.",
+  "works_on_mobile": "Ce jeu fonctionne dans le navigateur - même sur les téléphones!",
+  "start_game": "Allons-y!",
+  "reset": "Reset",
+  "pause": "Pause",
+  "fullscreen": "Fullscreen",
+  "sound": "Sound",
+  "carts": "Carts",
+  "download": "Télécharger",
+  "binaries_from": "Les fichiers exécutables pour Linux, Windows et Mac sont disponibles sur",
+  "wow_open_source": "Ce jeu est open source. Wow!",
+  "github_repo": "GITHUB",
+  "or_load_in_pico8": "Ou chargez cette cartouche dans PICO-8!",
+  "fonts_on_page": "Polices de caractères sur cette page",
+  "softsquare": "<a href=\"http://pixel-fonts.com/\">Softsquare</a> par <a href=\"https://twitter.com/chevyray\">Chevy Ray Johnston</a>",
+  "pico8_font": "Merci à <a href=\"https://www.lexaloffle.com/bbs/?tid=3760\">RhythmLynx</a> d'avoir rendu la police de PICO-8 disponible sur the web, et à <a href=\"https://twitter.com/lexaloffle\">Zep</a>, développeur de PICO-8!"
+}
