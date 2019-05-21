@@ -292,6 +292,7 @@ t_loop_duration = 1800
 t_loop_end = 32767
 t_loop_start = t_loop_end - t_loop_duration
 -- in frames
+tut_pause_duration = 60
 tut_success_duration = 60
 tut_complete_duration = 120
 post_tut_msg_duration = 60
@@ -330,6 +331,13 @@ removed_pattern_offset = 0
 --if dget(1) then
   --tut_complete = true
 --end
+
+tut_disp_type = "none"
+-- elapsed time of current pause
+tut_pause_elapsed = 0
+-- min time of tutorial pauses
+tut_paused = false
+tut_should_pause = false
 tut_current_step = 1
 tut_successes = {false,false,
 false,false,false,false}
@@ -472,6 +480,7 @@ end
 function tutorial_refresh()
 	-- find the highest
 	-- completed step
+	local prev = tut_current_step
 	local highest = 0
 	local le = #tut_successes
 	for i=1, le do
@@ -480,12 +489,28 @@ function tutorial_refresh()
 		end
 	end
 	if highest == le then
+		tut_should_pause = false
 		tut_complete = true
 		tut_running = false
 		dset(1,1)
 	else
-		tut_current_step = highest+1
+		tut_current_step = 
+		highest + 1
+		if tut_current_step >
+		prev then
+			tut_should_pause = true
+		end
 	end
+end
+
+function tutorial_pause()
+	tut_paused = true
+	tut_pause_elapsed = 0
+	tut_should_pause = false
+end
+
+function tutorial_unpause()
+	tut_paused = false
 end
 
 -- old way for backup
@@ -2059,6 +2084,41 @@ function print_debug_messages()
   end
 end
 
+function super_print(text,x,y)
+	local maincol = 7
+	local backcol = 2
+	print(
+		text,
+		x+1,
+		y,
+		backcol
+	)
+	print(
+		text,
+		x-1,
+		y,
+		backcol
+	)
+	print(
+		text,
+		x,
+		y+1,
+		backcol
+	)
+	print(
+		text,
+		x,
+		y-1,
+		backcol
+	)
+	print(
+		text,
+		x,
+		y,
+		maincol
+	)
+end
+
 function _draw()
   local cam_x = 0
   local cam_y = 0
@@ -2116,94 +2176,39 @@ function _draw()
   -----------------------
   -- tutorial
   if tut_displaying then
-  	tut_t += 1
-  	if tut_t > tut_intro_starttime then
-    -- draw tutorial prompt
-    local prompt_i
-    local use_success_prompt
-     = false
-    if tut_t < 
-    tut_intro_endtime 
-    and tut_current_step == 1
-    then
-      prompt_i = 1
-    -- success prompt
-    elseif
-     tut_success_t > 0 or
-     post_tut_msg_t > 0
-    then
-    	tut_success_t -= 1
-     post_tut_msg_t -= 1
-    	use_success_prompt = true
-    	if tut_complete then
-      if timer_ready then
-       prompt_i = 3
-      else
-       prompt_i = 2
-      end
-    	 -- end the tutorial
-    	 -- display
-     	-- after the end of tue
-     	-- tutorial complete
-     	-- message
-      if
-       tut_success_t <= 0 and
-       post_tut_msg_t <= 0
-       then
-     		tut_displaying = false
-     	end
-    	else
-    	 prompt_i = 1
-    	end
-    else
-    -- regular prompt
-      prompt_i = 
-      tut_current_step+1
-    end
-    local prompt
-    if use_success_prompt then
-     prompt =
-      tut_success_prompts[prompt_i]
-    else
-     prompt = 
-      tut_prompts[prompt_i]
-    end
-    local backcol = 2
-    for i=1, #prompt do
-      local text = prompt[i]
-     	print(
-       text,
-       8*8 - (#text*4)/2+1,
-      8+8*(i-1),
-      backcol
-     )
-     print(
-       text,
-       8*8 - (#text*4)/2-1,
-      8+8*(i-1),
-      backcol
-     )
-     print(
-       text,
-       8*8 - (#text*4)/2,
-      8+8*(i-1)-1,
-      backcol
-     )
-     print(
-       text,
-       8*8 - (#text*4)/2,
-      8+8*(i-1)+1,
-      backcol
-     )
-     -----
-     print(
-       text,
-       8*8 - (#text*4)/2,
-      8+8*(i-1),
-      7
-     )
-    end
-   end
+	if tut_disp_type != "none" then
+		local prompt
+		if tut_disp_type == "intro" then
+			prompt =
+			tut_prompts[1]
+		elseif tut_disp_type == "success"
+		then
+			local prompt_i = 1
+			if tut_complete then
+				if timer_ready then
+					prompt_i = 3
+				else
+					prompt_i = 2
+				end
+			end
+			prompt =
+			tut_success_prompts[prompt_i]
+		elseif tut_disp_type == "prompt"
+		then
+			prompt = tut_prompts[
+			tut_current_step+1]
+		end
+		for i=1, #prompt do
+			local text = prompt[i]
+			super_print(
+				text,
+				8*8 - (#text*4)/2,
+				8+8*(i-1)
+			)
+		end
+	end
+  	
+	--- end if tut_displaying
   elseif lyric_t_offset() ~= nil then
     -- lyric cursor
    local lc = t-lyric_t_offset() -- verse 1 only
@@ -2270,6 +2275,67 @@ function _draw()
 end
 
 function _update60()
+
+  if tut_displaying then
+	
+	tut_t += 1
+	
+	if tut_t > tut_intro_starttime then
+	
+		if tut_t < tut_intro_endtime and
+		tut_current_step == 1 then
+			tut_disp_type = "intro"
+			tut_should_pause = true
+		elseif tut_success_t > 0 or
+		post_tut_msg_t > 0 then
+			tut_disp_type = "success"
+			tut_success_t -= 1
+			post_tut_msg_t -= 1
+			
+			if tut_should_pause then
+				tutorial_pause()
+			end
+			
+			if tut_complete then
+				-- end the tutorial
+				-- display
+				-- after the end of tue
+				-- tutorial complete
+				-- message
+				if (tut_success_t <= 0 and
+				post_tut_msg_t <= 0)
+				then
+					tut_displaying = false
+				end
+			end
+			
+		else
+			tut_disp_type = "prompt"
+			if tut_should_pause then
+				tutorial_pause()
+			end
+		end
+		
+	else
+		tut_disp_type = "none"
+		
+	end
+
+  end
+  --------------------
+  --- tutorial pause
+  if tut_paused then
+   tut_pause_elapsed += 1
+   if tut_pause_elapsed >=
+   tut_pause_duration then
+	tut_pause_elapsed = tut_pause_duration
+	if btn(keys.a) or btn(keys.b) then
+	 tutorial_unpause()
+	end
+   end
+   return
+  end
+  ---------------
   if (
    start_countdown and
    not game_started
