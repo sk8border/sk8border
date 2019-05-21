@@ -1,0 +1,22 @@
+{
+  "title": "Sk8Border",
+  "description": "Lay that Wall to Waste!",
+  "curr_lang": "ENGLISH",
+  "other_lang": "FRANÇAIS",
+  "about_sk8border": "Sk8Border was created in Montréal in March/April 2018 for the <a href=\"https://itch.io/jam/antifa-game-jam\">Anti-Fascist Game Jam</a> as a collaborative effort by Leif Halldór Ásgeirsson, <a href=\"http://uncanard.com\">Marc-André Toupin</a> and <a href=\"https://benwiley.org\">Ben Wiley</a>. It is built with <a href=\"https://www.lexaloffle.com/pico-8.php\">PICO-8</a>.",
+  "works_on_mobile": "This game runs in your web browser - even on your phone!",
+  "start_game": "Let's go!",
+  "reset": "Reset",
+  "pause": "Pause",
+  "fullscreen": "Fullscreen",
+  "sound": "Sound",
+  "carts": "Carts",
+  "download": "Download",
+  "binaries_from": "Binaries for Linux, Windows and Mac are available from",
+  "wow_open_source": "This game is open source. Woah!",
+  "github_repo": "GITHUB REPOSITORY",
+  "or_load_in_pico8": "Or load this cart in PICO-8!",
+  "fonts_on_page": "Fonts on this page",
+  "softsquare": "<a href=\"http://pixel-fonts.com/\">Softsquare</a> font by <a href=\"https://twitter.com/chevyray\">Chevy Ray Johnston</a>",
+  "pico8_font": "Thanks to <a href=\"https://www.lexaloffle.com/bbs/?tid=3760\">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href=\"https://twitter.com/lexaloffle\">Zep</a> for developing it!"
+}

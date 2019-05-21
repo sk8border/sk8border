@@ -1,6 +1,8 @@
 *.html
 *.js
+!web_build.js
 *.png
 *.jpg
 *.wav
 *.gal
+node_modules
