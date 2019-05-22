@@ -2622,6 +2622,7 @@ function _update60()
     go_colindex = 15
     sfx(-1)
     t_at_lyric_start = nil
+    removed_pattern_offset = 0
     --music(-1)
    end
 
