@@ -600,10 +600,12 @@ function tutorial_pause()
 	tut_paused = true
 	tut_pause_elapsed = 0
 	tut_should_pause = false
+ distort_sound(true)
 end
 
 function tutorial_unpause()
 	tut_paused = false
+ distort_sound(false)
 end
 
 -- old way for backup
@@ -740,6 +742,19 @@ function lyric_t_offset()
   return nil
  end
  return t_at_lyric_start - lyric_early
+end
+
+byte_reverb = 0x5f41
+byte_lowpass = 0x5f43
+function distort_sound(on)
+ -- all 4 sound channels
+ local byte_value = 0b1111
+ if on == false then
+  -- all channels off
+  byte_value = 0
+ end
+ poke(byte_reverb, byte_value)
+ poke(byte_lowpass, byte_value)
 end
 
 function make_player(x,y)
