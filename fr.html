@@ -1,13 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Sk8Border</title>
-  <meta name="description" content="Lay that Wall to Waste!">
+  <meta name="description" content="Fracassez la frontière!">
   <meta property="og:title" content="Sk8Border" />
-  <meta property="og:description" content="Lay that Wall to Waste!">
+  <meta property="og:description" content="Fracassez la frontière!">
   <meta property="og:url" content="https://sk8border.github.io/sk8border/" />
   <meta property="og:image" content="https://sk8border.github.io/sk8border/sk8border_logo.png" />
 
@@ -270,53 +270,44 @@
     <div class="status"></div>
   </div>
   <center class="main">
-	<img src="./img/preview_gif_compressed.gif">
-	<h3 id="lang">====================<br/><a href="./">ENGLISH</a> - [FRANÇAIS]<br>====================<h3>
+  <img src="./img/preview_gif_compressed.gif">
+  <h3 id="lang">====================<br/>[FRANÇAIS] - <a href="index.html">ENGLISH</a><br>====================<h3>
     <h1 id="slogan">Fracassez la frontière!</h1>
-    <p>Sk8Border a été créé à Montréal en mars/avril 2018 pour le <a href="https://itch.io/jam/antifa-game-jam">Game Jam Antifasciste</a>, par Leif Halldór Ásgeirsson, <a href="http://uncanard.com">Marc-André Toupin</a> et <a href="https://twitter.com/Benwiley4000">Ben Wiley</a>. Il est fait avec <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
+    <p>Sk8Border a été créé à Montréal en mars/avril 2018 pour le <a href="https://itch.io/jam/antifa-game-jam">Game Jam Antifasciste</a>, par Leif Halldór Ásgeirsson, <a href="http://uncanard.com">Marc-André Toupin</a> et <a href="https://benwiley.org">Ben Wiley</a>. Il est fait avec <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
     <p>Ce jeu fonctionne dans le navigateur - même sur les téléphones!</p>
-    <h2 id="controls">Comment jouer</h2>
-    <ul>
-      <li>Tenez <span class="pico-8">Î</span> (Z) ou <span class="pico-8">×</span> (X) lorsque vous êtes au sol pour vous accroupir</li>
-      <li>Relâchez à la fois <span class="pico-8">Î</span> and <span class="pico-8">×</span> pour faire un ollie (sauter)</li>
-      <li>Tenez <span class="pico-8">Î</span> lorsqu'au-dessus du mur pour faire un 5-0 (tail) grind</li>
-      <li>Tenez <span class="pico-8">×</span> pour faire un nosegrind</li>
-      <li>Obtenez plus de points en alternant les grinds</li>
-      <li>Enchaînez les grinds sur le mur pour remplir la jauge de puissance... et faire voler ce mur en éclats!</li>
-    </ul>
-	<button id="play_game">Allons-y!</button>
+    <button id="play_game">Allons-y!</button>
     <div class="desk_game">
       <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
       <div class="desk_controls">
         <div class=pico8_el onclick="Module.pico8Reset();">
-          <img class="reset" alt="Reset" width=12 height=12/> Reset
+          <img class="reset" width=12 height=12/> Reset
         </div>
 
         <div class=pico8_el onclick="Module.pico8TogglePaused();">
-          <img class="pause" alt="Pause" width=12 height=12/> Pause
+          <img class="pause" width=12 height=12/> Pause
         </div>
 
         <div class=pico8_el onclick="Module.requestFullScreen(true, false);">
-          <img class="fullscreen" alt="Fullscreen" width=12 height=12/> Fullscreen
+          <img class="fullscreen" width=12 height=12/> Fullscreen
         </div>
 
         <div class=pico8_el onclick="Module.pico8ToggleSound();">
-          <img class="sound" alt="Toggle Sound" width=12 height=12/> Sound
-		  </div>
+          <img class="sound" width=12 height=12/> Sound
+        </div>
 
         <div class=pico8_el>
           <a target="_new" href="http://www.lexaloffle.com/bbs/?cat=7&sub=2">
-            <img class="carts" alt="More Carts" width=12 height=12/> Carts
+            <img class="carts" width=12 height=12/> Carts
           </a>
         </div>
       </div>
     </div>
-	<h3 id="separator">==============================</h3>
-	<h2>Télécharger</h2>
-	<p>Les fichiers exécutables pour Linux, Windows et Mac sont disponibles sur <a href="" id="itch">ITCH.IO</a></p>
-	<h2 id="opensource">Ce jeu est open source. Wow!</h2>
-    <p><a href="https://github.com/sk8border/sk8border/">GITHUB</a></p>
-	<p><small>Ou chargez cette cartouche dans PICO-8!</small></br></br><img src = "./sk8border.p8.png"></img></p>
+  <h3 id="separator">==============================</h3>
+  <h2>Télécharger</h2>
+  <p>Les fichiers exécutables pour Linux, Windows et Mac sont disponibles sur <a href="" id="itch">ITCH.IO</a></p>
+  <h2 id="opensource">Ce jeu est open source. Wow!</h2>
+  <p><a href="https://github.com/sk8border/sk8border/">GITHUB</a></p>
+  <p><small>Ou chargez cette cartouche dans PICO-8!</small></br></br><img src = "./sk8border.p8.png"></img></p>
     <h2 id="fonts">Polices de caractères sur cette page</h2>
     <ul>
       <li><a href="http://pixel-fonts.com/">Softsquare</a> par <a href="https://twitter.com/chevyray">Chevy Ray Johnston</a></li>
