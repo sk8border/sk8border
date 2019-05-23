@@ -7,39 +7,168 @@ cartdata('sk8border')
 
 debug = false
 
+-- i18n
+lang = "en"
+function i18n(key)
+ if lang == "fr" then
+  return i18n_fr[key]
+ else
+  return i18n_en[key]
+ end
+end
+i18n_en = {
+ lyric_1="♪we're gonna take♪",
+ lyric_2="♪down that wall♪",
+ lyric_3="♪break it!♪",
+ lyric_4="♪we will tear♪",
+ lyric_5="♪down that wall♪",
+ lyric_6="♪that wall is comin down♪",
+ lyric_7="*interlude harmonique*",
+ tut_prompt_start={
+  "let's learn how to",
+  "play sk8border!"
+ },
+ tut_prompt_jump={
+  "hold 🅾️ (z) or ❎ (x)",
+  "to crouch",
+  "...and release to jump!"
+ },
+ tut_prompt_grind={
+  "hold 🅾️ (z) or ❎ (x)",
+  "while jumping to land",
+  "and grind on a wall."
+ },
+ tut_prompt_wall_up={
+  "release to jump off the wall,",
+  "then land on a higher",
+  "wall segment."
+ },
+ tut_prompt_wall_down={
+  "continue holding at the",
+  "end of a high wall to land",
+  "on the wall below it."
+ },
+ tut_prompt_grind_switch={
+  "alternate between",
+  "a nosegrind with 🅾️ (z)",
+  "and a 5-0 with ❎ (x) to fill",
+  "your power meter faster!"
+ },
+ tut_prompt_destroy={
+  "now your final challenge:",
+  "grind long enough to knock",
+  "down that wall!"
+ },
+ tut_prompt_good={
+  "good!"
+ },
+ tut_prompt_complete={
+  "tutorial complete!"
+ },
+ tut_prompt_go={
+  "let's go!"
+ },
+ bring_it_down="bring_it_down!",
+ score="score:",
+ hi_score="hi score:",
+ press_buttons="press 🅾️ (z) or ❎ (x)",
+ wreck_that_wall="let's wreck that wall!",
+ tut_press_resume="(press to resume)"
+}
+
+i18n_fr = {
+ lyric_1="♪աҽ'ɾҽ �▒�✽ղղ�✽ է�✽ҟҽ♪",
+ lyric_2="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
+ lyric_3="♪�♪ɾҽ�✽ҟ ìէ!♪",
+ lyric_4="♪աҽ աì�█�█ էҽ�✽ɾ♪",
+ lyric_5="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
+ lyric_6="♪էհ�✽է ա�✽�█�█ ì�🐱 ç�✽�♪ìղ ժ�✽աղ♪",
+ lyric_7="*ìղէҽɾ�█մժҽ հ�✽ɾ�♪�✽ղìզմҽ*",
+ tut_prompt_start={
+  "�█ҽէ'�🐱 �█ҽ�✽ɾղ հ�✽ա է�✽",
+  "�░�█�✽վ �🐱ҟ���♪�✽ɾժҽɾ!"
+ },
+ tut_prompt_jump={
+  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
+  "է�✽ çɾ�✽մçհ",
+  "...�✽ղժ ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░!"
+ },
+ tut_prompt_grind={
+  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
+  "ահì�█ҽ ʝմ�♪�░ìղ�▒ է�✽ �█�✽ղժ",
+  "�✽ղժ �▒ɾìղժ �✽ղ �✽ ա�✽�█�█."
+ },
+ tut_prompt_wall_up={
+  "ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░ �✽�★�★ էհҽ ա�✽�█�█,",
+  "էհҽղ �█�✽ղժ �✽ղ �✽ հì�▒հҽɾ",
+  "ա�✽�█�█ �🐱ҽ�▒�♪ҽղէ."
+ },
+ tut_prompt_wall_down={
+  "ç�✽ղէìղմҽ հ�✽�█ժìղ�▒ �✽է էհҽ",
+  "ҽղժ �✽�★ �✽ հì�▒հ ա�✽�█�█ է�✽ �█�✽ղժ",
+  "�✽ղ էհҽ ա�✽�█�█ �♪ҽ�█�✽ա ìէ."
+ },
+ tut_prompt_grind_switch={
+  "�✽�█էҽɾղ�✽էҽ �♪ҽէաҽҽղ",
+  "�✽ ղ�✽�🐱ҽ�▒ɾìղժ աìէհ 🅾️ {�█}",
+  "�✽ղժ �✽ Ƽ-�⌂▤ աìէհ ❎ {�❎} է�✽ �★ì�█�█",
+  "վ�✽մɾ �░�✽աҽɾ �♪ҽէҽɾ �★�✽�🐱էҽɾ!"
+ },
+ tut_prompt_destroy={
+  "ղ�✽ա վ�✽մɾ �★ìղ�✽�█ çհ�✽�█�█ҽղ�▒ҽ:",
+  "�▒ɾìղժ �█�✽ղ�▒ ҽղ�✽մ�▒հ է�✽ ҟղ�✽çҟ",
+  "ժ�✽աղ էհ�✽է ա�✽�█�█!"
+ },
+ tut_prompt_good={
+  "�▒�✽�✽ժ!"
+ },
+ tut_prompt_complete={
+  "էմէ�✽ɾì�✽�█ ç�✽�♪�░�█ҽէҽ!"
+ },
+ tut_prompt_go={
+  "�█ҽէ'�🐱 �▒�✽!"
+ },
+ bring_it_down="�♪ɾìղ�▒ ìէ ժ�✽աղ!",
+ score="�🐱ç�✽ɾҽ:",
+ hi_score="հì �🐱ç�✽ɾҽ:",
+ press_buttons="�░ɾҽ�🐱�🐱 🅾️ {�█} �✽ɾ ❎ {�❎}",
+ wreck_that_wall="�█ҽէ'�🐱 աɾҽçҟ էհ�✽է ա�✽�█�█!",
+ tut_press_resume="Appuie pour continuer"
+}
+
 -- constants
 tpb=16 // ticks per beat
 lyric_early = 8 // early display ticks
 v1_recur = {0, 32*tpb}
 lyrics = {
- {"♪we're gonna take♪",
+ {i18n("lyric_1"),
   -- span of time to display
   {0*tpb, 4*tpb},
   -- list of time offsets for
   -- recurring display
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_2"),
   {4*tpb, 7*tpb},
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_2"),
   {8*tpb, 11*tpb},
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_2"),
   {12*tpb, 14.5*tpb},
   v1_recur},
- {"♪break it!♪",
+ {i18n("lyric_3"),
   {14.5*tpb, 17*tpb},
   v1_recur},
- {"♪we will tear♪",
+ {i18n("lyric_4"),
   {17*tpb, 20*tpb},
   v1_recur},
- {"♪down that wall♪",
+ {i18n("lyric_5"),
   {20*tpb, 24*tpb},
   v1_recur},
- {"♪that wall is comin down♪",
+ {i18n("lyric_6"),
   {24*tpb, 28*tpb},
   v1_recur},
- {"*interlude harmonique*",
+ {i18n("lyric_7"),
   {64*tpb, 80*tpb},
   {0}},
 }
@@ -247,6 +376,8 @@ wall_width_weights = {
   },
 }
 
+current_combo = ""
+
 -- for wall width progression
 -- in seconds
 -- (duration of each set
@@ -292,10 +423,13 @@ t_loop_duration = 1800
 t_loop_end = 32767
 t_loop_start = t_loop_end - t_loop_duration
 -- in frames
+tut_pause_delay_short = 20
+tut_pause_delay_normal = 80
+tut_pause_duration = 60
 tut_success_duration = 60
 tut_complete_duration = 120
 post_tut_msg_duration = 60
-tut_intro_starttime = 30
+tut_intro_starttime = 90
 tut_intro_endtime =
  tut_intro_starttime + 120
 -- end constants
@@ -317,9 +451,12 @@ start_countdown = nil
 num_jumps = 0
 prev_grind_y = -1
 p_falling = false
+nonstop_t = -1
 
 -- for tutorial
 tut_t = 0
+tut_a_up = false
+tut_b_up = false
 tut_running = false
 tut_displaying = false
 tut_complete = false
@@ -327,10 +464,21 @@ tut_success_t = 0
 post_tut_msg_t = 0
 tut_theme_triggers_done = {}
 removed_pattern_offset = 0
---if dget(1) then
-  --tut_complete = true
---end
+if dget(1) == 1 then
+  tut_complete = true
+end
+
+tut_disp_type = "none"
+-- time till delayed pause
+tut_pause_delay = 0
+-- elapsed time of current pause
+tut_pause_elapsed = 0
+-- min time of tutorial pauses
+tut_paused = false
+tut_can_resume = false
+tut_should_pause = false
 tut_current_step = 1
+tut_highest_success = 0
 tut_successes = {false,false,
 false,false,false,false}
 tut_steps = {
@@ -348,53 +496,19 @@ tut_theme_triggers={
  tut_steps.destroy
 }
 tut_prompts = {
-  {
-  "let's learn how to",
-  "play sk8border!"
-  },
-  {
-  "hold 🅾️ (z) or ❎ (x)",
-  "to crouch",
-  "...and release to jump!"
-  },
-  {
-  "hold 🅾️ (z) or ❎ (x)",
-  "while jumping to land",
-  "and grind on a wall."
-  },
-  {
-    "release to jump off the wall,",
-    "then land on a higher",
-    "wall segment."
-  },
-  { 
-    "continue holding at the",
-    "end of a high wall to land",
-    "on the wall below it."
-  },
-  { 
-    "alternate between",
-    "a nosegrind with 🅾️ (z)",
-    "and a 5-0 with ❎ (x) to fill",
-    "your power meter faster!"
-  },
-  { 
-    "now your final challenge:",
-    "grind long enough to knock",
-    "down that wall!"
-  }
+ i18n("tut_prompt_start"),
+ i18n("tut_prompt_jump"),
+ i18n("tut_prompt_grind"),
+ i18n("tut_prompt_wall_up"),
+ i18n("tut_prompt_wall_down"),
+ i18n("tut_prompt_grind_switch"),
+ i18n("tut_prompt_destroy")
 }
 
 tut_success_prompts = {
-	{ 
-	 "good!"
- },
- {
- 	"tutorial complete!"
- },
- {
-  "let's go!"
- }
+ i18n("tut_prompt_good"),
+ i18n("tut_prompt_complete"),
+ i18n("tut_prompt_go")
 }
 
 timer_ready = tut_complete
@@ -427,6 +541,9 @@ function tutorial_start()
   tut_displaying = true
   tut_current_step = 1
   tut_t = 0
+  tut_highest_success = 0
+  tut_pause_delay = 0
+  tut_pause_elapsed = 0
   local le = #tut_successes
   for i=1, le do
     tut_successes[i] = false
@@ -437,77 +554,102 @@ function tutorial_achieve(step)
   if tut_complete then
    return
   end
+  
+  -- skip wall down step
+  if step == 4 then
+	return
+  end
+  
   local prev_achieved =
    tut_successes[step]
-  if step >= tut_current_step
-  and not prev_achieved then
-   tut_successes[step]=true
-   tut_success_t =
-    tut_success_duration
-   to_break = 0
-   for s in all(
-    tut_theme_triggers
-   ) do
-    if (
-     (
-      not
-      tut_theme_triggers_done[s]
-     )
-     and step >= s
-    ) then
-     tut_theme_triggers_done[s]
-      = true
-     to_break += 1
-    end
-   end
-   break_music_loop(to_break)
+  
+  local just_achieved = false
+  
+  -- for the 'alternate step',
+  -- we can't do it in advance
+  if step == 5 then
+	just_achieved =
+	not prev_achieved and
+	step == tut_current_step
+  else
+	just_achieved =
+	step >= tut_current_step
+	and not prev_achieved
   end
-  tutorial_refresh()
-  if tut_complete then
-  	tut_success_t =
-  	tut_complete_duration
+  
+  if just_achieved
+  then
+	tut_successes[step]=true
+	to_break = 0
+	if step > tut_highest_success
+	then
+		tut_highest_success = step
+	end
+	if step == #tut_successes then
+		tut_complete = true
+		tut_running = false
+		tut_success_t =
+		tut_complete_duration
+		dset(1,1)
+	else
+		tut_success_t =
+		tut_success_duration
+		local pdelay =
+		tut_pause_delay_normal
+		-- shorter delay for the first
+		-- step (jump)
+		if step == 1 then
+			pdelay =
+			tut_pause_delay_short
+		end
+		tutorial_pause(pdelay)
+	end
+
+	for s in all(
+		tut_theme_triggers
+	) do
+		if (
+		(
+		not
+		tut_theme_triggers_done[s]
+		)
+		and step >= s
+		) then
+			tut_theme_triggers_done[s]
+			= true
+			to_break += 1
+		end
+	end
+	break_music_loop(to_break)
   end
+  
 end
 
 function tutorial_refresh()
-	-- find the highest
-	-- completed step
-	local highest = 0
-	local le = #tut_successes
-	for i=1, le do
-		if tut_successes[i] then
-			highest = i
-		end
-	end
-	if highest == le then
-		tut_complete = true
-		tut_running = false
-		dset(1,1)
-	else
-		tut_current_step = highest+1
+	tut_current_step = tut_highest_success + 1
+	-- skip wall down step
+	if tut_current_step == 4 then
+		tut_current_step += 1
 	end
 end
 
--- old way for backup
-function tutorial_refresh_old()
-  -- find the lowest
-  -- uncompleted step
-  local le = #tut_successes
-  local lowest = le + 1
-  for i=1, le do
-    if not tut_successes[i] then
-      lowest = i
-      break
-    end
-  end
-  if lowest == le + 1 then
-    tut_complete = true
-    tut_running = false
-    dset(1, 1)
-  else
-    tut_current_step = lowest
-  end
-end       
+function tutorial_pause(delay)
+	if delay then
+		tut_pause_delay = delay
+	else
+		tut_paused = true
+		tut_can_resume = false
+		tut_pause_elapsed = 0
+		--tut_should_pause = false
+		distort_sound(true)
+	end
+end
+
+function tutorial_unpause()
+	tut_paused = false
+	tut_can_resume = false
+	distort_sound(false)
+end
 
 function write_gpio(num,i,bits)
  local lastbit_i = 0x5f80+i+bits-1
@@ -580,19 +722,26 @@ function remove_music_section(
   - (pattern_end + 1 - pattern_start)
 end
 
+-- we were iterating until 64
+-- but we had an unsolved bug
+-- where we accidentally remove
+-- *all* the music.. by capping
+-- our search, we avoid that
+-- problem.
+max_loop_pattern = 28
 function break_music_loop(n)
  local curr_pattern = stat(24)
  local pattern = curr_pattern
  while n > 0 do
   while (
-   pattern < 64 and
+   pattern <= max_loop_pattern and
    not has_end_loop(
     pattern
    )
   ) do
    pattern += 1
   end
-  if pattern < 64 then
+  if pattern <= max_loop_pattern then
    if pattern > curr_pattern then
     remove_music_section(
      curr_pattern + 1,
@@ -622,6 +771,19 @@ function lyric_t_offset()
   return nil
  end
  return t_at_lyric_start - lyric_early
+end
+
+byte_reverb = 0x5f41
+byte_lowpass = 0x5f43
+function distort_sound(on)
+ -- all 4 sound channels
+ local byte_value = 0b1111
+ if on == false then
+  -- all channels off
+  byte_value = 0
+ end
+ poke(byte_reverb, byte_value)
+ poke(byte_lowpass, byte_value)
 end
 
 function make_player(x,y)
@@ -665,6 +827,7 @@ function check_for_destruction()
   --score += scoring.destruction_pts
   reset_gauge(gauge)
   tutorial_achieve(tut_steps.destroy)
+  current_combo=""
   return true
  end
  return false
@@ -683,6 +846,10 @@ function update_player(p)
   if not game_started then
    return
   end
+
+  controls_enabled =
+  not tut_running or
+  tut_t > tut_intro_starttime
 
   local sc = scoring
   local ps = p_state
@@ -714,7 +881,8 @@ function update_player(p)
 
   if ps == states.idle then
    if (
-    btn(keys.a) or btn(keys.b)
+    controls_enabled and
+	(btn(keys.a) or btn(keys.b))
    ) then
     p_state = states.crouch
    end
@@ -733,6 +901,7 @@ function update_player(p)
     floating_after_jump = false
     play_snd(-1) -- stop thrust
    elseif (
+	controls_enabled and
     get_first_grindable_x() < p.x+16
     and
     (btn(keys.a) or btn(keys.b)) 
@@ -750,7 +919,6 @@ function update_player(p)
       local grind_y =
        find_grind_y(walls[i])
       if player.y == grind_y then
-
        -- just entered
        -- grind state
        
@@ -826,6 +994,11 @@ function update_player(p)
         4,
         3
        )
+
+       local key_name =
+        p_last_grind=="a" and "🅾️" or "❎"
+       current_combo =
+        current_combo..key_name.."\150"
       end
       if current_wall == nil or
       walls[i].y < current_wall.y 
@@ -907,7 +1080,8 @@ function update_player(p)
    if land_t > 0 then
     p_state = states.idle
     if (
-    btn(keys.a) or btn(keys.b)
+	controls_enabled and
+    (btn(keys.a) or btn(keys.b))
    ) then
     p_state = states.crouch
    end
@@ -922,6 +1096,7 @@ function update_player(p)
    local py_before = p.y
    if apply_gravity(p) then
     if (
+	 controls_enabled and
      current_wall and
      (btn(keys.a) or btn(keys.b))
     ) then
@@ -954,6 +1129,7 @@ function update_player(p)
     land_t = land_time
     play_snd(snd.skate)
     prev_grind_y = 0
+    current_combo = ""
    end
   end
 
@@ -1008,11 +1184,13 @@ function compute_frame(p)
     frm = 3
    end
   elseif ps == states.jump then
-   if not floating_after_jump and
-   btn(keys.a) then
+   if (not floating_after_jump and
+   controls_enabled and
+   btn(keys.a)) then
     frm = 3
-   elseif not floating_after_jump and
-   btn(keys.b) then
+   elseif (not floating_after_jump and
+   controls_enabled and
+   btn(keys.b)) then
     frm = 5
    else
     frm = 4
@@ -1020,7 +1198,8 @@ function compute_frame(p)
   elseif ps == states.grind then
    -- todo: handle grind
   elseif ps == states.down then
-   if btn(keys.a) then
+   if controls_enabled and
+   btn(keys.a) then
     frm = 3
    else
     frm = 5
@@ -1214,7 +1393,8 @@ function update_spark(spark)
 end
 
 function draw_spark(spark)
- if not spark.exists then
+ if spark == nil or
+ not spark.exists then
   return
  end
  --pset(spark.x,spark.y,10)
@@ -1359,7 +1539,7 @@ function draw_gauge(gauge)
  end
  
  if gauge.maxed then
-  local text = "bring it down!"
+  local text = i18n("bring_it_down")
   print(
    text,
    x+gauge.width/2-
@@ -1686,7 +1866,9 @@ function update_wall(wall)
   end
   wall.anim_y = flr(rnd(range))
  elseif wall.breaking then
-  wall.anim_elapsed += 1
+  if not tut_paused then
+   wall.anim_elapsed += 1
+  end
   wall.anim_x = 
    rnd(6)-3
   wall.anim_y = 
@@ -1694,7 +1876,9 @@ function update_wall(wall)
    (wall.anim_elapsed/4)+
    rnd(2)-1
  end
- wall.x -= scroll_speed
+ if not tut_paused then
+  wall.x -= scroll_speed
+ end
  if wall.x+wall.w*8 < -16 then
   wall.exists = false
  end
@@ -1966,7 +2150,7 @@ function draw_title()
  
  -- score
  if not (last_score == nil) then
-  local text = 'score: '..
+  local text = i18n("score").." "..
    last_score
   print(
    text,
@@ -1982,7 +2166,7 @@ function draw_title()
    hi_score > 0
   )
  ) then
-  text = 'hi score: '..
+  text = i18n("hi_score").." "..
    hi_score
   print(
    text,
@@ -1993,14 +2177,14 @@ function draw_title()
  end
 
  local message =
-   'press 🅾️ (z) or ❎ (x)'
+   i18n("press_buttons")
  local blink = true
  if (
   start_countdown or
   game_started
  ) then
   message =
-   'let\'s wreck that wall!'
+   i18n("wreck_that_wall")
   blink = false
  end
  if (
@@ -2059,6 +2243,99 @@ function print_debug_messages()
   end
 end
 
+function super_print(text,x,y,maincol,backcol)
+	print(
+		text,
+		x+1,
+		y,
+		backcol
+	)
+	print(
+		text,
+		x-1,
+		y,
+		backcol
+	)
+	print(
+		text,
+		x,
+		y+1,
+		backcol
+	)
+	print(
+		text,
+		x,
+		y-1,
+		backcol
+	)
+	print(
+		text,
+		x,
+		y,
+		maincol
+	)
+end
+
+function combo_print()
+ local base_x = 0
+ local base_y = 0
+ if p_state == states.grind then
+  base_x = rnd(2)-1
+  base_y = rnd(2)-1
+ end
+ local j = 1
+ local y = base_y + 100
+ while j <= #current_combo do
+  local x = base_x + 4
+  local first = j
+  local last = j+15
+  if first > 1 then
+   x -= 8
+   first -= 1
+  end
+  local text = sub(
+   current_combo,first,last
+  )
+  local backcol = 7
+  print(
+   text,
+   x+1,
+   y,
+   backcol
+  )
+  print(
+   text,
+   x-1,
+   y,
+   backcol
+  )
+  print(
+   text,
+   x,
+   y+1,
+   backcol
+  )
+  print(
+   text,
+   x,
+   y-1,
+   backcol
+  )
+  for i=1,#text do
+   local char=sub(text,i,i)
+   local maincol = 1
+   if char == "🅾️" then
+    maincol = 8
+   elseif char == "❎" then
+    maincol = 13
+   end
+   print(char,x+(i-1)*8,y,maincol)
+  end
+  j += 16
+  y += 8
+ end
+end
+
 function _draw()
   local cam_x = 0
   local cam_y = 0
@@ -2106,104 +2383,82 @@ function _draw()
   drawscrollmap(fg_1_offset,0,14,-8,14*8,fg_scroll_width,3)
   rectfill(-8, 120, 136, 136, 0)
   drawskater(player)
-  
+
   -- sparks!
   for i=1, #sparks do
    draw_spark(sparks[i])
   end
- 
+
   -- tutorial or lyrics
   -----------------------
   -- tutorial
   if tut_displaying then
-  	tut_t += 1
-  	if tut_t > tut_intro_starttime then
-    -- draw tutorial prompt
-    local prompt_i
-    local use_success_prompt
-     = false
-    if tut_t < 
-    tut_intro_endtime 
-    and tut_current_step == 1
-    then
-      prompt_i = 1
-    -- success prompt
-    elseif
-     tut_success_t > 0 or
-     post_tut_msg_t > 0
-    then
-    	tut_success_t -= 1
-     post_tut_msg_t -= 1
-    	use_success_prompt = true
-    	if tut_complete then
-      if timer_ready then
-       prompt_i = 3
-      else
-       prompt_i = 2
-      end
-    	 -- end the tutorial
-    	 -- display
-     	-- after the end of tue
-     	-- tutorial complete
-     	-- message
-      if
-       tut_success_t <= 0 and
-       post_tut_msg_t <= 0
-       then
-     		tut_displaying = false
-     	end
-    	else
-    	 prompt_i = 1
-    	end
-    else
-    -- regular prompt
-      prompt_i = 
-      tut_current_step+1
-    end
-    local prompt
-    if use_success_prompt then
-     prompt =
-      tut_success_prompts[prompt_i]
-    else
-     prompt = 
-      tut_prompts[prompt_i]
-    end
-    local backcol = 2
-    for i=1, #prompt do
-      local text = prompt[i]
-     	print(
-       text,
-       8*8 - (#text*4)/2+1,
-      8+8*(i-1),
-      backcol
-     )
-     print(
-       text,
-       8*8 - (#text*4)/2-1,
-      8+8*(i-1),
-      backcol
-     )
-     print(
-       text,
-       8*8 - (#text*4)/2,
-      8+8*(i-1)-1,
-      backcol
-     )
-     print(
-       text,
-       8*8 - (#text*4)/2,
-      8+8*(i-1)+1,
-      backcol
-     )
-     -----
-     print(
-       text,
-       8*8 - (#text*4)/2,
-      8+8*(i-1),
-      7
-     )
-    end
-   end
+	if tut_disp_type != "none" then
+		local prompt
+		if tut_disp_type == "intro" then
+			prompt =
+			tut_prompts[1]
+		elseif tut_disp_type == "success"
+		then
+			local prompt_i = 1
+			if tut_complete then
+				if timer_ready then
+					prompt_i = 3
+				else
+					prompt_i = 2
+				end
+			end
+			prompt =
+			tut_success_prompts[prompt_i]
+		elseif tut_disp_type == "prompt"
+		then
+			prompt = tut_prompts[
+			tut_current_step+1]
+		end
+		---- draw box ?
+		if (tut_disp_type == "success"
+		and not tut_complete)
+		or ((tut_disp_type == "prompt" or
+		tut_disp_type == "intro") and
+		tut_paused) then
+			color(2)
+			local rx = 2+flr(rnd(2))
+			local ry = 2+flr(rnd(2))
+			rectfill(rx,ry,rx+123,
+			ry+#prompt*8+3+3)
+		end
+		---- draw text lines
+		local liney
+		for i=1, #prompt do
+			liney = 8+8*(i-1)
+			local text = prompt[i]
+			super_print(
+				text,
+				8*8 - (#text*4)/2,
+				liney,
+				7, -- main color
+				2 -- back color
+			)
+		end
+		---- draw press-to-
+		---- resume prompt
+		if (
+   tut_can_resume and
+   flr(nonstop_t/32)%2 == 0
+  ) then
+			local text =
+			i18n("tut_press_resume")
+			super_print(
+				text,
+				8*8 - (#text*4)/2,
+				liney + 16,
+				7, -- main color
+				2 -- back color
+			)
+		end
+	end
+  	
+	--- end if tut_displaying
   elseif lyric_t_offset() ~= nil then
     -- lyric cursor
    local lc = t-lyric_t_offset() -- verse 1 only
@@ -2258,6 +2513,8 @@ function _draw()
    print(text,12,121,timer_color)
   end
 
+  combo_print()
+
   if debug then
     print_debug_messages()
   end
@@ -2270,6 +2527,114 @@ function _draw()
 end
 
 function _update60()
+  nonstop_t += 1
+
+  -- sparks!!!
+  for i=1, #sparks do
+   update_spark(sparks[i])
+  end
+
+  for i=1, #walls do
+   update_wall(walls[i])
+  end
+
+  if tut_displaying then
+	
+	tut_t += 1
+	tutorial_refresh()
+	
+	if tut_t > tut_intro_starttime then
+		
+		if tut_t < tut_intro_endtime and
+		tut_current_step == 1 then
+			tut_disp_type = "intro"
+			tutorial_pause()
+		elseif tut_success_t > 0 or
+		post_tut_msg_t > 0 then
+			tut_disp_type = "success"
+			tut_success_t -= 1
+			post_tut_msg_t -= 1
+			if tut_complete then
+				-- end the tutorial
+				-- display
+				-- after the end of tue
+				-- tutorial complete
+				-- message
+				if (tut_success_t <= 0 and
+				post_tut_msg_t <= 0)
+				then
+					tut_displaying = false
+				end
+			end
+			
+		else
+			tut_disp_type = "prompt"
+		end
+		
+	else
+		tut_disp_type = "none"
+		
+	end
+
+  end
+  --------------------
+  --- tutorial paused
+  if tut_paused then
+	if tut_disp_type != "intro" then
+		local prev_e = 
+		tut_pause_elapsed
+		
+		tut_pause_elapsed += 1
+		
+		if tut_pause_elapsed >=
+		tut_pause_duration then
+			tut_pause_elapsed = 
+			tut_pause_duration
+			-- do this one time only
+			if prev_e < tut_pause_duration then
+				tut_a_up = false
+				tut_b_up = false
+				tut_can_resume = true
+			end
+			local unpause = false
+			-- a released then pressed?
+			if btn(keys.a) then
+				if tut_a_up then
+					unpause = true
+				end
+			else
+				tut_a_up = true
+			end
+			-- b released then pressed?
+			if btn(keys.b) then
+				if tut_b_up then
+					unpause = true
+				end
+			else
+				tut_b_up = true
+			end
+			--------
+			if unpause then
+				tutorial_unpause()
+			end
+		end
+	end
+	--- prevent anything else
+	--- from updating
+	return
+  ---------------
+  --- countdown to pause
+  elseif (
+   tut_complete == false and
+   tut_pause_delay > 0
+  ) then
+	tut_pause_delay -= 1
+	if tut_pause_delay <= 0 then
+		tut_pause_delay = 0
+		tutorial_pause()
+	end
+  end
+  ---------------
   if (
    start_countdown and
    not game_started
@@ -2320,11 +2685,6 @@ function _update60()
   then
    crack_all_walls(0.05,crack_level/100,(3*crack_level)/50)
   end
-  
-  -- sparks!!!
-  for i=1, #sparks do
-   update_spark(sparks[i])
-  end
 
   if p_state == states.grind then
    player.spark.exists = true
@@ -2353,10 +2713,6 @@ function _update60()
   end
 
   -- walls !!
-  
-  for i=1, #walls do
-   update_wall(walls[i])
-  end
   
   if lastwall == nil or
    lastwall.x+lastwall.w*8 <= 
@@ -2448,6 +2804,7 @@ function _update60()
     go_colindex = 15
     sfx(-1)
     t_at_lyric_start = nil
+    removed_pattern_offset = 0
     --music(-1)
    end
 

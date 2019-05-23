@@ -3,10 +3,4 @@
 *.jpg
 *.wav
 *.gal
-!sk8border_logo.png
-!sk8border.p8.png
-!sk8border_screenshot_1.gif
-!sk8border_screenshot_2.gif
-!sk8border_screenshot_3.gif
-!sk8border_screenshot_4.gif
 node_modules
