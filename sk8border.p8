@@ -422,7 +422,7 @@ t_loop_end = 32767
 t_loop_start = t_loop_end - t_loop_duration
 -- in frames
 tut_pause_delay_short = 20
-tut_pause_delay_normal = 60
+tut_pause_delay_normal = 80
 tut_pause_duration = 60
 tut_success_duration = 60
 tut_complete_duration = 120
@@ -1850,7 +1850,9 @@ function update_wall(wall)
   end
   wall.anim_y = flr(rnd(range))
  elseif wall.breaking then
-  wall.anim_elapsed += 1
+  if not tut_paused then
+   wall.anim_elapsed += 1
+  end
   wall.anim_x = 
    rnd(6)-3
   wall.anim_y = 
@@ -1858,7 +1860,9 @@ function update_wall(wall)
    (wall.anim_elapsed/4)+
    rnd(2)-1
  end
- wall.x -= scroll_speed
+ if not tut_paused then
+  wall.x -= scroll_speed
+ end
  if wall.x+wall.w*8 < -16 then
   wall.exists = false
  end
@@ -2303,12 +2307,12 @@ function _draw()
   drawscrollmap(fg_1_offset,0,14,-8,14*8,fg_scroll_width,3)
   rectfill(-8, 120, 136, 136, 0)
   drawskater(player)
-  
+
   -- sparks!
   for i=1, #sparks do
    draw_spark(sparks[i])
   end
- 
+
   -- tutorial or lyrics
   -----------------------
   -- tutorial
@@ -2443,6 +2447,15 @@ function _draw()
 end
 
 function _update60()
+
+  -- sparks!!!
+  for i=1, #sparks do
+   update_spark(sparks[i])
+  end
+
+  for i=1, #walls do
+   update_wall(walls[i])
+  end
 
   if tut_displaying then
 	
@@ -2589,11 +2602,6 @@ function _update60()
   then
    crack_all_walls(0.05,crack_level/100,(3*crack_level)/50)
   end
-  
-  -- sparks!!!
-  for i=1, #sparks do
-   update_spark(sparks[i])
-  end
 
   if p_state == states.grind then
    player.spark.exists = true
@@ -2622,10 +2630,6 @@ function _update60()
   end
 
   -- walls !!
-  
-  for i=1, #walls do
-   update_wall(walls[i])
-  end
   
   if lastwall == nil or
    lastwall.x+lastwall.w*8 <= 
