@@ -2461,7 +2461,10 @@ function _draw()
 		end
 		---- draw press-to-
 		---- resume prompt
-		if tut_can_resume then
+		if (
+   tut_can_resume and
+   flr(nonstop_t/32)%2 == 0
+  ) then
 			local text =
 			i18n.tut_press_resume
 			super_print(
@@ -2543,6 +2546,8 @@ function _draw()
 end
 
 function _update60()
+  nonstop_t += 1
+
   -- sparks!!!
   for i=1, #sparks do
    update_spark(sparks[i])
