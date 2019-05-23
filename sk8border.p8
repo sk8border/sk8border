@@ -720,19 +720,26 @@ function remove_music_section(
   - (pattern_end + 1 - pattern_start)
 end
 
+-- we were iterating until 64
+-- but we had an unsolved bug
+-- where we accidentally remove
+-- *all* the music.. by capping
+-- our search, we avoid that
+-- problem.
+max_loop_pattern = 28
 function break_music_loop(n)
  local curr_pattern = stat(24)
  local pattern = curr_pattern
  while n > 0 do
   while (
-   pattern < 64 and
+   pattern <= max_loop_pattern and
    not has_end_loop(
     pattern
    )
   ) do
    pattern += 1
   end
-  if pattern < 64 then
+  if pattern <= max_loop_pattern then
    if pattern > curr_pattern then
     remove_music_section(
      curr_pattern + 1,
@@ -2547,8 +2554,10 @@ function _update60()
 	return
   ---------------
   --- countdown to pause
-  elseif tut_pause_delay > 0
-  then
+  elseif (
+   tut_complete == false and
+   tut_pause_delay > 0
+  ) then
 	tut_pause_delay -= 1
 	if tut_pause_delay <= 0 then
 		tut_pause_delay = 0
