@@ -72,66 +72,68 @@ i18n_en = {
  score="score:",
  hi_score="hi score:",
  press_buttons="press 🅾️ (z) or ❎ (x)",
- wreck_that_wall="let's wreck that wall!"
+ wreck_that_wall="let's wreck that wall!",
+ tut_press_resume="(press to resume)"
 }
 
 i18n_fr = {
- lyric_1="♪աҽ'ɾҽ �▒�✽ղղ�✽ է�✽ҟҽ♪",
- lyric_2="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
- lyric_3="♪�♪ɾҽ�✽ҟ ìէ!♪",
- lyric_4="♪աҽ աì�█�█ էҽ�✽ɾ♪",
- lyric_5="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
- lyric_6="♪էհ�✽է ա�✽�█�█ ì�🐱 ç�✽�♪ìղ ժ�✽աղ♪",
- lyric_7="*ìղէҽɾ�█մժҽ հ�✽ɾ�♪�✽ղìզմҽ*",
+ lyric_1="♪աҽ'ɾҽ �▒�✽ղղ�✽ է�✽ҟҽ♪",
+ lyric_2="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
+ lyric_3="♪�♪ɾҽ�✽ҟ ìէ!♪",
+ lyric_4="♪աҽ աì�█�█ էҽ�✽ɾ♪",
+ lyric_5="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
+ lyric_6="♪էհ�✽է ա�✽�█�█ ì�🐱 ç�✽�♪ìղ ժ�✽աղ♪",
+ lyric_7="*ìղէҽɾ�█մժҽ հ�✽ɾ�♪�✽ղìզմҽ*",
  tut_prompt_start={
-  "�█ҽէ'�🐱 �█ҽ�✽ɾղ հ�✽ա է�✽",
-  "�░�█�✽վ �🐱ҟ���♪�✽ɾժҽɾ!"
+  "�█ҽէ'�🐱 �█ҽ�✽ɾղ հ�✽ա է�✽",
+  "�░�█�✽վ �🐱ҟ���♪�✽ɾժҽɾ!"
  },
  tut_prompt_jump={
-  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
-  "է�✽ çɾ�✽մçհ",
-  "...�✽ղժ ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░!"
+  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
+  "է�✽ çɾ�✽մçհ",
+  "...�✽ղժ ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░!"
  },
  tut_prompt_grind={
-  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
-  "ահì�█ҽ ʝմ�♪�░ìղ�▒ է�✽ �█�✽ղժ",
-  "�✽ղժ �▒ɾìղժ �✽ղ �✽ ա�✽�█�█."
+  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
+  "ահì�█ҽ ʝմ�♪�░ìղ�▒ է�✽ �█�✽ղժ",
+  "�✽ղժ �▒ɾìղժ �✽ղ �✽ ա�✽�█�█."
  },
  tut_prompt_wall_up={
-  "ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░ �✽�★�★ էհҽ ա�✽�█�█,",
-  "էհҽղ �█�✽ղժ �✽ղ �✽ հì�▒հҽɾ",
-  "ա�✽�█�█ �🐱ҽ�▒�♪ҽղէ."
+  "ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░ �✽�★�★ էհҽ ա�✽�█�█,",
+  "էհҽղ �█�✽ղժ �✽ղ �✽ հì�▒հҽɾ",
+  "ա�✽�█�█ �🐱ҽ�▒�♪ҽղէ."
  },
  tut_prompt_wall_down={
-  "ç�✽ղէìղմҽ հ�✽�█ժìղ�▒ �✽է էհҽ",
-  "ҽղժ �✽�★ �✽ հì�▒հ ա�✽�█�█ է�✽ �█�✽ղժ",
-  "�✽ղ էհҽ ա�✽�█�█ �♪ҽ�█�✽ա ìէ."
+  "ç�✽ղէìղմҽ հ�✽�█ժìղ�▒ �✽է էհҽ",
+  "ҽղժ �✽�★ �✽ հì�▒հ ա�✽�█�█ է�✽ �█�✽ղժ",
+  "�✽ղ էհҽ ա�✽�█�█ �♪ҽ�█�✽ա ìէ."
  },
  tut_prompt_grind_switch={
-  "�✽�█էҽɾղ�✽էҽ �♪ҽէաҽҽղ",
-  "�✽ ղ�✽�🐱ҽ�▒ɾìղժ աìէհ 🅾️ {�█}",
-  "�✽ղժ �✽ Ƽ-�⌂▤ աìէհ ❎ {�❎} է�✽ �★ì�█�█",
-  "վ�✽մɾ �░�✽աҽɾ �♪ҽէҽɾ �★�✽�🐱էҽɾ!"
+  "�✽�█էҽɾղ�✽էҽ �♪ҽէաҽҽղ",
+  "�✽ ղ�✽�🐱ҽ�▒ɾìղժ աìէհ 🅾️ {�█}",
+  "�✽ղժ �✽ Ƽ-�⌂▤ աìէհ ❎ {�❎} է�✽ �★ì�█�█",
+  "վ�✽մɾ �░�✽աҽɾ �♪ҽէҽɾ �★�✽�🐱էҽɾ!"
  },
  tut_prompt_destroy={
-  "ղ�✽ա վ�✽մɾ �★ìղ�✽�█ çհ�✽�█�█ҽղ�▒ҽ:",
-  "�▒ɾìղժ �█�✽ղ�▒ ҽղ�✽մ�▒հ է�✽ ҟղ�✽çҟ",
-  "ժ�✽աղ էհ�✽է ա�✽�█�█!"
+  "ղ�✽ա վ�✽մɾ �★ìղ�✽�█ çհ�✽�█�█ҽղ�▒ҽ:",
+  "�▒ɾìղժ �█�✽ղ�▒ ҽղ�✽մ�▒հ է�✽ ҟղ�✽çҟ",
+  "ժ�✽աղ էհ�✽է ա�✽�█�█!"
  },
  tut_prompt_good={
-  "�▒�✽�✽ժ!"
+  "�▒�✽�✽ժ!"
  },
  tut_prompt_complete={
-  "էմէ�✽ɾì�✽�█ ç�✽�♪�░�█ҽէҽ!"
+  "էմէ�✽ɾì�✽�█ ç�✽�♪�░�█ҽէҽ!"
  },
  tut_prompt_go={
-  "�█ҽէ'�🐱 �▒�✽!"
+  "�█ҽէ'�🐱 �▒�✽!"
  },
- bring_it_down="�♪ɾìղ�▒ ìէ ժ�✽աղ!",
- score="�🐱ç�✽ɾҽ:",
- hi_score="հì �🐱ç�✽ɾҽ:",
- press_buttons="�░ɾҽ�🐱�🐱 🅾️ {�█} �✽ɾ ❎ {�❎}",
- wreck_that_wall="�█ҽէ'�🐱 աɾҽçҟ էհ�✽է ա�✽�█�█!"
+ bring_it_down="�♪ɾìղ�▒ ìէ ժ�✽աղ!",
+ score="�🐱ç�✽ɾҽ:",
+ hi_score="հì �🐱ç�✽ɾҽ:",
+ press_buttons="�░ɾҽ�🐱�🐱 🅾️ {�█} �✽ɾ ❎ {�❎}",
+ wreck_that_wall="�█ҽէ'�🐱 աɾҽçҟ էհ�✽է ա�✽�█�█!",
+ tut_press_resume="Appuie pour continuer"
 }
 
 -- constants
@@ -421,7 +423,7 @@ t_loop_start = t_loop_end - t_loop_duration
 -- in frames
 tut_pause_delay_short = 20
 tut_pause_delay_normal = 60
-tut_pause_duration = 180
+tut_pause_duration = 60
 tut_success_duration = 60
 tut_complete_duration = 120
 post_tut_msg_duration = 60
@@ -450,6 +452,8 @@ p_falling = false
 
 -- for tutorial
 tut_t = 0
+tut_a_up = false
+tut_b_up = false
 tut_running = false
 tut_displaying = false
 tut_complete = false
@@ -468,6 +472,7 @@ tut_pause_delay = 0
 tut_pause_elapsed = 0
 -- min time of tutorial pauses
 tut_paused = false
+tut_can_resume = false
 tut_should_pause = false
 tut_current_step = 1
 tut_highest_success = 0
@@ -546,10 +551,17 @@ function tutorial_achieve(step)
   if tut_complete then
    return
   end
+  
+  -- skip wall down step
+  if step == 4 then
+	return
+  end
+  
   local prev_achieved =
    tut_successes[step]
   
   local just_achieved = false
+  
   -- for the 'alternate step',
   -- we can't do it in advance
   if step == 5 then
@@ -612,8 +624,8 @@ end
 
 function tutorial_refresh()
 	tut_current_step = tut_highest_success + 1
+	-- skip wall down step
 	if tut_current_step == 4 then
-		-- ignore the wall down step
 		tut_current_step += 1
 	end
 end
@@ -623,6 +635,7 @@ function tutorial_pause(delay)
 		tut_pause_delay = delay
 	else
 		tut_paused = true
+		tut_can_resume = false
 		tut_pause_elapsed = 0
 		--tut_should_pause = false
 		distort_sound(true)
@@ -631,7 +644,8 @@ end
 
 function tutorial_unpause()
 	tut_paused = false
- distort_sound(false)
+	tut_can_resume = false
+	distort_sound(false)
 end
 
 function write_gpio(num,i,bits)
@@ -2321,6 +2335,7 @@ function _draw()
 			prompt = tut_prompts[
 			tut_current_step+1]
 		end
+		---- draw box ?
 		if (tut_disp_type == "success"
 		and not tut_complete)
 		or ((tut_disp_type == "prompt" or
@@ -2329,14 +2344,32 @@ function _draw()
 			color(2)
 			local rx = 2+flr(rnd(2))
 			local ry = 2+flr(rnd(2))
-			rectfill(rx,ry,rx+123,ry+#prompt*8+3+3)
+			rectfill(rx,ry,rx+123,
+			ry+#prompt*8+3+3)
 		end
+		---- draw text lines
+		local liney
 		for i=1, #prompt do
+			liney = 8+8*(i-1)
 			local text = prompt[i]
 			super_print(
 				text,
 				8*8 - (#text*4)/2,
-				8+8*(i-1),
+				liney,
+				7, -- main color
+				2 -- back color
+			)
+		end
+		---- draw press-to-
+		---- resume prompt
+		if true then
+		elseif tut_can_resume then
+			local text =
+			i18n("tut_press_resume")
+			super_print(
+				text,
+				8*8 - (#text*4)/2,
+				liney + 16,
 				7, -- main color
 				2 -- back color
 			)
@@ -2451,21 +2484,52 @@ function _update60()
 
   end
   --------------------
-  --- tutorial pause
+  --- tutorial paused
   if tut_paused then
 	if tut_disp_type != "intro" then
-	   tut_pause_elapsed += 1
-	   if tut_pause_elapsed >=
-	   tut_pause_duration then
-		tut_pause_elapsed = tut_pause_duration
-		if btn(keys.a) or btn(keys.b) then
-		 tutorial_unpause()
+		local prev_e = 
+		tut_pause_elapsed
+		
+		tut_pause_elapsed += 1
+		
+		if tut_pause_elapsed >=
+		tut_pause_duration then
+			tut_pause_elapsed = 
+			tut_pause_duration
+			-- do this one time only
+			if prev_e < tut_pause_duration then
+				tut_a_up = false
+				tut_b_up = false
+				tut_can_resume = true
+			end
+			local unpause = false
+			-- a released then pressed?
+			if btn(keys.a) then
+				if tut_a_up then
+					unpause = true
+				end
+			else
+				tut_a_up = true
+			end
+			-- b released then pressed?
+			if btn(keys.b) then
+				if tut_b_up then
+					unpause = true
+				end
+			else
+				tut_b_up = true
+			end
+			--------
+			if unpause then
+				tutorial_unpause()
+			end
 		end
-	   end
 	end
-	 return
+	--- prevent anything else
+	--- from updating
+	return
   ---------------
-  --- delayed pause
+  --- countdown to pause
   elseif tut_pause_delay > 0
   then
 	tut_pause_delay -= 1
