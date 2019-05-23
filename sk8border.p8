@@ -738,14 +738,16 @@ function break_music_loop(n)
  local pattern = curr_pattern
  while n > 0 do
   while (
-   pattern <= max_loop_pattern and
+   pattern - removed_pattern_offset
+   <= max_loop_pattern and
    not has_end_loop(
     pattern
    )
   ) do
    pattern += 1
   end
-  if pattern <= max_loop_pattern then
+  if pattern - removed_pattern_offset
+   <= max_loop_pattern then
    if pattern > curr_pattern then
     remove_music_section(
      curr_pattern + 1,
