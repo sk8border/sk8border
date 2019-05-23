@@ -1239,10 +1239,23 @@ end
 
 function drawskater(p)
  if not p.framew then return end
+ local base_x = p.x
+ local base_y = p.y
+ if (
+  tut_paused and
+  (
+   p_state == states.jump or
+   p_state == states.down or
+   p_state == states.launch
+  )
+ ) then
+  base_x += rnd(2) - 1
+  base_y += rnd(2) - 1
+ end
  spr(
   p.frame,
-  p.x,
-  p.y - playerheight,
+  base_x,
+  base_y - playerheight,
   p.framew,
   p.frameh
  )
@@ -1258,8 +1271,8 @@ function drawskater(p)
    local frm = (flr(t/3)+i%2)%2
    spr(
     110+frm,
-    p.x+firstx+spacing*i,
-    p.y-2
+    base_x+firstx+spacing*i,
+    base_y-2
    )
   end
  end
