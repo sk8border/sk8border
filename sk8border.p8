@@ -462,9 +462,9 @@ tut_success_t = 0
 post_tut_msg_t = 0
 tut_theme_triggers_done = {}
 removed_pattern_offset = 0
---if dget(1) then
-  --tut_complete = true
---end
+if dget(1) == 1 then
+  tut_complete = true
+end
 
 tut_disp_type = "none"
 -- time till delayed pause
