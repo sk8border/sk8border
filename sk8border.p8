@@ -381,6 +381,8 @@ wall_width_weights = {
 }
 
 current_combo = ""
+combo_link_explosion_angles={}
+combo_link_offsets={}
 
 -- for wall width progression
 -- in seconds
@@ -456,6 +458,7 @@ num_jumps = 0
 prev_grind_y = -1
 p_falling = false
 nonstop_t = -1
+destruct_t = 0
 
 -- for tutorial
 tut_t = 0
@@ -833,7 +836,13 @@ function check_for_destruction()
   --score += scoring.destruction_pts
   reset_gauge(gauge)
   tutorial_achieve(tut_steps.destroy)
-  current_combo=""
+  combo_link_explosion_angles={}
+  combo_link_offsets={}
+  for i=1,#current_combo do
+   add(combo_link_explosion_angles,rnd(2))
+   add(combo_link_offsets,{0,0})
+  end
+  destruct_t = 120
   return true
  end
  return false
@@ -2303,11 +2312,26 @@ function combo_print()
   base_y = rnd(2)-1
  end
  local j = 1
- local y = base_y + 100
+ local _y_off = 0
+ local draw_x_y_list={}
+ for k=1,#current_combo do
+  local off={0,0}
+  if combo_link_offsets[k] then
+   off=combo_link_offsets[k]
+  end
+  add(draw_x_y_list,{
+   x=base_x+4+off[1],
+   y=base_y+100+off[2]
+  })
+ end
  while j <= #current_combo do
-  local x = base_x + 4
+  local x = draw_x_y_list[j].x
+  local y = draw_x_y_list[j].y + _y_off
   local first = j
   local last = j+15
+  if last > #current_combo then
+    last = #current_combo
+  end
   if first > 1 then
    x -= 8
    first -= 1
@@ -2316,31 +2340,40 @@ function combo_print()
    current_combo,first,last
   )
   local backcol = 7
-  print(
-   text,
-   x+1,
-   y,
-   backcol
-  )
-  print(
-   text,
-   x-1,
-   y,
-   backcol
-  )
-  print(
-   text,
-   x,
-   y+1,
-   backcol
-  )
-  print(
-   text,
-   x,
-   y-1,
-   backcol
-  )
+  if destruct_t == 0 then
+    print(
+     text,
+     x+1,
+     y,
+     backcol
+    )
+    print(
+     text,
+     x-1,
+     y,
+     backcol
+    )
+    print(
+     text,
+     x,
+     y+1,
+     backcol
+    )
+    print(
+     text,
+     x,
+     y-1,
+     backcol
+    )
+  end
   for i=1,#text do
+   local _x = x
+   local _y = y
+   local index = first+i-1
+   if combo_link_offsets[index] then
+    _x += combo_link_offsets[index][1]
+    _y += combo_link_offsets[index][2]
+   end
    local char=sub(text,i,i)
    local maincol = 1
    if char == "🅾️" then
@@ -2348,10 +2381,16 @@ function combo_print()
    elseif char == "❎" then
     maincol = 13
    end
-   print(char,x+(i-1)*8,y,maincol)
+   if combo_link_offsets[index] then
+    print(char,_x+(i-1)*8+1,_y,backcol)
+    print(char,_x+(i-1)*8-1,_y,backcol)
+    print(char,_x+(i-1)*8,_y+1,backcol)
+    print(char,_x+(i-1)*8,_y-1,backcol)
+   end
+   print(char,_x+(i-1)*8,_y,maincol)
   end
   j += 16
-  y += 8
+  _y_off += 8
  end
 end
 
@@ -2877,7 +2916,31 @@ function _update60()
   if display_score <
   score then
    display_score += 1
-  end 
+  end
+
+  -- disperse combo links
+  if destruct_t and destruct_t > 0 then
+   for i=1,#combo_link_offsets do
+    local angle=combo_link_explosion_angles[i]
+    -- normalize the vector
+    local w = cos(angle)
+    local h = sin(angle)
+    local len = sqrt(w*w+h*h)
+    if len == 0 then len = 1 end
+    w = w / len
+    h = h / len
+    combo_link_offsets[i][1] += w
+    combo_link_offsets[i][2] += h
+    local a_factor = (120-destruct_t) / 8
+    combo_link_offsets[i][2] += a_factor*a_factor - 1.5
+   end
+   destruct_t -= 1
+   if destruct_t == 0 then
+    combo_link_offsets={}
+    combo_link_explosion_angles={}
+    current_combo = ""
+   end
+  end
 end
 
 __gfx__
