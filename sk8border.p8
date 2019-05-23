@@ -376,6 +376,8 @@ wall_width_weights = {
   },
 }
 
+current_combo = ""
+
 -- for wall width progression
 -- in seconds
 -- (duration of each set
@@ -825,6 +827,7 @@ function check_for_destruction()
   --score += scoring.destruction_pts
   reset_gauge(gauge)
   tutorial_achieve(tut_steps.destroy)
+  current_combo=""
   return true
  end
  return false
@@ -916,7 +919,6 @@ function update_player(p)
       local grind_y =
        find_grind_y(walls[i])
       if player.y == grind_y then
-
        -- just entered
        -- grind state
        
@@ -992,6 +994,11 @@ function update_player(p)
         4,
         3
        )
+
+       local key_name =
+        p_last_grind=="a" and "🅾️" or "❎"
+       current_combo =
+        current_combo..key_name.."\150"
       end
       if current_wall == nil or
       walls[i].y < current_wall.y 
@@ -1122,6 +1129,7 @@ function update_player(p)
     land_t = land_time
     play_snd(snd.skate)
     prev_grind_y = 0
+    current_combo = ""
    end
   end
 
@@ -2268,6 +2276,66 @@ function super_print(text,x,y,maincol,backcol)
 	)
 end
 
+function combo_print()
+ local base_x = 0
+ local base_y = 0
+ if p_state == states.grind then
+  base_x = rnd(2)-1
+  base_y = rnd(2)-1
+ end
+ local j = 1
+ local y = base_y + 100
+ while j <= #current_combo do
+  local x = base_x + 4
+  local first = j
+  local last = j+15
+  if first > 1 then
+   x -= 8
+   first -= 1
+  end
+  local text = sub(
+   current_combo,first,last
+  )
+  local backcol = 7
+  print(
+   text,
+   x+1,
+   y,
+   backcol
+  )
+  print(
+   text,
+   x-1,
+   y,
+   backcol
+  )
+  print(
+   text,
+   x,
+   y+1,
+   backcol
+  )
+  print(
+   text,
+   x,
+   y-1,
+   backcol
+  )
+  for i=1,#text do
+   local char=sub(text,i,i)
+   local maincol = 1
+   if char == "🅾️" then
+    maincol = 8
+   elseif char == "❎" then
+    maincol = 13
+   end
+   print(char,x+(i-1)*8,y,maincol)
+  end
+  j += 16
+  y += 8
+ end
+end
+
 function _draw()
   local cam_x = 0
   local cam_y = 0
@@ -2444,6 +2512,8 @@ function _draw()
    text = tostr(timer)
    print(text,12,121,timer_color)
   end
+
+  combo_print()
 
   if debug then
     print_debug_messages()
