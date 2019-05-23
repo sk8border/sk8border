@@ -7,6 +7,11 @@ cartdata('sk8border')
 
 debug = false
 
+storage_keys = {
+ hi_score=0,
+ tutorial=2
+}
+
 -- i18n
 lang = "en"
 function i18n(key)
@@ -436,7 +441,7 @@ tut_intro_endtime =
 
 
 -- global variables
-hi_score = dget(0)
+hi_score = dget(storage_keys.hi_score)
 last_score = nil
 game_started = false
 game_over = false
@@ -464,7 +469,7 @@ tut_success_t = 0
 post_tut_msg_t = 0
 tut_theme_triggers_done = {}
 removed_pattern_offset = 0
-if dget(1) == 1 then
+if dget(storage_keys.tutorial) == 1 then
   tut_complete = true
 end
 
@@ -590,7 +595,7 @@ function tutorial_achieve(step)
 		tut_running = false
 		tut_success_t =
 		tut_complete_duration
-		dset(1,1)
+		dset(storage_keys.tutorial,1)
 	else
 		tut_success_t =
 		tut_success_duration
@@ -2795,7 +2800,7 @@ function _update60()
     if hi_score == nil or
     last_score > hi_score then
      hi_score = last_score
-     dset(0, hi_score)
+     dset(storage_keys.hi_score, hi_score)
     end
     game_over = true
     game_started = false
