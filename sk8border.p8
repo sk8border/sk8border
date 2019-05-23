@@ -76,62 +76,62 @@ i18n_en = {
 }
 
 i18n_fr = {
- lyric_1="♪աҽ'ɾҽ ցօղղą էąҟҽ♪",
- lyric_2="♪ժօաղ էհąէ աąӀӀ♪",
- lyric_3="♪ҍɾҽąҟ ìէ!♪",
- lyric_4="♪աҽ աìӀӀ էҽąɾ♪",
- lyric_5="♪ժօաղ էհąէ աąӀӀ♪",
- lyric_6="♪էհąէ աąӀӀ ìʂ çօʍìղ ժօաղ♪",
- lyric_7="*ìղէҽɾӀմժҽ հąɾʍօղìզմҽ*",
+ lyric_1="♪աҽ'ɾҽ �▒�✽ղղ�✽ է�✽ҟҽ♪",
+ lyric_2="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
+ lyric_3="♪�♪ɾҽ�✽ҟ ìէ!♪",
+ lyric_4="♪աҽ աì�█�█ էҽ�✽ɾ♪",
+ lyric_5="♪ժ�✽աղ էհ�✽է ա�✽�█�█♪",
+ lyric_6="♪էհ�✽է ա�✽�█�█ ì�🐱 ç�✽�♪ìղ ժ�✽աղ♪",
+ lyric_7="*ìղէҽɾ�█մժҽ հ�✽ɾ�♪�✽ղìզմҽ*",
  tut_prompt_start={
-  "Ӏҽէ'ʂ Ӏҽąɾղ հօա էօ",
-  "քӀąվ ʂҟ��ҍօɾժҽɾ!"
+  "�█ҽէ'�🐱 �█ҽ�✽ɾղ հ�✽ա է�✽",
+  "�░�█�✽վ �🐱ҟ���♪�✽ɾժҽɾ!"
  },
  tut_prompt_jump={
-  "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
-  "էօ çɾօմçհ",
-  "...ąղժ ɾҽӀҽąʂҽ էօ ʝմʍք!"
+  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
+  "է�✽ çɾ�✽մçհ",
+  "...�✽ղժ ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░!"
  },
  tut_prompt_grind={
-  "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
-  "ահìӀҽ ʝմʍքìղց էօ Ӏąղժ",
-  "ąղժ ցɾìղժ օղ ą աąӀӀ."
+  "հ�✽�█ժ 🅾️ {�█} �✽ɾ ❎ {�❎}",
+  "ահì�█ҽ ʝմ�♪�░ìղ�▒ է�✽ �█�✽ղժ",
+  "�✽ղժ �▒ɾìղժ �✽ղ �✽ ա�✽�█�█."
  },
  tut_prompt_wall_up={
-  "ɾҽӀҽąʂҽ էօ ʝմʍք օƒƒ էհҽ աąӀӀ,",
-  "էհҽղ Ӏąղժ օղ ą հìցհҽɾ",
-  "աąӀӀ ʂҽցʍҽղէ."
+  "ɾҽ�█ҽ�✽�🐱ҽ է�✽ ʝմ�♪�░ �✽�★�★ էհҽ ա�✽�█�█,",
+  "էհҽղ �█�✽ղժ �✽ղ �✽ հì�▒հҽɾ",
+  "ա�✽�█�█ �🐱ҽ�▒�♪ҽղէ."
  },
  tut_prompt_wall_down={
-  "çօղէìղմҽ հօӀժìղց ąէ էհҽ",
-  "ҽղժ օƒ ą հìցհ աąӀӀ էօ Ӏąղժ",
-  "օղ էհҽ աąӀӀ ҍҽӀօա ìէ."
+  "ç�✽ղէìղմҽ հ�✽�█ժìղ�▒ �✽է էհҽ",
+  "ҽղժ �✽�★ �✽ հì�▒հ ա�✽�█�█ է�✽ �█�✽ղժ",
+  "�✽ղ էհҽ ա�✽�█�█ �♪ҽ�█�✽ա ìէ."
  },
  tut_prompt_grind_switch={
-  "ąӀէҽɾղąէҽ ҍҽէաҽҽղ",
-  "ą ղօʂҽցɾìղժ աìէհ 🅾️ {Հ}",
-  "ąղժ ą Ƽ-⊘ աìէհ ❎ {×} էօ ƒìӀӀ",
-  "վօմɾ քօաҽɾ ʍҽէҽɾ ƒąʂէҽɾ!"
+  "�✽�█էҽɾղ�✽էҽ �♪ҽէաҽҽղ",
+  "�✽ ղ�✽�🐱ҽ�▒ɾìղժ աìէհ 🅾️ {�█}",
+  "�✽ղժ �✽ Ƽ-�⌂▤ աìէհ ❎ {�❎} է�✽ �★ì�█�█",
+  "վ�✽մɾ �░�✽աҽɾ �♪ҽէҽɾ �★�✽�🐱էҽɾ!"
  },
  tut_prompt_destroy={
-  "ղօա վօմɾ ƒìղąӀ çհąӀӀҽղցҽ:",
-  "ցɾìղժ Ӏօղց ҽղօմցհ էօ ҟղօçҟ",
-  "ժօաղ էհąէ աąӀӀ!"
+  "ղ�✽ա վ�✽մɾ �★ìղ�✽�█ çհ�✽�█�█ҽղ�▒ҽ:",
+  "�▒ɾìղժ �█�✽ղ�▒ ҽղ�✽մ�▒հ է�✽ ҟղ�✽çҟ",
+  "ժ�✽աղ էհ�✽է ա�✽�█�█!"
  },
  tut_prompt_good={
-  "ցօօժ!"
+  "�▒�✽�✽ժ!"
  },
  tut_prompt_complete={
-  "էմէօɾìąӀ çօʍքӀҽէҽ!"
+  "էմէ�✽ɾì�✽�█ ç�✽�♪�░�█ҽէҽ!"
  },
  tut_prompt_go={
-  "Ӏҽէ'ʂ ցօ!"
+  "�█ҽէ'�🐱 �▒�✽!"
  },
- bring_it_down="ҍɾìղց ìէ ժօաղ!",
- score="ʂçօɾҽ:",
- hi_score="հì ʂçօɾҽ:",
- press_buttons="քɾҽʂʂ 🅾️ {Հ} օɾ ❎ {×}",
- wreck_that_wall="Ӏҽէ'ʂ աɾҽçҟ էհąէ աąӀӀ!"
+ bring_it_down="�♪ɾìղ�▒ ìէ ժ�✽աղ!",
+ score="�🐱ç�✽ɾҽ:",
+ hi_score="հì �🐱ç�✽ɾҽ:",
+ press_buttons="�░ɾҽ�🐱�🐱 🅾️ {�█} �✽ɾ ❎ {�❎}",
+ wreck_that_wall="�█ҽէ'�🐱 աɾҽçҟ էհ�✽է ա�✽�█�█!"
 }
 
 -- constants
@@ -419,11 +419,13 @@ t_loop_duration = 1800
 t_loop_end = 32767
 t_loop_start = t_loop_end - t_loop_duration
 -- in frames
-tut_pause_duration = 60
+tut_pause_delay_short = 20
+tut_pause_delay_normal = 60
+tut_pause_duration = 180
 tut_success_duration = 60
 tut_complete_duration = 120
 post_tut_msg_duration = 60
-tut_intro_starttime = 30
+tut_intro_starttime = 90
 tut_intro_endtime =
  tut_intro_starttime + 120
 -- end constants
@@ -460,12 +462,15 @@ removed_pattern_offset = 0
 --end
 
 tut_disp_type = "none"
+-- time till delayed pause
+tut_pause_delay = 0
 -- elapsed time of current pause
 tut_pause_elapsed = 0
 -- min time of tutorial pauses
 tut_paused = false
 tut_should_pause = false
 tut_current_step = 1
+tut_highest_success = 0
 tut_successes = {false,false,
 false,false,false,false}
 tut_steps = {
@@ -528,6 +533,9 @@ function tutorial_start()
   tut_displaying = true
   tut_current_step = 1
   tut_t = 0
+  tut_highest_success = 0
+  tut_pause_delay = 0
+  tut_pause_elapsed = 0
   local le = #tut_successes
   for i=1, le do
     tut_successes[i] = false
@@ -540,94 +548,91 @@ function tutorial_achieve(step)
   end
   local prev_achieved =
    tut_successes[step]
-  if step >= tut_current_step
-  and not prev_achieved then
-   tut_successes[step]=true
-   tut_success_t =
-    tut_success_duration
-   to_break = 0
-   for s in all(
-    tut_theme_triggers
-   ) do
-    if (
-     (
-      not
-      tut_theme_triggers_done[s]
-     )
-     and step >= s
-    ) then
-     tut_theme_triggers_done[s]
-      = true
-     to_break += 1
-    end
-   end
-   break_music_loop(to_break)
+  
+  local just_achieved = false
+  -- for the 'alternate step',
+  -- we can't do it in advance
+  if step == 5 then
+	just_achieved =
+	not prev_achieved and
+	step == tut_current_step
+  else
+	just_achieved =
+	step >= tut_current_step
+	and not prev_achieved
   end
-  tutorial_refresh()
-  if tut_complete then
-  	tut_success_t =
-  	tut_complete_duration
+  
+  if just_achieved
+  then
+	tut_successes[step]=true
+	to_break = 0
+	if step > tut_highest_success
+	then
+		tut_highest_success = step
+	end
+	if step == #tut_successes then
+		tut_complete = true
+		tut_running = false
+		tut_success_t =
+		tut_complete_duration
+		dset(1,1)
+	else
+		tut_success_t =
+		tut_success_duration
+		local pdelay =
+		tut_pause_delay_normal
+		-- shorter delay for the first
+		-- step (jump)
+		if step == 1 then
+			pdelay =
+			tut_pause_delay_short
+		end
+		tutorial_pause(pdelay)
+	end
+
+	for s in all(
+		tut_theme_triggers
+	) do
+		if (
+		(
+		not
+		tut_theme_triggers_done[s]
+		)
+		and step >= s
+		) then
+			tut_theme_triggers_done[s]
+			= true
+			to_break += 1
+		end
+	end
+	break_music_loop(to_break)
   end
+  
 end
 
 function tutorial_refresh()
-	-- find the highest
-	-- completed step
-	local prev = tut_current_step
-	local highest = 0
-	local le = #tut_successes
-	for i=1, le do
-		if tut_successes[i] then
-			highest = i
-		end
-	end
-	if highest == le then
-		tut_should_pause = false
-		tut_complete = true
-		tut_running = false
-		dset(1,1)
-	else
-		tut_current_step = 
-		highest + 1
-		if tut_current_step >
-		prev then
-			tut_should_pause = true
-		end
+	tut_current_step = tut_highest_success + 1
+	if tut_current_step == 4 then
+		-- ignore the wall down step
+		tut_current_step += 1
 	end
 end
 
-function tutorial_pause()
-	tut_paused = true
-	tut_pause_elapsed = 0
-	tut_should_pause = false
- distort_sound(true)
+function tutorial_pause(delay)
+	if delay then
+		tut_pause_delay = delay
+	else
+		tut_paused = true
+		tut_pause_elapsed = 0
+		--tut_should_pause = false
+		distort_sound(true)
+	end
 end
 
 function tutorial_unpause()
 	tut_paused = false
  distort_sound(false)
 end
-
--- old way for backup
-function tutorial_refresh_old()
-  -- find the lowest
-  -- uncompleted step
-  local le = #tut_successes
-  local lowest = le + 1
-  for i=1, le do
-    if not tut_successes[i] then
-      lowest = i
-      break
-    end
-  end
-  if lowest == le + 1 then
-    tut_complete = true
-    tut_running = false
-    dset(1, 1)
-  else
-    tut_current_step = lowest
-  end
-end       
 
 function write_gpio(num,i,bits)
  local lastbit_i = 0x5f80+i+bits-1
@@ -817,6 +822,10 @@ function update_player(p)
    return
   end
 
+  controls_enabled =
+  not tut_running or
+  tut_t > tut_intro_starttime
+
   local sc = scoring
   local ps = p_state
 
@@ -847,7 +856,8 @@ function update_player(p)
 
   if ps == states.idle then
    if (
-    btn(keys.a) or btn(keys.b)
+    controls_enabled and
+	(btn(keys.a) or btn(keys.b))
    ) then
     p_state = states.crouch
    end
@@ -866,6 +876,7 @@ function update_player(p)
     floating_after_jump = false
     play_snd(-1) -- stop thrust
    elseif (
+	controls_enabled and
     get_first_grindable_x() < p.x+16
     and
     (btn(keys.a) or btn(keys.b)) 
@@ -1040,7 +1051,8 @@ function update_player(p)
    if land_t > 0 then
     p_state = states.idle
     if (
-    btn(keys.a) or btn(keys.b)
+	controls_enabled and
+    (btn(keys.a) or btn(keys.b))
    ) then
     p_state = states.crouch
    end
@@ -1055,6 +1067,7 @@ function update_player(p)
    local py_before = p.y
    if apply_gravity(p) then
     if (
+	 controls_enabled and
      current_wall and
      (btn(keys.a) or btn(keys.b))
     ) then
@@ -1141,11 +1154,13 @@ function compute_frame(p)
     frm = 3
    end
   elseif ps == states.jump then
-   if not floating_after_jump and
-   btn(keys.a) then
+   if (not floating_after_jump and
+   controls_enabled and
+   btn(keys.a)) then
     frm = 3
-   elseif not floating_after_jump and
-   btn(keys.b) then
+   elseif (not floating_after_jump and
+   controls_enabled and
+   btn(keys.b)) then
     frm = 5
    else
     frm = 4
@@ -1153,7 +1168,8 @@ function compute_frame(p)
   elseif ps == states.grind then
    -- todo: handle grind
   elseif ps == states.down then
-   if btn(keys.a) then
+   if controls_enabled and
+   btn(keys.a) then
     frm = 3
    else
     frm = 5
@@ -1347,7 +1363,8 @@ function update_spark(spark)
 end
 
 function draw_spark(spark)
- if not spark.exists then
+ if spark == nil or
+ not spark.exists then
   return
  end
  --pset(spark.x,spark.y,10)
@@ -2192,9 +2209,7 @@ function print_debug_messages()
   end
 end
 
-function super_print(text,x,y)
-	local maincol = 7
-	local backcol = 2
+function super_print(text,x,y,maincol,backcol)
 	print(
 		text,
 		x+1,
@@ -2306,12 +2321,24 @@ function _draw()
 			prompt = tut_prompts[
 			tut_current_step+1]
 		end
+		if (tut_disp_type == "success"
+		and not tut_complete)
+		or ((tut_disp_type == "prompt" or
+		tut_disp_type == "intro") and
+		tut_paused) then
+			color(2)
+			local rx = 2+flr(rnd(2))
+			local ry = 2+flr(rnd(2))
+			rectfill(rx,ry,rx+123,ry+#prompt*8+3+3)
+		end
 		for i=1, #prompt do
 			local text = prompt[i]
 			super_print(
 				text,
 				8*8 - (#text*4)/2,
-				8+8*(i-1)
+				8+8*(i-1),
+				7, -- main color
+				2 -- back color
 			)
 		end
 	end
@@ -2387,23 +2414,19 @@ function _update60()
   if tut_displaying then
 	
 	tut_t += 1
+	tutorial_refresh()
 	
 	if tut_t > tut_intro_starttime then
-	
+		
 		if tut_t < tut_intro_endtime and
 		tut_current_step == 1 then
 			tut_disp_type = "intro"
-			tut_should_pause = true
+			tutorial_pause()
 		elseif tut_success_t > 0 or
 		post_tut_msg_t > 0 then
 			tut_disp_type = "success"
 			tut_success_t -= 1
 			post_tut_msg_t -= 1
-			
-			if tut_should_pause then
-				tutorial_pause()
-			end
-			
 			if tut_complete then
 				-- end the tutorial
 				-- display
@@ -2419,9 +2442,6 @@ function _update60()
 			
 		else
 			tut_disp_type = "prompt"
-			if tut_should_pause then
-				tutorial_pause()
-			end
 		end
 		
 	else
@@ -2433,15 +2453,26 @@ function _update60()
   --------------------
   --- tutorial pause
   if tut_paused then
-   tut_pause_elapsed += 1
-   if tut_pause_elapsed >=
-   tut_pause_duration then
-	tut_pause_elapsed = tut_pause_duration
-	if btn(keys.a) or btn(keys.b) then
-	 tutorial_unpause()
+	if tut_disp_type != "intro" then
+	   tut_pause_elapsed += 1
+	   if tut_pause_elapsed >=
+	   tut_pause_duration then
+		tut_pause_elapsed = tut_pause_duration
+		if btn(keys.a) or btn(keys.b) then
+		 tutorial_unpause()
+		end
+	   end
 	end
-   end
-   return
+	 return
+  ---------------
+  --- delayed pause
+  elseif tut_pause_delay > 0
+  then
+	tut_pause_delay -= 1
+	if tut_pause_delay <= 0 then
+		tut_pause_delay = 0
+		tutorial_pause()
+	end
   end
   ---------------
   if (
