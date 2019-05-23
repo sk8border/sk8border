@@ -498,7 +498,7 @@ tut_steps = {
 }
 tut_theme_triggers={
  tut_steps.grind,
- tut_steps.wall_down,
+ tut_steps.wall_up,
  tut_steps.grind_switch,
  tut_steps.destroy
 }
