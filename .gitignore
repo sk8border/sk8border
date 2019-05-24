@@ -1,8 +1,9 @@
 *.html
 *.js
-!web_build.js
 *.png
 *.jpg
 *.wav
 *.gal
 node_modules
+!web_build.js
+!web_template/*

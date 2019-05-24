@@ -42,3 +42,23 @@ fs.writeFileSync(
     )
   )
 );
+
+fs.copyFileSync(
+  path.join(__dirname, 'web_template', 'sk8border_touch_ui.js'),
+  path.join(__dirname, 'sk8border_touch_ui.js')
+);
+
+fs.copyFileSync(
+  path.join(__dirname, 'web_template', 'sk8border_gpio_vibrations.js'),
+  path.join(__dirname, 'sk8border_gpio_vibrations.js')
+);
+
+fs.copyFileSync(
+  path.join(__dirname, 'web_template', 'ChevyRay - Softsquare FR.ttf'),
+  path.join(__dirname, 'ChevyRay - Softsquare FR.ttf')
+);
+
+fs.copyFileSync(
+  path.join(__dirname, 'web_template', 'sk8border_logo.png'),
+  path.join(__dirname, 'sk8border_logo.png')
+);
