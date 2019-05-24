@@ -251,6 +251,30 @@
     .playing #separator {
       margin-top: 3.6rem;
     }
+    .gif_wrapper {
+      position: relative;
+      display: inline-block;
+      display: inline-grid;
+    }
+    .gif_wrapper > .notice::after {
+      content: "This isn't the game (please scroll down!)";
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      font-style: italic;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 0.08s;
+    }
+    .gif_wrapper:hover > .notice::after {
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -270,7 +294,10 @@
     <div class="status"></div>
   </div>
   <center class="main">
-  <img src="./img/preview_gif_compressed.gif">
+  <div class="gif_wrapper">
+    <img src="./img/preview_gif_compressed.gif">
+    <div class="notice"></div>
+  </div>
   <h3 id="lang">====================<br/>[ENGLISH] - <a href="fr.html">FRANÇAIS</a><br>====================<h3>
     <h1 id="slogan">Lay that Wall to Waste!</h1>
     <p>Sk8Border was created in Montréal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a> as a collaborative effort by Leif Halldór Ásgeirsson, <a href="http://uncanard.com">Marc-André Toupin</a> and <a href="https://benwiley.org">Ben Wiley</a>. It is built with <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
@@ -350,262 +377,11 @@
     }
     document.addEventListener('keydown', onKeyDown_blocker, false);
   </script>
-  <script>
-    (function() {
-      var qS = document.querySelector.bind(document);
-
-      // meta functionality
-      // Using undocumented features in PICO-8 v0.1.11g
-      var using_touch = false;
-      function activateTouch() {
-        if (using_touch) return;
-        using_touch = true;
-        window.pico8_buttons = [0];
-        document.body.classList.add('using_touch');
-      }
-      var game_started = false;
-      var game_started_once = false;
-      function startGame() {
-        if (game_started) {
-          return;
-        }
-        document.body.classList.add('playing');
-        qS('#play_game').classList.add('hidden');
-        if (!game_started_once) {
-          // choose canvas
-          var namespace = using_touch ? '.touch_game' : '.desk_game';
-          Module.canvas = qS(namespace + ' canvas');
-          // display status messages
-          Module.setStatus = function(msg) {
-            qS('.touch_game .status').innerText = msg;
-          };
-          // run the game
-          Module.calledRun = false;
-          window.shouldRunNow = true;
-          run();
-        }
-        game_started = true;
-        game_started_once = true;
-        if (game_paused) {
-          toggleGamePaused();
-        }
-      }
-      // only used for touch mode
-      function stopGame() {
-        if (!game_started) {
-          return;
-        }
-        clearInterval(window.vibrateInterval);
-        if (navigator.vibrate) navigator.vibrate(0);
-        qS('#play_game').classList.remove('hidden');
-        if (!game_paused) {
-          toggleGamePaused();
-        }
-        document.body.classList.remove('playing');
-        game_started = false;
-      }
-      var audio_on = true;
-      function toggleAudio() {
-        if (!game_started) {
-          return;
-        }
-        audio_on = !audio_on;
-        // there's a setter checking mutations I guess!
-        window.codo_command = 3;
-      }
-      var game_paused = false;
-      function toggleGamePaused() {
-        if (!game_started) {
-          return;
-        }
-        game_paused = !game_paused;
-        if (game_paused) {
-          window.clearInterval(window.vibrateInterval);
-          if (navigator.vibrate) navigator.vibrate(0);
-        }
-        window.codo_command = 4;
-      }
-      function resetGame() {
-        if (!game_started) {
-          return;
-        }
-        window.codo_command = 1;
-      }
-
-      // game controls
-      var btn_a_code = 16;
-      var btn_b_code = 32;
-      var btn_a_pressed = false;
-      var btn_b_pressed = false;
-      function update_input() {
-        var code_a = btn_a_pressed ? btn_a_code : 0;
-        var code_b = btn_b_pressed ? btn_b_code : 0;
-        pico8_buttons[0] = code_a | code_b;
-      }
-      function press_a(e) {
-        e.preventDefault();
-        btn_a_pressed = true;
-        update_input();
-        if (navigator.vibrate) {
-          navigator.vibrate(10);
-        }
-      }
-      function press_b(e) {
-        e.preventDefault();
-        btn_b_pressed = true;
-        update_input();
-        if (navigator.vibrate) {
-          navigator.vibrate(10);
-        }
-      }
-      function release_a() {
-        btn_a_pressed = false;
-        update_input();
-      }
-      function release_b() {
-        btn_b_pressed = false;
-        update_input();
-      }
-
-      // set up listeners
-      document.addEventListener('touchstart', activateTouch);
-
-      qS('.touch_game').addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-      }, true);
-
-      var start_btn = qS('#play_game');
-      start_btn.addEventListener('click', startGame);
-
-      var pause_btn = qS('.meta_btn.pause');
-      pause_btn.addEventListener('click', toggleGamePaused);
-
-      var reset_btn = qS('.meta_btn.reset');
-      reset_btn.addEventListener('click', resetGame);
-
-      var exit_btn = qS('.meta_btn.exit');
-      exit_btn.addEventListener('click', stopGame);
-
-      var btn_a = qS('.control_btn.a');
-      btn_a.addEventListener('touchstart', press_a);
-      btn_a.addEventListener('touchend', release_a);
-
-      var btn_b = qS('.control_btn.b');
-      btn_b.addEventListener('touchstart', press_b);
-      btn_b.addEventListener('touchend', release_b);
-    })();
-  </script>
+  <script src="sk8border_touch_ui.js"></script>
   <script src="https://unpkg.com/pico8-gpio-listener@0.2.1/pico8-gpio-listener.js"></script>
+  <script src="sk8border_gpio_vibrations.js"></script>
+  <script src="https://static.itch.io/api.js"></script>
   <script>
-    (function() {
-      function readNumberFromGpio(gpio, pinIndex, bits) {
-        return gpio
-          .slice(pinIndex, pinIndex + bits)
-          .reduce(function (num, val, i) {
-            return num + (
-              val
-                ? Math.pow(2, bits - 1 - i)
-                : 0
-            );
-          }, 0);
-      }
-
-      function groundVibration() {
-        // TODO: implement a ground vibration? maybe?
-        // navigator.vibrate([1, 300, 1]);
-      }
-
-      function grindVibration(level) {
-        navigator.vibrate(0);
-        var length = 5 * level;
-        var vibrations = [];
-        for (var i = 0; i < 12; i++) {
-          vibrations.push(length);
-          vibrations.push(80 - length);
-        }
-        navigator.vibrate(vibrations);
-      }
-
-      var playerStates = {
-        0: 'idle',
-        1: 'crouch',
-        2: 'launch',
-        3: 'jump',
-        4: 'grind',
-        5: 'down',
-        6: 'land'
-      };
-
-      var playerState = 0;
-      var destructionLevel = 0;
-
-      window.vibrateInterval = null;
-
-      var gpio = getP8Gpio();
-      gpio.subscribe(function() {
-        // don't waste time doing this if we can't vibrate!
-        if (!navigator.vibrate) return;
-
-        var _playerState = readNumberFromGpio(gpio, 1, 3);
-        var _destructionLevel = readNumberFromGpio(gpio, 4, 3);
-        if (
-          _playerState === playerState &&
-          _destructionLevel === destructionLevel ||
-          (
-            (
-              // same vibration pattern for both of these
-              playerStates[playerState] === 'idle' ||
-              playerStates[playerState] === 'crouch'
-            ) &&
-            (
-              playerStates[_playerState] === 'idle' ||
-              playerStates[_playerState] === 'crouch'
-            )
-          )
-        ) {
-          // no need to change anything
-          return;
-        }
-
-        clearInterval(vibrateInterval);
-        navigator.vibrate(0);
-
-        if (_destructionLevel) {
-          // vibrate based on destruction level
-          if (_destructionLevel === 6) {
-            // wall is falling
-            navigator.vibrate([40, 10, 40, 10, 40, 10, 40, 10, 40, 10, 40]);
-          } else if (playerStates[_playerState] === 'grind') {
-            vibrateInterval =
-              setInterval(grindVibration(_destructionLevel), 960);
-          }
-        } else if (_playerState !== playerState) {
-          switch (playerStates[_playerState]) {
-            case 'idle':
-            case 'crouch':
-              // vibrateInterval = setInterval(groundVibration, 1000);
-              break;
-            case 'launch':
-              navigator.vibrate([20, 40, 20]);
-              break;
-            case 'land':
-              // it feels a bit early without the timeout
-              setTimeout(function() {
-                navigator.vibrate(40);
-              }, 40);
-              break;
-            default:
-              break;
-          }
-        }
-
-        playerState = _playerState;
-        destructionLevel = _destructionLevel;
-      })
-    })();
-  </script>
-  <script type="text/javascript" src="https://static.itch.io/api.js"></script>
-  <script type="text/javascript">
     Itch.attachBuyButton(document.getElementById('itch'), {
       user: 'sk8border',
       game: 'sk8border'
