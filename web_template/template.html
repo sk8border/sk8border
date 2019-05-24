@@ -251,6 +251,30 @@
     .playing #separator {
       margin-top: 3.6rem;
     }
+    .gif_wrapper {
+      position: relative;
+      display: inline-block;
+      display: inline-grid;
+    }
+    .gif_wrapper > .notice::after {
+      content: "{{{non_interactive_gif}}}";
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      font-style: italic;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 0.08s;
+    }
+    .gif_wrapper:hover > .notice::after {
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -270,7 +294,10 @@
     <div class="status"></div>
   </div>
   <center class="main">
-  <img src="./img/preview_gif_compressed.gif">
+  <div class="gif_wrapper">
+    <img src="./img/preview_gif_compressed.gif">
+    <div class="notice"></div>
+  </div>
   <h3 id="lang">====================<br/>[{{curr_lang}}] - <a href="{{other_lang_href}}">{{other_lang}}</a><br>====================<h3>
     <h1 id="slogan">{{description}}</h1>
     <p>{{{about_sk8border}}}</p>
