@@ -18,5 +18,6 @@
   "or_load_in_pico8": "Ou chargez cette cartouche dans PICO-8!",
   "fonts_on_page": "Polices de caractères sur cette page",
   "softsquare": "<a href=\"http://pixel-fonts.com/\">Softsquare</a> par <a href=\"https://twitter.com/chevyray\">Chevy Ray Johnston</a>",
-  "pico8_font": "Merci à <a href=\"https://www.lexaloffle.com/bbs/?tid=3760\">RhythmLynx</a> d'avoir rendu la police de PICO-8 disponible sur the web, et à <a href=\"https://twitter.com/lexaloffle\">Zep</a>, développeur de PICO-8!"
+  "pico8_font": "Merci à <a href=\"https://www.lexaloffle.com/bbs/?tid=3760\">RhythmLynx</a> d'avoir rendu la police de PICO-8 disponible sur the web, et à <a href=\"https://twitter.com/lexaloffle\">Zep</a>, développeur de PICO-8!",
+  "non_interactive_gif": "Ceci n'est pas le jeu (défilez vers le bas svp!)"
 }

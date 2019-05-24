@@ -18,5 +18,6 @@
   "or_load_in_pico8": "Or load this cart in PICO-8!",
   "fonts_on_page": "Fonts on this page",
   "softsquare": "<a href=\"http://pixel-fonts.com/\">Softsquare</a> font by <a href=\"https://twitter.com/chevyray\">Chevy Ray Johnston</a>",
-  "pico8_font": "Thanks to <a href=\"https://www.lexaloffle.com/bbs/?tid=3760\">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href=\"https://twitter.com/lexaloffle\">Zep</a> for developing it!"
+  "pico8_font": "Thanks to <a href=\"https://www.lexaloffle.com/bbs/?tid=3760\">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href=\"https://twitter.com/lexaloffle\">Zep</a> for developing it!",
+  "non_interactive_gif": "This isn't the game (please scroll down!)"
 }
