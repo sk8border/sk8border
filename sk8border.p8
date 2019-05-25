@@ -65,6 +65,96 @@ table_from_string(
 lang="fr"
 i18n=lang=="fr"and i18n_fr or i18n_en
 
+-- print with accents
+-- by zep (modified by us)
+-- https://lexaloffle.com/bbs/?tid=34306
+function print_fr(str,x,y,col)
+ local dat={
+  ["#"] = {",",  0, 2},
+  ["^"] = {"^",  0,-3},
+  ["`"] = {"`", -1,-3},
+  ["|"] = {",",  1,-6},
+  ["@"] = {"\"", 0,-3}
+ }
+ local p=1
+ while p <= #str do
+  local c=sub(str,p,p)
+  if (dat[c]) then
+   ?dat[c][1],x+dat[c][2],y+dat[c][3],col
+   p+=1
+   c=sub(str,p,p)
+  end
+  ?c,x,y,col
+  printh("printing char.. "..c.." ("..x..","..y..")","hello")
+  x+=4 p+=1
+ end
+ printh("french printing.. "..str,"hello")
+end
+
+function encode_accents(str)
+ local new_str = ""
+ local i = 0
+ while i <= #str do
+  local c = sub(str,i,i)
+  printh(c,"hello")
+  local e = c
+  -- cedille
+  if c == "ç" then
+   e="#c"
+  -- aigu
+  elseif c == "é" then
+   e="|e"
+  -- circonflex
+  elseif c == "â" then
+   e="^a"
+  elseif c == "ê" then
+   e="^e"
+  elseif c == "î" then
+   e="^i"
+  elseif c == "ô" then
+   e="^o"
+  elseif c == "û" then
+   e="^u"
+  -- grave
+  elseif c == "à" then
+   e="`a"
+  elseif c == "è" then
+   e="`e"
+  elseif c == "ì" then
+   e="`i"
+  elseif c == "ò" then
+   e="`o"
+  elseif c == "ù" then
+   e="`u"
+  -- trema
+  elseif c == "ë" then
+   e="@e"
+  elseif c == "ï" then
+   e="@i"
+  elseif c == "ü" then
+   e='@u'
+  end
+  new_str=new_str..e
+  printh(e,"hello")
+  i += 1
+ end
+ printh(new_str,"hello")
+ return new_str
+end
+
+function encode_table(table)
+ for k,v in pairs(table) do
+  if type(v) == "table" then
+   encode_table(v)
+  else
+   table[k]=encode_accents(v)
+  end
+ end
+end
+
+encode_table(i18n_en)
+encode_table(i18n_fr)
+
 -- constants
 tpb=16 // ticks per beat
 lyric_early = 8 // early display ticks
@@ -1430,7 +1520,7 @@ function draw_gauge(gauge)
 
  if gauge.maxed then
   local text = i18n.bring_it_down
-  print(
+  print_fr(
    text,
    x+gauge.width/2-
    (#text/2)*4,
@@ -1842,10 +1932,10 @@ function draw_wall(wall)
     8)
    local text = 'make america'
    local tw = #text*4
-   ?text,lx+p.w*4-tw/2,ty+5,7
+   print_fr(text,lx+p.w*4-tw/2,ty+5,7)
    text = 'great again'
    tw = #text*4
-   ?text,lx+p.w*4-tw/2,ty+5+8,7
+   print_fr(text,lx+p.w*4-tw/2,ty+5+8,7)
   elseif p.template ==
   posters.refugees_welcome then
    spr(p.i,x+p.x,y+p.y,p.w,1)
@@ -2038,8 +2128,13 @@ function draw_title()
  -- score
  if not (last_score == nil) then
   local text = i18n.score.." "..
-  last_score
-  ?text,64-#text*2,8*9+wall_anim_y,7
+   last_score
+  print_fr(
+   text,
+   64-#text*2,
+   8*9+wall_anim_y,
+   7
+  )
  end
  if (
   (not (hi_score == nil)) and
@@ -2049,8 +2144,13 @@ function draw_title()
   )
  ) then
   text = i18n.hi_score.." "..
-  hi_score
-  ?text,64-#text*2,8*10+wall_anim_y,7
+   hi_score
+  print_fr(
+   text,
+   64-#text*2,
+   8*10+wall_anim_y,
+   7
+  )
  end
 
  local message =
@@ -2068,8 +2168,8 @@ function draw_title()
   not blink or
   flr(time()) % 2 == 0
  ) then
-  print(
-  	message,
+  print_fr(
+   message,
    63-#message*2,
    8*13+wall_anim_y,
    7
@@ -2122,11 +2222,36 @@ function print_debug_messages()
 end
 
 function super_print(text,x,y,maincol,backcol)
- ?text,x+1,y,backcol
- ?text,x-1,y,backcol
- ?text,x,y+1,backcol
- ?text,x,y-1,backcol
- ?text,x,y,maincol
+	print_fr(
+		text,
+		x+1,
+		y,
+		backcol
+	)
+	print_fr(
+		text,
+		x-1,
+		y,
+		backcol
+	)
+	print_fr(
+		text,
+		x,
+		y+1,
+		backcol
+	)
+	print_fr(
+		text,
+		x,
+		y-1,
+		backcol
+	)
+	print_fr(
+		text,
+		x,
+		y,
+		maincol
+	)
 end
 
 function combo_print()
@@ -2324,7 +2449,9 @@ function _draw()
     lc >= lyric[2][1] + off and
     lc < lyric[2][2] + off then
      text = lyric[1]
-     ?text,8*8-(#text*4)/2,8,7
+     print_fr(
+      text,8*8-(#text*4)/2,8,7
+     )
      break
     end
    end
