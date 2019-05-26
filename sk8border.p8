@@ -7,10 +7,8 @@ cartdata('sk8border')
 
 debug = false
 
-storage_keys = {
- hi_score=0,
- tutorial=2
-}
+storage_key_hi_score = 0
+storage_key_tutorial = 2
 
 -- i18n
 i18n_en = {
@@ -132,12 +130,8 @@ i18n_fr = {
  wreck_that_wall="Ӏҽէ'ʂ աɾҽçҟ էհąէ աąӀӀ!",
  tut_press_resume="appuie pour continuer"
 }
-lang = "en"
-if lang == "fr" then
- i18n = i18n_fr
-else
- i18n = i18n_en
-end
+lang="en"
+i18n=lang=="fr"and i18n_fr or i18n_en
 
 -- constants
 tpb=16 // ticks per beat
@@ -176,24 +170,20 @@ lyrics = {
   {0}},
 }
 
-keys = {
- left=0,
- right=1,
- up=2,
- down=3,
- a=4,
- b=5
-}
+key_left = 0
+key_right = 1
+key_up = 2
+key_down = 3
+key_a = 4
+key_b = 5
 
-states = {
- idle=0,
- crouch=1,
- launch=2,
- jump=3,
- grind=4,
- down=5,
- land=6
-}
+state_idle = 0
+state_crouch = 1
+state_launch = 2
+state_jump = 3
+state_grind = 4
+state_down = 5
+state_land = 6
 
 spark_frames = {
  126,95,94
@@ -207,15 +197,13 @@ crack_frames = {
  18,18,69,39
 }
 
-snd = {
- explode=19,
- skate=22,
- jump=23,
- grind=24,
- ticker=47,
- thrust=48,
- start_game=43
-}
+snd_explode = 19
+snd_skate = 22
+snd_jump = 23
+snd_grind = 24
+snd_ticker = 47
+snd_thrust = 48
+snd_start_game = 43
 
 rubble = {
  {i=64,w=2,h=1},
@@ -441,7 +429,7 @@ tut_intro_starttime + 120
 -- end constants
 
 -- global variables
-hi_score = dget(storage_keys.hi_score)
+hi_score = dget(storage_key_hi_score)
 last_score = nil
 game_started = false
 game_over = false
@@ -450,7 +438,7 @@ player = nil
 frm = 0
 launch_t = 0
 land_t = 0
-p_state = states.idle
+p_state = state_idle
 lastwall = nil
 start_countdown = nil
 num_jumps = 0
@@ -470,7 +458,7 @@ tut_success_t = 0
 post_tut_msg_t = 0
 tut_theme_triggers_done = {}
 removed_pattern_offset = 0
-if dget(storage_keys.tutorial) == 1 then
+if dget(storage_key_tutorial) == 1 then
  tut_complete = true
 end
 
@@ -485,8 +473,7 @@ tut_can_resume = false
 tut_should_pause = false
 tut_current_step = 1
 tut_highest_success = 0
-tut_successes = {false,false,
- false,false,false,false}
+tut_successes = {}
 tut_steps = {
  jump=1,
  grind=2,
@@ -495,6 +482,10 @@ tut_steps = {
  grind_switch=5,
  destroy=6
 }
+tut_step_count = 0
+for s in pairs(tut_steps) do
+ tut_step_count += 1
+end
 tut_theme_triggers={
  tut_steps.grind,
  tut_steps.wall_up,
@@ -543,17 +534,12 @@ cloud_2_offset = 11960/72
 
 -- end global variables
 function tutorial_start()
- tut_running = true
- tut_displaying = true
- tut_current_step = 1
- tut_t = 0
+ tut_running,tut_displaying=true,true
+ tut_current_step,tut_t=1,0
  tut_highest_success = 0
  tut_pause_delay = 0
  tut_pause_elapsed = 0
- local le = #tut_successes
- for i=1, le do
-  tut_successes[i] = false
- end
+ tut_successes={}
 end
 
 function tutorial_achieve(step)
@@ -591,12 +577,12 @@ function tutorial_achieve(step)
   then
    tut_highest_success = step
   end
-  if step == #tut_successes then
+  if step == tut_step_count then
    tut_complete = true
    tut_running = false
    tut_success_t =
    tut_complete_duration
-   dset(storage_keys.tutorial,1)
+   dset(storage_key_tutorial,1)
   else
    tut_success_t =
    tut_success_duration
@@ -775,32 +761,19 @@ end
 t_at_lyric_start = nil
 
 function lyric_t_offset()
- if t_at_lyric_start == nil then
-  return nil
- end
- return t_at_lyric_start - lyric_early
+ return t_at_lyric_start and t_at_lyric_start-lyric_early
 end
 
-byte_reverb = 0x5f41
-byte_lowpass = 0x5f43
+b_reverb,b_lowpass = 0x5f41,0x5f43
 function distort_sound(on)
  -- all 4 sound channels
  local byte_value = 0b1111
- if on == false then
+ if not on then
   -- all channels off
   byte_value = 0
  end
- poke(byte_reverb, byte_value)
- poke(byte_lowpass, byte_value)
-end
-
-function make_player(x,y)
- local p = {}
- p.x = x
- p.y = y
- p.dy = 0
- p.ddy = g  -- acceleration due to gravity
- return p
+ poke(b_reverb, byte_value)
+ poke(b_lowpass, byte_value)
 end
 
 function find_explosion_jump_speed()
@@ -865,16 +838,15 @@ function update_player(p)
  not tut_running or
  tut_t > tut_intro_starttime
 
- local sc = scoring
- local ps = p_state
+ local sc,ps=scoring,p_state
 
  function check_for_jump(jump_speed)
   if not (
-   btn(keys.a) or btn(keys.b)
+   btn(key_a) or btn(key_b)
   ) then
-   p_state = states.launch
+   p_state = state_launch
    launch_t = launch_time
-   p.dy = -jump_speed
+   p.dy -= jump_speed
    if not check_for_destruction()
    then
     -- jump achieved
@@ -882,7 +854,7 @@ function update_player(p)
     if num_jumps >= 2 then
      tutorial_achieve(tut_steps.jump)
     end
-    play_snd(snd.jump)
+    play_snd(snd_jump)
     p_falling = false
    end
    return true
@@ -893,32 +865,32 @@ function update_player(p)
  -- used for grinding
  local current_wall = nil
 
- if ps == states.idle then
+ if ps == state_idle then
   if (
    controls_enabled and
-   (btn(keys.a) or btn(keys.b))
+   (btn(key_a) or btn(key_b))
   ) then
-   p_state = states.crouch
+   p_state = state_crouch
   end
- elseif ps == states.crouch then
+ elseif ps == state_crouch then
   check_for_jump(ground_jump_speed)
- elseif ps == states.launch then
+ elseif ps == state_launch then
   if launch_t > 0 then
-   p_state = states.jump
+   p_state = state_jump
   end
- elseif ps == states.jump then
+ elseif ps == state_jump then
   if (
    p.dy > 0 and
    ground_y-p.y < max_grind_y
   ) then
-   p_state = states.down
+   p_state = state_down
    floating_after_jump = false
    play_snd(-1)  -- stop thrust
   elseif (
    controls_enabled and
    get_first_grindable_x() < p.x+16
    and
-   (btn(keys.a) or btn(keys.b))
+   (btn(key_a) or btn(key_b))
   ) then
    floating_after_jump = false
    play_snd(-1)  -- stop thrust
@@ -961,7 +933,7 @@ function update_player(p)
       -- is a down, or is it
       -- b?
       local adown =
-      btn(keys.a)
+      btn(key_a)
 
       -- initiate
       -- grinding
@@ -996,10 +968,10 @@ function update_player(p)
       p_last_grind =
       adown and 'a' or 'b'
 
-      p_state = states.grind
+      p_state = state_grind
       trying_to_grind = false
       player.dy = 0
-      play_snd(snd.grind)
+      play_snd(snd_grind)
 
       destruct_level =
       gauge.multiplier
@@ -1022,7 +994,7 @@ function update_player(p)
     end
    end
   end
- elseif ps == states.grind then
+ elseif ps == state_grind then
   -- prove me wrong!
   local player_should_fall = true
 
@@ -1045,7 +1017,7 @@ function update_player(p)
   if player_should_fall then
    -- fallllllllllllllll
    p_falling = true
-   p_state = states.jump
+   p_state = state_jump
    play_snd(-1)  -- stop grind noise
    if sc.destroy_on_fall then
     if check_for_destruction()
@@ -1088,31 +1060,31 @@ function update_player(p)
     check_for_jump(grind_jump_speed)
    end
   end
- elseif ps == states.down then
+ elseif ps == state_down then
  -- todo: special handling ?
- else  -- states.land
+ else  -- state_land
   if land_t > 0 then
-   p_state = states.idle
+   p_state = state_idle
    if (
     controls_enabled and
-    (btn(keys.a) or btn(keys.b))
+    (btn(key_a) or btn(key_b))
    ) then
-    p_state = states.crouch
+    p_state = state_crouch
    end
   end
  end
 
  if (
-  p_state == states.launch or
-  p_state == states.jump or
-  p_state == states.down
+  p_state == state_launch or
+  p_state == state_jump or
+  p_state == state_down
  ) then
   local py_before = p.y
   if apply_gravity(p) then
    if (
     controls_enabled and
     current_wall and
-    (btn(keys.a) or btn(keys.b))
+    (btn(key_a) or btn(key_b))
    ) then
     local grind_y =
     find_grind_y(current_wall)
@@ -1130,7 +1102,7 @@ function update_player(p)
     awaiting_thrust_after_jump and
     p.dy >= 0
    ) then
-    play_snd(snd.thrust)
+    play_snd(snd_thrust)
     awaiting_thrust_after_jump
     = false
    end
@@ -1138,19 +1110,19 @@ function update_player(p)
    -- just landed
    p_last_grind = nil
    reset_gauge(gauge)
-   p_state = states.land
+   p_state = state_land
    trying_to_grind = true
    land_t = land_time
-   play_snd(snd.skate)
+   play_snd(snd_skate)
    prev_grind_y = 0
    current_combo = ""
   end
  end
 
  if (
-  p_state == states.idle or
-  p_state == states.crouch or
-  p_state == states.land
+  p_state == state_idle or
+  p_state == state_crouch or
+  p_state == state_land
  ) then
   player.bob_frame = flr(
    t/idle_bob_time % 2
@@ -1167,7 +1139,7 @@ function update_player(p)
 
  if (
   destruct_level > 0 and
-  p_state != states.grind and
+  p_state != state_grind and
   (not is_a_wall_moving())
  ) then
   destruct_level = 0
@@ -1181,14 +1153,14 @@ end
 
 function compute_frame(p)
  local ps = p_state
- if ps == states.idle then
+ if ps == state_idle then
   if p.bob_frame == 0 then frm = 0
   else
    frm = 6
   end
- elseif ps == states.crouch then
+ elseif ps == state_crouch then
   frm = 1
- elseif ps == states.launch then
+ elseif ps == state_launch then
   if (
    launch_time - launch_t <
    launch_frm_time
@@ -1197,28 +1169,28 @@ function compute_frame(p)
   else
    frm = 3
   end
- elseif ps == states.jump then
+ elseif ps == state_jump then
   if (not floating_after_jump and
    controls_enabled and
-   btn(keys.a)) then
+   btn(key_a)) then
    frm = 3
   elseif (not floating_after_jump and
    controls_enabled and
-   btn(keys.b)) then
+   btn(key_b)) then
    frm = 5
   else
    frm = 4
   end
- elseif ps == states.grind then
+ elseif ps == state_grind then
  -- todo: handle grind
- elseif ps == states.down then
+ elseif ps == state_down then
   if controls_enabled and
-  btn(keys.a) then
+  btn(key_a) then
    frm = 3
   else
    frm = 5
   end
- else  -- ps == states.land
+ else  -- ps == state_land
   frm = 1
  end
 
@@ -1248,14 +1220,13 @@ end
 
 function drawskater(p)
  if not p.framew then return end
- local base_x = p.x
- local base_y = p.y
+ local base_x,base_y = p.x,p.y
  if (
   tut_paused and
   (
-   p_state == states.jump or
-   p_state == states.down or
-   p_state == states.launch
+   p_state == state_jump or
+   p_state == state_down or
+   p_state == state_launch
   )
  ) then
   base_x += rnd(2) - 1
@@ -1270,17 +1241,30 @@ function drawskater(p)
  )
  if p.frame == 88 and
  floating_after_jump then
-  local numflames = 3
-  local span = 10
-  local spacing = span/
-  (numflames-1)
-  local firstx = numflames == 1
-  and 8-1 or 8-1-flr(span/2)
-  for i=0,numflames-1 do
+  -- this variable logic
+  -- can be way simplified
+  -- by assuming numflames = 3
+  --
+  -- local numflames = 4
+  -- local span = 10
+  -- local spacing = span/
+  -- (numflames-1)
+  -- local firstx = numflames == 1
+  -- and 8-1 or 8-1-flr(span/2)
+  -- for i=0,numflames-1 do
+  --  local frm = (flr(t/3)+i%2)%2
+  --  spr(
+  --   110+frm,
+  --   base_x+firstx+spacing*i,
+  --   base_y-2
+  --  )
+  -- end
+
+  for i=0,2 do
    local frm = (flr(t/3)+i%2)%2
    spr(
     110+frm,
-    base_x+firstx+spacing*i,
+    base_x+2+5*i,
     base_y-2
    )
   end
@@ -1299,7 +1283,7 @@ function reset()
  frm = 0
  launch_t = 0
  land_t = 0
- p_state = states.idle
+ p_state = state_idle
  lastwall = nil
  start_countdown = nil
  destruct_level = 0
@@ -1342,11 +1326,14 @@ function _init()
 
  game_over = false
 
- player = make_player(8, ground_y)
+ player = {
+  x = 8,
+  y = ground_y,
+  dy = 0,
+  ddy = g  -- acceleration due to gravity
+ }
 
- sparks = {}
-
- player.spark = add_spark()
+ spark={ elapsed=0 }
 
  gauge = make_gauge(
   8,64,0,119)
@@ -1373,60 +1360,25 @@ function _init()
  reset()
 end
 
-function add_spark(x,y)
- local spark = nil
- for i=1,#sparks do
-  if not sparks[i].exists then
-   spark = sparks[i]
-   break
+function update_spark()
+ if spark.exists then
+  local frm_duration = 3
+  spark.elapsed += 1
+  if spark.elapsed >= frm_duration*3 then
+   spark.elapsed = 0
   end
+  local frm = 1+
+  flr(spark.elapsed/frm_duration)%3
+  spark.frame = spark_frames[frm]
  end
- if spark == nil then
-  spark = {}
-  sparks[#sparks+1] = spark
- end
- local x_speed=-rnd(0.8)
- local y_speed=-rnd(1)
- spark.x=x
- spark.y=y
- spark.x_speed=x_speed
- spark.y_speed=y_speed
- spark.exists = true
- spark.elapsed = 0
- return spark
 end
 
-function update_spark(spark)
- if not spark.exists then
-  return
+function draw_spark()
+ if spark.exists then
+  spr(spark.frame,
+   spark.x-9,
+   spark.y-7)
  end
- --if spark.elapsed >= 4 then
- --spark.exists = false
- --return
- --end
- --spark.x+=spark.x_speed
- --spark.y+=spark.y_speed
- --spark.x-=scroll_speed
- local frm_duration = 3
- spark.elapsed += 1
- if spark.elapsed >= frm_duration*3 then
-  spark.elapsed = 0
- end
- local frm = 1+
- flr(spark.elapsed/frm_duration)%3
- spark.frm = frm
- spark.frame = spark_frames[frm]
-end
-
-function draw_spark(spark)
- if spark == nil or
- not spark.exists then
-  return
- end
- --pset(spark.x,spark.y,10)
- spr(spark.frame,
-  spark.x-9,
-  spark.y-7)
 end
 
 function set_diff_level(lvl)
@@ -1454,36 +1406,19 @@ function fill_drawing_box(weights, drawing_box)
  return drawing_box
 end
 
-function make_gauge(
- width_in_sprites,
- max_value,
- x,y)
-
- width_in_sprites = max(
-  3,width_in_sprites)
-
- local width =
- width_in_sprites * 8
-
- -- create gauge object
- gauge={
-  w=w,
-  x=x,
-  y=y,
-  width=width,
-  width_in_sprites=
-  width_in_sprites,
-  pixels_per_unit=
-  width/max_value,
-  max_value=max_value,
+function make_gauge()
+ local w = 64
+ return {
+  x=0,
+  y=119,
+  width=w,
+  width_in_sprites=w/8,
+  pixels_per_unit=1,
+  max_value=w,
   value=0,
   multiplier=1,
   maxed=false
  }
-
- set_gauge_value(gauge,units)
-
- return gauge
 end
 
 function reset_gauge(gauge)
@@ -1498,7 +1433,7 @@ function set_gauge_value(
  gauge.maxed = gauge.value==
  gauge.max_value
  if not _maxed and gauge.maxed then
-  play_snd(snd.ticker)
+  play_snd(snd_ticker)
  end
  local mult =
  flr(4*(gauge.value/
@@ -1522,8 +1457,7 @@ end
 
 function draw_gauge(gauge)
 
- local x = gauge.x
- local y = gauge.y
+ local x,y = gauge.x,gauge.y
  local col = 7+gauge.multiplier
  local basecol = 5
 
@@ -1627,8 +1561,7 @@ function add_wall(x,forced_h)
   wall.tiles = {}
  end
 
- local w = wall.w
- local h = wall.h
+ local w,h = wall.w,wall.h
 
  local numtiles = w*h
  wall.num_tiles=numtiles
@@ -1862,7 +1795,7 @@ function break_wall(wall)
   wall.rubble[i] =
   rubble[1+flr(rnd(3))]
  end
- play_snd(snd.explode)
+ play_snd(snd_explode)
  destruct_level = 6
  write_gpio(destruct_level,4,3)
 end
@@ -1876,7 +1809,7 @@ function update_wall(wall)
  wall.anim_x = 0
  wall.anim_y = 0
  if not wall.breaking and
- p_state == states.grind then
+ p_state == state_grind then
   local lvl = gauge.multiplier
   local range = 1
   if gauge.maxed then
@@ -1967,10 +1900,8 @@ function draw_wall(wall)
   local p = wall.posters[i]
   palt(p.template.tcol or 0,true)
 
-  local lx = x+p.x
-  local rx = x+p.x+p.w*8-8
-  local ty = y+p.y
-  local by = y+p.y+p.h*8-8
+  local lx,rx = x+p.x,x+p.x+p.w*8-8
+  local ty,by = y+p.y,y+p.y+p.h*8-8
 
   if p.template ==
   posters.make_america_great then
@@ -1979,10 +1910,10 @@ function draw_wall(wall)
     8)
    local text = 'make america'
    local tw = #text*4
-   print(text,lx+p.w*4-tw/2,ty+5,7)
+   ?text,lx+p.w*4-tw/2,ty+5,7
    text = 'great again'
    tw = #text*4
-   print(text,lx+p.w*4-tw/2,ty+5+8,7)
+   ?text,lx+p.w*4-tw/2,ty+5+8,7
   elseif p.template ==
   posters.refugees_welcome then
    spr(p.i,x+p.x,y+p.y,p.w,1)
@@ -2176,12 +2107,7 @@ function draw_title()
  if not (last_score == nil) then
   local text = i18n.score.." "..
   last_score
-  print(
-   text,
-   64-#text*2,
-   8*9+wall_anim_y,
-   7
-  )
+  ?text,64-#text*2,8*9+wall_anim_y,7
  end
  if (
   (not (hi_score == nil)) and
@@ -2192,12 +2118,7 @@ function draw_title()
  ) then
   text = i18n.hi_score.." "..
   hi_score
-  print(
-   text,
-   64-#text*2,
-   8*10+wall_anim_y,
-   7
-  )
+  ?text,64-#text*2,8*10+wall_anim_y,7
  end
 
  local message =
@@ -2241,71 +2162,45 @@ function draw_wall_outline(wall)
 end
 
 function print_debug_messages()
- if max_dy == nil or max_dy < player.dy then
-  max_dy = player.dy
- end
+ assert(false, "uncomment print_debug_messages body!")
+ -- if max_dy == nil or max_dy < player.dy then
+ --  max_dy = player.dy
+ -- end
 
- if max_y == nil or max_y < player.y then
-  max_y = player.y
- end
+ -- if max_y == nil or max_y < player.y then
+ --  max_y = player.y
+ -- end
 
- if min_y == nil or min_y > player.y then
-  min_y = player.y
- end
+ -- if min_y == nil or min_y > player.y then
+ --  min_y = player.y
+ -- end
 
- local debug_messages = {
-  "walls: "..tostr(#walls),
-  "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
-  "player state: "..tostr(p_state),
-  "player dy: "..tostr(player.dy),
-  "max y: "..tostr(max_y),
-  "min y: "..tostr(min_y),
-  "max dy: "..tostr(max_dy)
- }
- for i=1,#debug_messages do
-  print(debug_messages[i], 1, (i-1)*6 + 16, 1)
- end
+ -- local debug_messages = {
+ --  "walls: "..tostr(#walls),
+ --  "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
+ --  "player state: "..tostr(p_state),
+ --  "player dy: "..tostr(player.dy),
+ --  "max y: "..tostr(max_y),
+ --  "min y: "..tostr(min_y),
+ --  "max dy: "..tostr(max_dy)
+ -- }
+ -- for i=1,#debug_messages do
+ --  print(debug_messages[i], 1, (i-1)*6 + 16, 1)
+ -- end
 end
 
 function super_print(text,x,y,maincol,backcol)
- print(
-  text,
-  x+1,
-  y,
-  backcol
- )
- print(
-  text,
-  x-1,
-  y,
-  backcol
- )
- print(
-  text,
-  x,
-  y+1,
-  backcol
- )
- print(
-  text,
-  x,
-  y-1,
-  backcol
- )
- print(
-  text,
-  x,
-  y,
-  maincol
- )
+ ?text,x+1,y,backcol
+ ?text,x-1,y,backcol
+ ?text,x,y+1,backcol
+ ?text,x,y-1,backcol
+ ?text,x,y,maincol
 end
 
 function combo_print()
- local base_x = 0
- local base_y = 0
- if p_state == states.grind then
-  base_x = rnd(2)-1
-  base_y = rnd(2)-1
+ local base_x,base_y=0,0
+ if p_state == state_grind then
+  base_x,base_y=rnd(2)-1,rnd(2)-1
  end
  local j = 1
  local _y_off = 0
@@ -2323,8 +2218,7 @@ function combo_print()
  while j <= #current_combo do
   local x = draw_x_y_list[j].x
   local y = draw_x_y_list[j].y + _y_off
-  local first = j
-  local last = j+15
+  local first,last=j,j+15
   if last > #current_combo then
    last = #current_combo
   end
@@ -2337,53 +2231,30 @@ function combo_print()
   )
   local backcol = 7
   if destruct_t == 0 then
-   print(
-    text,
-    x+1,
-    y,
-    backcol
-   )
-   print(
-    text,
-    x-1,
-    y,
-    backcol
-   )
-   print(
-    text,
-    x,
-    y+1,
-    backcol
-   )
-   print(
-    text,
-    x,
-    y-1,
-    backcol
-   )
+   ?text,x+1,y,backcol
+   ?text,x-1,y,backcol
+   ?text,x,y+1,backcol
+   ?text,x,y-1,backcol
   end
   for i=1,#text do
-   local _x = x
-   local _y = y
-   local index = first+i-1
+   local _x,_y,index=x,y,first+i-1
    if combo_link_offsets[index] then
     _x += combo_link_offsets[index][1]
     _y += combo_link_offsets[index][2]
    end
-   local char=sub(text,i,i)
-   local maincol = 1
+   local char,maincol=sub(text,i,i),1
    if char == "🅾️" then
     maincol = 8
    elseif char == "❎" then
     maincol = 13
    end
    if combo_link_offsets[index] then
-    print(char,_x+(i-1)*8+1,_y,backcol)
-    print(char,_x+(i-1)*8-1,_y,backcol)
-    print(char,_x+(i-1)*8,_y+1,backcol)
-    print(char,_x+(i-1)*8,_y-1,backcol)
+    ?char,_x+(i-1)*8+1,_y,backcol
+    ?char,_x+(i-1)*8-1,_y,backcol
+    ?char,_x+(i-1)*8,_y+1,backcol
+    ?char,_x+(i-1)*8,_y-1,backcol
    end
-   print(char,_x+(i-1)*8,_y,maincol)
+   ?char,_x+(i-1)*8,_y,maincol
   end
   j += 16
   _y_off += 8
@@ -2391,8 +2262,7 @@ function combo_print()
 end
 
 function _draw()
- local cam_x = 0
- local cam_y = 0
+ local cam_x,cam_y = 0,0
  if is_a_wall_moving() then
   cam_x =
   flr(-1 + rnd(5))
@@ -2439,9 +2309,7 @@ function _draw()
  drawskater(player)
 
  -- sparks!
- for i=1, #sparks do
-  draw_spark(sparks[i])
- end
+ draw_spark()
 
  -- tutorial or lyrics
  -----------------------
@@ -2524,12 +2392,7 @@ function _draw()
     lc >= lyric[2][1] + off and
     lc < lyric[2][2] + off then
      text = lyric[1]
-     print(
-      text,
-      8*8 - (#text*4)/2,
-      8,
-      7
-     )
+     ?text,8*8-(#text*4)/2,8,7
      break
     end
    end
@@ -2546,8 +2409,7 @@ function _draw()
 
  if timer_ready then
   -- score
-  local text = tostr(display_score)
-  print(text,
+  print(display_score,
    gauge.x+gauge.width+4
    ,121,6)
 
@@ -2563,8 +2425,7 @@ function _draw()
   spr(timer_sprite,2,121-2)
   palt(0,false)
   palt(7,true)
-  text = tostr(timer)
-  print(text,12,121,timer_color)
+  ?timer,12,121,timer_color
  end
 
  combo_print()
@@ -2584,9 +2445,7 @@ function _update60()
  nonstop_t += 1
 
  -- sparks!!!
- for i=1, #sparks do
-  update_spark(sparks[i])
- end
+ update_spark()
 
  for i=1, #walls do
   update_wall(walls[i])
@@ -2646,24 +2505,19 @@ function _update60()
     tut_pause_duration
     -- do this one time only
     if prev_e < tut_pause_duration then
-     tut_a_up = false
-     tut_b_up = false
+     tut_a_up,tut_b_up=false,false
      tut_can_resume = true
     end
     local unpause = false
     -- a released then pressed?
-    if btn(keys.a) then
-     if tut_a_up then
-      unpause = true
-     end
+    if btn(key_a) then
+     unpause = tut_a_up
     else
      tut_a_up = true
     end
     -- b released then pressed?
-    if btn(keys.b) then
-     if tut_b_up then
-      unpause = true
-     end
+    if btn(key_b) then
+     unpause = tut_b_up
     else
      tut_b_up = true
     end
@@ -2693,10 +2547,10 @@ function _update60()
   start_countdown and
   not game_started
  ) then
-  if btn(keys.a) or btn(keys.b) then
+  if btn(key_a) or btn(key_b) then
    -- make sure player is ready
    -- to launch on game start
-   p_state = states.crouch
+   p_state = state_crouch
   end
 
   start_countdown -= 1
@@ -2706,25 +2560,24 @@ function _update60()
     tutorial_start()
    end
    music(get_theme_start())
-   play_snd(snd.skate)
+   play_snd(snd_skate)
   end
  end
 
  if (
   not game_started and
   not start_countdown and
-  (btn(keys.a) or btn(keys.b))
+  (btn(key_a) or btn(key_b))
  ) then
   -- wait 400 ms before
   -- starting game
   start_countdown = start_delay
   music(-1)
-  play_snd(snd.start_game)
+  play_snd(snd_start_game)
 
   -- reset some globals
   -- for tutorializing
-  num_jumps = 0
-  prev_grind_y = -1
+  num_jumps,prev_grind_y=0,-1
   p_falling = false
  end
 
@@ -2734,25 +2587,23 @@ function _update60()
  local crack_level =
  gauge.multiplier - 1
 
- if p_state == states.grind
+ if p_state == state_grind
  and crack_level > 0
  then
   crack_all_walls(0.05,crack_level/100,(3*crack_level)/50)
  end
 
- if p_state == states.grind then
-  player.spark.exists = true
-  player.spark.y = player.y -1
+ if p_state == state_grind then
+  spark.exists = true
+  spark.y = player.y -1
   if player.frame == 86 then
-   --add_spark(player.x+4,player.y-1)
-   player.spark.x = player.x+4
+   spark.x = player.x+4
   elseif player.frame == 90
   then
-   player.spark.x = player.x+11
-  --add_spark(player.x+11,player.y-1)
+   spark.x = player.x+11
   end
  else
-  player.spark.exists = false
+  spark.exists = false
  end
 
  -----------------
@@ -2805,9 +2656,9 @@ function _update60()
   (not timer_ready) and
   tut_complete and
   (
-   p_state == states.idle or
-   p_state == states.crouch or
-   p_state == states.grind
+   p_state == state_idle or
+   p_state == state_crouch or
+   p_state == state_grind
   )
  ) then
   timer_ready = true
@@ -2839,8 +2690,8 @@ function _update60()
    -- they touch down on the
    -- ground!
    (
-    p_state == states.idle or
-    p_state == states.crouch
+    p_state == state_idle or
+    p_state == state_crouch
    )
   ) then
    -- enter game over
@@ -2849,7 +2700,7 @@ function _update60()
    if hi_score == nil or
    last_score > hi_score then
     hi_score = last_score
-    dset(storage_keys.hi_score, hi_score)
+    dset(storage_key_hi_score, hi_score)
    end
    game_over = true
    game_started = false
@@ -2917,10 +2768,9 @@ function _update60()
  -- disperse combo links
  if destruct_t and destruct_t > 0 then
   for i=1,#combo_link_offsets do
-   local angle=combo_link_explosion_angles[i]
+   local ang=combo_link_explosion_angles[i]
    -- normalize the vector
-   local w = cos(angle)
-   local h = sin(angle)
+   local w,h = cos(ang),sin(ang)
    local len = sqrt(w*w+h*h)
    if len == 0 then len = 1 end
    w = w / len
