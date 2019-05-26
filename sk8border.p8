@@ -213,7 +213,8 @@ snd = {
  jump=23,
  grind=24,
  ticker=47,
- thrust=48
+ thrust=48,
+ start_game=43
 }
 
 rubble = {
@@ -2718,7 +2719,7 @@ function _update60()
   -- starting game
   start_countdown = start_delay
   music(-1)
-  play_snd(43)
+  play_snd(snd.start_game)
 
   -- reset some globals
   -- for tutorializing
