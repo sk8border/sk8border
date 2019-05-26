@@ -139,7 +139,6 @@ else
  i18n = i18n_en
 end
 
-
 -- constants
 tpb=16 // ticks per beat
 lyric_early = 8 // early display ticks
@@ -202,7 +201,7 @@ spark_frames = {
 
 wall_left_frames = {
  1,17,33,49
-} 
+}
 
 crack_frames = {
  18,18,69,39
@@ -248,7 +247,7 @@ posters = {
 }
 
 explosion_frames = {
-192,224,236,238
+ 192,224,236,238
 }
 
 scoring = {
@@ -259,7 +258,7 @@ scoring = {
  -- grinding starts
  interval_base=15,
  -- if grinding on the opposite
- -- time as last time, 
+ -- time as last time,
  -- that interval start as
  -- this number of ticks
  interval_alt=5,
@@ -285,99 +284,99 @@ scoring = {
 }
 
 wall_height_weights = {
-  normal={
-   [5]=1,
-   [6]=1,
-   [7]=1,
-   [8]=1,
-   [9]=1
-  },
-  ground={
-   [5]=3,
-   [6]=3,
-   [7]=3,
-   [8]=0,
-   [9]=0
-  },
-  tutorial_ground={
-  	[5]=1
-  }
+ normal={
+  [5]=1,
+  [6]=1,
+  [7]=1,
+  [8]=1,
+  [9]=1
+ },
+ ground={
+  [5]=3,
+  [6]=3,
+  [7]=3,
+  [8]=0,
+  [9]=0
+ },
+ tutorial_ground={
+  [5]=1
+ }
 }
 
 wall_width_weights = {
-  { -- diff level 1
-   [4]=0,
-   [5]=0,
-   [6]=0,
-   [7]=1,
-   [8]=1,
-   [9]=2,
-   [10]=3,
-   [11]=4
-  },
-  { -- diff level 2
-   [4]=0,
-   [5]=0,
-   [6]=1,
-   [7]=1,
-   [8]=1,
-   [9]=2,
-   [10]=2,
-   [11]=2
-  },
-  { -- diff level 3 (original)
-   [4]=1,
-   [5]=1,
-   [6]=1,
-   [7]=1,
-   [8]=1,
-   [9]=1,
-   [10]=1,
-   [11]=1
-  },
-  { -- diff level 4
-   [4]=3,
-   [5]=2,
-   [6]=2,
-   [7]=2,
-   [8]=2,
-   [9]=1,
-   [10]=1,
-   [11]=1
-  },
-  { -- diff level 5
-   [3]=3,
-   [4]=5,
-   [5]=4,
-   [6]=3,
-   [7]=2,
-   [8]=2,
-   [9]=1,
-   [10]=1,
-   [11]=0
-  },
-  { -- diff level 6
-   [3]=10,
-   [4]=10,
-   [5]=8,
-   [6]=2,
-   [7]=1,
-   [8]=1,
-   [9]=1,
-   [10]=1,
-   [11]=1
-  },
-  { -- diff level 7
-   [3]=50,
-   [4]=12,
-   [5]=6,
-   [6]=2,
-   [7]=1,
-   [8]=1,
-   [9]=1,
-   [10]=0,
-   [11]=0
-  },
+ {  -- diff level 1
+  [4]=0,
+  [5]=0,
+  [6]=0,
+  [7]=1,
+  [8]=1,
+  [9]=2,
+  [10]=3,
+  [11]=4
+ },
+ {  -- diff level 2
+  [4]=0,
+  [5]=0,
+  [6]=1,
+  [7]=1,
+  [8]=1,
+  [9]=2,
+  [10]=2,
+  [11]=2
+ },
+ {  -- diff level 3 (original)
+  [4]=1,
+  [5]=1,
+  [6]=1,
+  [7]=1,
+  [8]=1,
+  [9]=1,
+  [10]=1,
+  [11]=1
+ },
+ {  -- diff level 4
+  [4]=3,
+  [5]=2,
+  [6]=2,
+  [7]=2,
+  [8]=2,
+  [9]=1,
+  [10]=1,
+  [11]=1
+ },
+ {  -- diff level 5
+  [3]=3,
+  [4]=5,
+  [5]=4,
+  [6]=3,
+  [7]=2,
+  [8]=2,
+  [9]=1,
+  [10]=1,
+  [11]=0
+ },
+ {  -- diff level 6
+  [3]=10,
+  [4]=10,
+  [5]=8,
+  [6]=2,
+  [7]=1,
+  [8]=1,
+  [9]=1,
+  [10]=1,
+  [11]=1
+ },
+ {  -- diff level 7
+  [3]=50,
+  [4]=12,
+  [5]=6,
+  [6]=2,
+  [7]=1,
+  [8]=1,
+  [9]=1,
+  [10]=0,
+  [11]=0
+ },
 }
 
 current_combo = ""
@@ -390,7 +389,7 @@ combo_link_offsets={}
 -- of weights)
 diff_level_duration = 15
 
-  -- acceleration due to gravity
+-- acceleration due to gravity
 game_duration = 60
 g = 0.2
 ground_jump_speed = 5
@@ -408,13 +407,13 @@ title_wall_y = 8 * 8
 start_delay = 40
 scroll_speed = 1.5
 bg_1_scroll_speed
- = scroll_speed/200
+= scroll_speed/200
 bg_2_scroll_speed
- = scroll_speed/8
+= scroll_speed/8
 bg_3_scroll_speed
- = scroll_speed/4
+= scroll_speed/4
 bg_4_scroll_speed
- = scroll_speed/2
+= scroll_speed/2
 bg_scroll_width = 24
 fg_scroll_width = 18
 cloud_base_offset = -49
@@ -437,9 +436,8 @@ tut_complete_duration = 120
 post_tut_msg_duration = 60
 tut_intro_starttime = 90
 tut_intro_endtime =
- tut_intro_starttime + 120
+tut_intro_starttime + 120
 -- end constants
-
 
 -- global variables
 hi_score = dget(storage_keys.hi_score)
@@ -472,7 +470,7 @@ post_tut_msg_t = 0
 tut_theme_triggers_done = {}
 removed_pattern_offset = 0
 if dget(storage_keys.tutorial) == 1 then
-  tut_complete = true
+ tut_complete = true
 end
 
 tut_disp_type = "none"
@@ -487,7 +485,7 @@ tut_should_pause = false
 tut_current_step = 1
 tut_highest_success = 0
 tut_successes = {false,false,
-false,false,false,false}
+ false,false,false,false}
 tut_steps = {
  jump=1,
  grind=2,
@@ -544,118 +542,118 @@ cloud_2_offset = 11960/72
 
 -- end global variables
 function tutorial_start()
-  tut_running = true
-  tut_displaying = true
-  tut_current_step = 1
-  tut_t = 0
-  tut_highest_success = 0
-  tut_pause_delay = 0
-  tut_pause_elapsed = 0
-  local le = #tut_successes
-  for i=1, le do
-    tut_successes[i] = false
-  end
+ tut_running = true
+ tut_displaying = true
+ tut_current_step = 1
+ tut_t = 0
+ tut_highest_success = 0
+ tut_pause_delay = 0
+ tut_pause_elapsed = 0
+ local le = #tut_successes
+ for i=1, le do
+  tut_successes[i] = false
+ end
 end
 
 function tutorial_achieve(step)
-  if tut_complete then
-   return
-  end
-  
-  -- skip wall down step
-  if step == 4 then
-	return
-  end
-  
-  local prev_achieved =
-   tut_successes[step]
-  
-  local just_achieved = false
-  
-  -- for the 'alternate step',
-  -- we can't do it in advance
-  if step == 5 then
-	just_achieved =
-	not prev_achieved and
-	step == tut_current_step
-  else
-	just_achieved =
-	step >= tut_current_step
-	and not prev_achieved
-  end
-  
-  if just_achieved
-  then
-	tut_successes[step]=true
-	to_break = 0
-	if step > tut_highest_success
-	then
-		tut_highest_success = step
-	end
-	if step == #tut_successes then
-		tut_complete = true
-		tut_running = false
-		tut_success_t =
-		tut_complete_duration
-		dset(storage_keys.tutorial,1)
-	else
-		tut_success_t =
-		tut_success_duration
-		local pdelay =
-		tut_pause_delay_normal
-		-- shorter delay for the first
-		-- step (jump)
-		if step == 1 then
-			pdelay =
-			tut_pause_delay_short
-		end
-		tutorial_pause(pdelay)
-	end
+ if tut_complete then
+  return
+ end
 
-	for s in all(
-		tut_theme_triggers
-	) do
-		if (
-		(
-		not
-		tut_theme_triggers_done[s]
-		)
-		and step >= s
-		) then
-			tut_theme_triggers_done[s]
-			= true
-			to_break += 1
-		end
-	end
-	break_music_loop(to_break)
+ -- skip wall down step
+ if step == 4 then
+  return
+ end
+
+ local prev_achieved =
+ tut_successes[step]
+
+ local just_achieved = false
+
+ -- for the 'alternate step',
+ -- we can't do it in advance
+ if step == 5 then
+  just_achieved =
+  not prev_achieved and
+  step == tut_current_step
+ else
+  just_achieved =
+  step >= tut_current_step
+  and not prev_achieved
+ end
+
+ if just_achieved
+ then
+  tut_successes[step]=true
+  to_break = 0
+  if step > tut_highest_success
+  then
+   tut_highest_success = step
   end
-  
+  if step == #tut_successes then
+   tut_complete = true
+   tut_running = false
+   tut_success_t =
+   tut_complete_duration
+   dset(storage_keys.tutorial,1)
+  else
+   tut_success_t =
+   tut_success_duration
+   local pdelay =
+   tut_pause_delay_normal
+   -- shorter delay for the first
+   -- step (jump)
+   if step == 1 then
+    pdelay =
+    tut_pause_delay_short
+   end
+   tutorial_pause(pdelay)
+  end
+
+  for s in all(
+   tut_theme_triggers
+  ) do
+   if (
+    (
+     not
+     tut_theme_triggers_done[s]
+    )
+    and step >= s
+   ) then
+    tut_theme_triggers_done[s]
+    = true
+    to_break += 1
+   end
+  end
+  break_music_loop(to_break)
+ end
+
 end
 
 function tutorial_refresh()
-	tut_current_step = tut_highest_success + 1
-	-- skip wall down step
-	if tut_current_step == 4 then
-		tut_current_step += 1
-	end
+ tut_current_step = tut_highest_success + 1
+ -- skip wall down step
+ if tut_current_step == 4 then
+  tut_current_step += 1
+ end
 end
 
 function tutorial_pause(delay)
-	if delay then
-		tut_pause_delay = delay
-	else
-		tut_paused = true
-		tut_can_resume = false
-		tut_pause_elapsed = 0
-		--tut_should_pause = false
-		distort_sound(true)
-	end
+ if delay then
+  tut_pause_delay = delay
+ else
+  tut_paused = true
+  tut_can_resume = false
+  tut_pause_elapsed = 0
+  --tut_should_pause = false
+  distort_sound(true)
+ end
 end
 
 function tutorial_unpause()
-	tut_paused = false
-	tut_can_resume = false
-	distort_sound(false)
+ tut_paused = false
+ tut_can_resume = false
+ distort_sound(false)
 end
 
 function write_gpio(num,i,bits)
@@ -671,35 +669,35 @@ end
 music_start_address = 0x3100
 pattern_byte_size = 4
 music_end_address =
- music_start_address +
- 64 * pattern_byte_size
+music_start_address +
+64 * pattern_byte_size
 start_loop_byte_offset = 0
 end_loop_byte_offset = 1
 
 function address_for_pattern(i, offset)
  local address =
-  music_start_address +
-  pattern_byte_size * i +
-  offset
+ music_start_address +
+ pattern_byte_size * i +
+ offset
  return address
 end
 
 function has_end_loop(pattern_i)
  local address =
-  address_for_pattern(
-   pattern_i,
-   end_loop_byte_offset
-  )
+ address_for_pattern(
+  pattern_i,
+  end_loop_byte_offset
+ )
  local byte = peek(address)
  return band(byte, 0b10000000) > 0
 end
 
 function unloop_pattern(pattern_i)
  local address =
-  address_for_pattern(
-   pattern_i,
-   end_loop_byte_offset
-  )
+ address_for_pattern(
+  pattern_i,
+  end_loop_byte_offset
+ )
  local byte = peek(address)
  -- set loop bit to 0
  poke(address, band(byte, 0b01111111))
@@ -709,24 +707,24 @@ function remove_music_section(
  pattern_start, pattern_end
 )
  local dest_address =
-  music_start_address +
-  pattern_start *
-  pattern_byte_size
+ music_start_address +
+ pattern_start *
+ pattern_byte_size
  local source_address =
-  music_start_address +
-  (pattern_end + 1) *
-  pattern_byte_size
+ music_start_address +
+ (pattern_end + 1) *
+ pattern_byte_size
  local len =
-  music_end_address -
-  source_address
+ music_end_address -
+ source_address
  memcpy(
   dest_address,
   source_address,
   len
  )
  removed_pattern_offset =
-  removed_pattern_offset
-  - (pattern_end + 1 - pattern_start)
+ removed_pattern_offset
+ - (pattern_end + 1 - pattern_start)
 end
 
 -- we were iterating until 64
@@ -750,7 +748,7 @@ function break_music_loop(n)
    pattern += 1
   end
   if pattern - removed_pattern_offset
-   <= max_loop_pattern then
+  <= max_loop_pattern then
    if pattern > curr_pattern then
     remove_music_section(
      curr_pattern + 1,
@@ -796,12 +794,12 @@ function distort_sound(on)
 end
 
 function make_player(x,y)
-  local p = {}
-  p.x = x
-  p.y = y
-  p.dy = 0
-  p.ddy = g  -- acceleration due to gravity
-  return p
+ local p = {}
+ p.x = x
+ p.y = y
+ p.dy = 0
+ p.ddy = g  -- acceleration due to gravity
+ return p
 end
 
 function find_explosion_jump_speed()
@@ -816,8 +814,8 @@ function find_explosion_jump_speed()
 end
 
 function add_to_score(points)
-	if not tut_running then
- 	score += points*gauge.multiplier
+ if not tut_running then
+  score += points*gauge.multiplier
  end
  set_gauge_value(
   gauge,
@@ -858,395 +856,394 @@ function find_grind_y(wall)
 end
 
 function update_player(p)
-  if not game_started then
-   return
-  end
+ if not game_started then
+  return
+ end
 
-  controls_enabled =
-  not tut_running or
-  tut_t > tut_intro_starttime
+ controls_enabled =
+ not tut_running or
+ tut_t > tut_intro_starttime
 
-  local sc = scoring
-  local ps = p_state
+ local sc = scoring
+ local ps = p_state
 
-  function check_for_jump(jump_speed)
-   if not (
-    btn(keys.a) or btn(keys.b)
-   ) then
-    p_state = states.launch
-    launch_t = launch_time
-    p.dy = -jump_speed
-    if not check_for_destruction()
-    then
-      -- jump achieved
-      num_jumps += 1
-      if num_jumps >= 2 then
-        tutorial_achieve(tut_steps.jump)
-     end
-     play_snd(snd.jump)
-     p_falling = false
+ function check_for_jump(jump_speed)
+  if not (
+   btn(keys.a) or btn(keys.b)
+  ) then
+   p_state = states.launch
+   launch_t = launch_time
+   p.dy = -jump_speed
+   if not check_for_destruction()
+   then
+    -- jump achieved
+    num_jumps += 1
+    if num_jumps >= 2 then
+     tutorial_achieve(tut_steps.jump)
     end
-    return true
+    play_snd(snd.jump)
+    p_falling = false
    end
-   return false
+   return true
   end
+  return false
+ end
 
-  -- used for grinding
-  local current_wall = nil
+ -- used for grinding
+ local current_wall = nil
 
-  if ps == states.idle then
-   if (
-    controls_enabled and
-	(btn(keys.a) or btn(keys.b))
-   ) then
-    p_state = states.crouch
-   end
-  elseif ps == states.crouch then
-   check_for_jump(ground_jump_speed)
-  elseif ps == states.launch then
-   if launch_t > 0 then
-    p_state = states.jump
-   end
-  elseif ps == states.jump then
-   if (
-    p.dy > 0 and
-    ground_y-p.y < max_grind_y
-   ) then
-    p_state = states.down
-    floating_after_jump = false
-    play_snd(-1) -- stop thrust
-   elseif (
-	controls_enabled and
-    get_first_grindable_x() < p.x+16
-    and
-    (btn(keys.a) or btn(keys.b)) 
-   ) then
-    floating_after_jump = false
-    play_snd(-1) -- stop thrust
-    for i=1,#walls do
-     if (
-      walls[i].exists and
-      not walls[i].breaking and
-      player.x + 16 >= walls[i].x and
-      player.x <= walls[i].x + 8*walls[i].w and 
-      player.y <= find_grind_y(walls[i])
-     ) then
-      local grind_y =
-       find_grind_y(walls[i])
-      if player.y == grind_y then
-       -- just entered
-       -- grind state
-       
-       -- grind achieved
-       tutorial_achieve(tut_steps.grind)
-       if prev_grind_y > 0 then
-        if grind_y <
-        prev_grind_y then
-          -- jump on a higher
-          -- wall achieved
-          tutorial_achieve(tut_steps.wall_up)
-        elseif grind_y >
-        prev_grind_y and
-        p_falling then
-          -- fall on a lower
-          -- wall achieved
-          tutorial_achieve(tut_steps.wall_down)
-        end
-       end
-       
-       prev_grind_y = grind_y
-       
-       add_to_score(
-       sc.grind_start_pts)
-
-       -- is a down, or is it
-       -- b?
-       local adown =
-       btn(keys.a)
-
-       -- initiate 
-       -- grinding
-       -- scoring
-       -------------------
-       -- reset grind ticks
-       -- for this unperturbated
-       -- horizontal section
-       p_totalgrindt = 0
-
-       -- if grinding on the
-       -- opposite side as
-       -- last time...
-       if (adown and  
-       p_last_grind == 'b') or
-       (adown == false and
-       p_last_grind == 'a') 
-       then
-       	-- alternate grind
-       	-- achieved
-        tutorial_achieve(tut_steps.grind_switch)
-        p_grindinterval = 
-        sc.interval_alt
-       else
-        -- reset fully
-        p_grindt = 0
-        p_grindinterval = 
-        sc.interval_base
-       end
-       ---------------------
-
-       p_last_grind =
-        adown and 'a' or 'b'
-
-       p_state = states.grind
-       trying_to_grind = false
-       player.dy = 0
-       play_snd(snd.grind)
-       
-       destruct_level =
-        gauge.multiplier
-       write_gpio(
-        destruct_level,
-        4,
-        3
-       )
-
-       local key_name =
-        p_last_grind=="a" and "🅾️" or "❎"
-       current_combo =
-        current_combo..key_name.."\150"
-      end
-      if current_wall == nil or
-      walls[i].y < current_wall.y 
-      then
-      	current_wall = walls[i]
-      end
-     end
-    end
-   end
-  elseif ps == states.grind then
-   -- prove me wrong!
-   local player_should_fall = true
-
+ if ps == states.idle then
+  if (
+   controls_enabled and
+   (btn(keys.a) or btn(keys.b))
+  ) then
+   p_state = states.crouch
+  end
+ elseif ps == states.crouch then
+  check_for_jump(ground_jump_speed)
+ elseif ps == states.launch then
+  if launch_t > 0 then
+   p_state = states.jump
+  end
+ elseif ps == states.jump then
+  if (
+   p.dy > 0 and
+   ground_y-p.y < max_grind_y
+  ) then
+   p_state = states.down
+   floating_after_jump = false
+   play_snd(-1)  -- stop thrust
+  elseif (
+   controls_enabled and
+   get_first_grindable_x() < p.x+16
+   and
+   (btn(keys.a) or btn(keys.b))
+  ) then
+   floating_after_jump = false
+   play_snd(-1)  -- stop thrust
    for i=1,#walls do
     if (
      walls[i].exists and
      not walls[i].breaking and
      player.x + 16 >= walls[i].x and
-     player.x <= walls[i].x + 8*walls[i].w
+     player.x <= walls[i].x + 8*walls[i].w and
+     player.y <= find_grind_y(walls[i])
     ) then
      local grind_y =
-      find_grind_y(walls[i])
+     find_grind_y(walls[i])
      if player.y == grind_y then
-      player_should_fall = false
-     break
+      -- just entered
+      -- grind state
+
+      -- grind achieved
+      tutorial_achieve(tut_steps.grind)
+      if prev_grind_y > 0 then
+       if grind_y <
+       prev_grind_y then
+        -- jump on a higher
+        -- wall achieved
+        tutorial_achieve(tut_steps.wall_up)
+       elseif grind_y >
+       prev_grind_y and
+       p_falling then
+        -- fall on a lower
+        -- wall achieved
+        tutorial_achieve(tut_steps.wall_down)
+       end
+      end
+
+      prev_grind_y = grind_y
+
+      add_to_score(
+       sc.grind_start_pts)
+
+      -- is a down, or is it
+      -- b?
+      local adown =
+      btn(keys.a)
+
+      -- initiate
+      -- grinding
+      -- scoring
+      -------------------
+      -- reset grind ticks
+      -- for this unperturbated
+      -- horizontal section
+      p_totalgrindt = 0
+
+      -- if grinding on the
+      -- opposite side as
+      -- last time...
+      if (adown and
+       p_last_grind == 'b') or
+      (adown == false and
+       p_last_grind == 'a')
+      then
+       -- alternate grind
+       -- achieved
+       tutorial_achieve(tut_steps.grind_switch)
+       p_grindinterval =
+       sc.interval_alt
+      else
+       -- reset fully
+       p_grindt = 0
+       p_grindinterval =
+       sc.interval_base
+      end
+      ---------------------
+
+      p_last_grind =
+      adown and 'a' or 'b'
+
+      p_state = states.grind
+      trying_to_grind = false
+      player.dy = 0
+      play_snd(snd.grind)
+
+      destruct_level =
+      gauge.multiplier
+      write_gpio(
+       destruct_level,
+       4,
+       3
+      )
+
+      local key_name =
+      p_last_grind=="a" and "🅾️" or "❎"
+      current_combo =
+      current_combo..key_name.."\150"
+     end
+     if current_wall == nil or
+     walls[i].y < current_wall.y
+     then
+      current_wall = walls[i]
      end
     end
    end
+  end
+ elseif ps == states.grind then
+  -- prove me wrong!
+  local player_should_fall = true
 
-   if player_should_fall then
-    -- fallllllllllllllll
-    p_falling = true
-    p_state = states.jump
-    play_snd(-1) -- stop grind noise
-    if sc.destroy_on_fall then
-     if check_for_destruction()
-     then
-      floating_after_jump = true
-      awaiting_thrust_after_jump
-       = true
-      p.dy =
-       -find_explosion_jump_speed()
-     end
+  for i=1,#walls do
+   if (
+    walls[i].exists and
+    not walls[i].breaking and
+    player.x + 16 >= walls[i].x and
+    player.x <= walls[i].x + 8*walls[i].w
+   ) then
+    local grind_y =
+    find_grind_y(walls[i])
+    if player.y == grind_y then
+     player_should_fall = false
+     break
+    end
+   end
+  end
+
+  if player_should_fall then
+   -- fallllllllllllllll
+   p_falling = true
+   p_state = states.jump
+   play_snd(-1)  -- stop grind noise
+   if sc.destroy_on_fall then
+    if check_for_destruction()
+    then
+     floating_after_jump = true
+     awaiting_thrust_after_jump
+     = true
+     p.dy =
+     -find_explosion_jump_speed()
+    end
+   end
+  else
+
+   -- continuous grinding!!
+   ------------------
+   if p_totalgrindt <
+   sc.max_grind_ticks then
+    p_grindt += 1
+    p_totalgrindt += 1
+    if p_grindt>=p_grindinterval
+    then
+     add_to_score(1)
+     p_grindt = 0
+     p_grindinterval =
+     max(p_grindinterval-
+      sc.interval_drop_rate,
+      sc.interval_min)
+    end
+   end
+   ------------
+   if gauge.maxed then
+    if check_for_jump(
+     find_explosion_jump_speed()
+    ) then
+     floating_after_jump = true
+     awaiting_thrust_after_jump
+     = true
     end
    else
-   
-    -- continuous grinding!!
-    ------------------
-    if p_totalgrindt < 
-    sc.max_grind_ticks then
-     p_grindt += 1
-     p_totalgrindt += 1
-     if p_grindt>=p_grindinterval
-     then
-      add_to_score(1)
-      p_grindt = 0
-      p_grindinterval =
-       max(p_grindinterval-
-       sc.interval_drop_rate,
-       sc.interval_min)
-     end
-    end
-    ------------
-    if gauge.maxed then
-     if check_for_jump(
-      find_explosion_jump_speed()
-     ) then
-      floating_after_jump = true
-      awaiting_thrust_after_jump
-       = true
-     end
-    else
-     check_for_jump(grind_jump_speed)
-    end
+    check_for_jump(grind_jump_speed)
    end
-  elseif ps == states.down then
-   -- todo: special handling ?
-  else  -- states.land
-   if land_t > 0 then
-    p_state = states.idle
-    if (
-	controls_enabled and
+  end
+ elseif ps == states.down then
+ -- todo: special handling ?
+ else  -- states.land
+  if land_t > 0 then
+   p_state = states.idle
+   if (
+    controls_enabled and
     (btn(keys.a) or btn(keys.b))
    ) then
     p_state = states.crouch
    end
-   end
   end
+ end
 
-  if (
-   p_state == states.launch or
-   p_state == states.jump or
-   p_state == states.down
-  ) then
-   local py_before = p.y
-   if apply_gravity(p) then
+ if (
+  p_state == states.launch or
+  p_state == states.jump or
+  p_state == states.down
+ ) then
+  local py_before = p.y
+  if apply_gravity(p) then
+   if (
+    controls_enabled and
+    current_wall and
+    (btn(keys.a) or btn(keys.b))
+   ) then
+    local grind_y =
+    find_grind_y(current_wall)
     if (
-	 controls_enabled and
-     current_wall and
-     (btn(keys.a) or btn(keys.b))
+     py_before < grind_y and
+     p.y > grind_y
     ) then
-     local grind_y =
-      find_grind_y(current_wall)
-     if (
-      py_before < grind_y and
-      p.y > grind_y
-     ) then
-      -- oops we just passed through
-      -- the wall while holding the button!
-      -- reset player on wall so grinding
-      -- works on next turn
-      p.y = grind_y
-     end
-    elseif (
-     awaiting_thrust_after_jump and
-     p.dy >= 0
-    ) then
-     play_snd(snd.thrust)
-     awaiting_thrust_after_jump
-      = false
+     -- oops we just passed through
+     -- the wall while holding the button!
+     -- reset player on wall so grinding
+     -- works on next turn
+     p.y = grind_y
     end
-   else
-    -- just landed
-    p_last_grind = nil
-    reset_gauge(gauge)
-    p_state = states.land
-    trying_to_grind = true
-    land_t = land_time
-    play_snd(snd.skate)
-    prev_grind_y = 0
-    current_combo = ""
+   elseif (
+    awaiting_thrust_after_jump and
+    p.dy >= 0
+   ) then
+    play_snd(snd.thrust)
+    awaiting_thrust_after_jump
+    = false
    end
-  end
-
-  if (
-   p_state == states.idle or
-   p_state == states.crouch or
-   p_state == states.land
-  ) then
-   player.bob_frame = flr(
-   t/idle_bob_time % 2
-   )
   else
-   yoffset = 0
+   -- just landed
+   p_last_grind = nil
+   reset_gauge(gauge)
+   p_state = states.land
+   trying_to_grind = true
+   land_t = land_time
+   play_snd(snd.skate)
+   prev_grind_y = 0
+   current_combo = ""
   end
+ end
 
-  compute_frame(p)
-  
-  if ps != p_state then
-   write_gpio(p_state, 1, 3)
-  end
-  
-  if (
-   destruct_level > 0 and
-   p_state != states.grind and
-   (not is_a_wall_moving())
-  ) then
-   destruct_level = 0
-   write_gpio(
-    destruct_level,
-    4,
-    3
-   )
-  end
+ if (
+  p_state == states.idle or
+  p_state == states.crouch or
+  p_state == states.land
+ ) then
+  player.bob_frame = flr(
+   t/idle_bob_time % 2
+  )
+ else
+  yoffset = 0
+ end
+
+ compute_frame(p)
+
+ if ps != p_state then
+  write_gpio(p_state, 1, 3)
+ end
+
+ if (
+  destruct_level > 0 and
+  p_state != states.grind and
+  (not is_a_wall_moving())
+ ) then
+  destruct_level = 0
+  write_gpio(
+   destruct_level,
+   4,
+   3
+  )
+ end
 end
 
 function compute_frame(p)
-  local ps = p_state
-  if ps == states.idle then
-   if p.bob_frame == 0 then frm = 0
-   else
+ local ps = p_state
+ if ps == states.idle then
+  if p.bob_frame == 0 then frm = 0
+  else
    frm = 6
-   end
-  elseif ps == states.crouch then
-   frm = 1
-  elseif ps == states.launch then
-   if (
-    launch_time - launch_t <
-    launch_frm_time
-   ) then
-    frm = 2
-   else
-    frm = 3
-   end
-  elseif ps == states.jump then
-   if (not floating_after_jump and
+  end
+ elseif ps == states.crouch then
+  frm = 1
+ elseif ps == states.launch then
+  if (
+   launch_time - launch_t <
+   launch_frm_time
+  ) then
+   frm = 2
+  else
+   frm = 3
+  end
+ elseif ps == states.jump then
+  if (not floating_after_jump and
    controls_enabled and
    btn(keys.a)) then
-    frm = 3
-   elseif (not floating_after_jump and
+   frm = 3
+  elseif (not floating_after_jump and
    controls_enabled and
    btn(keys.b)) then
-    frm = 5
-   else
-    frm = 4
-   end
-  elseif ps == states.grind then
-   -- todo: handle grind
-  elseif ps == states.down then
-   if controls_enabled and
-   btn(keys.a) then
-    frm = 3
-   else
-    frm = 5
-   end
-  else -- ps == states.land
-   frm = 1
+   frm = 5
+  else
+   frm = 4
   end
+ elseif ps == states.grind then
+ -- todo: handle grind
+ elseif ps == states.down then
+  if controls_enabled and
+  btn(keys.a) then
+   frm = 3
+  else
+   frm = 5
+  end
+ else  -- ps == states.land
+  frm = 1
+ end
 
-  p.frame = 80+2*frm
-  p.framew = 2
-  p.frameh = 3
+ p.frame = 80+2*frm
+ p.framew = 2
+ p.frameh = 3
 end
 
 -- returns false if no effect,
 -- else true
 function apply_gravity(p)
-  if floating_after_jump and p.dy >= 0 then
-    p.y += floating_speed
-  else
-    p.dy += p.ddy
-    p.y += p.dy
-  end
-  if (p.y >= ground_y) then
-    -- we are on the ground
-    p.y = ground_y
-    p.dy = 0
-    floating_after_jump = false
-    return false
-  end
-  return true
+ if floating_after_jump and p.dy >= 0 then
+  p.y += floating_speed
+ else
+  p.dy += p.ddy
+  p.y += p.dy
+ end
+ if (p.y >= ground_y) then
+  -- we are on the ground
+  p.y = ground_y
+  p.dy = 0
+  floating_after_jump = false
+  return false
+ end
+ return true
 end
-
 
 function drawskater(p)
  if not p.framew then return end
@@ -1307,7 +1304,7 @@ function reset()
  destruct_level = 0
  --------------------
  t = 0
-  --------------
+ --------------
  set_diff_level(1)
  --------------
  score = 0
@@ -1341,38 +1338,38 @@ function reset()
 end
 
 function _init()
-  
-  game_over = false
-  
-  player = make_player(8, ground_y)
-  
-  sparks = {}
-  
-  player.spark = add_spark()
-  
-  gauge = make_gauge(
-   8,64,0,119)
 
-  gauge.x = 64-gauge.width/2
+ game_over = false
 
-  palt(0,false)
-  palt(7,true) 
+ player = make_player(8, ground_y)
 
-  wall_height_drawing_box = {
-   normal=fill_drawing_box(
-    wall_height_weights.normal
-   ),
-   ground=fill_drawing_box(
-    wall_height_weights.ground
-   ),
-   tutorial_ground=
-   fill_drawing_box(
-   	wall_height_weights.
-   	tutorial_ground
-   )
-  }
-  
-  reset()
+ sparks = {}
+
+ player.spark = add_spark()
+
+ gauge = make_gauge(
+  8,64,0,119)
+
+ gauge.x = 64-gauge.width/2
+
+ palt(0,false)
+ palt(7,true)
+
+ wall_height_drawing_box = {
+  normal=fill_drawing_box(
+   wall_height_weights.normal
+  ),
+  ground=fill_drawing_box(
+   wall_height_weights.ground
+  ),
+  tutorial_ground=
+  fill_drawing_box(
+   wall_height_weights.
+   tutorial_ground
+  )
+ }
+
+ reset()
 end
 
 function add_spark(x,y)
@@ -1399,12 +1396,12 @@ function add_spark(x,y)
 end
 
 function update_spark(spark)
- if not spark.exists then 
+ if not spark.exists then
   return
  end
  --if spark.elapsed >= 4 then
-  --spark.exists = false
-  --return
+ --spark.exists = false
+ --return
  --end
  --spark.x+=spark.x_speed
  --spark.y+=spark.y_speed
@@ -1427,10 +1424,9 @@ function draw_spark(spark)
  end
  --pset(spark.x,spark.y,10)
  spr(spark.frame,
- spark.x-9,
- spark.y-7)
+  spark.x-9,
+  spark.y-7)
 end
-
 
 function set_diff_level(lvl)
  if lvl > #wall_width_weights
@@ -1445,30 +1441,29 @@ function set_diff_level(lvl)
  fill_drawing_box(
   wall_width_weights[lvl]
  )
-end 
-
+end
 
 function fill_drawing_box(weights, drawing_box)
-  drawing_box = {}
-  for value, weight in pairs(weights) do
-    for i=1,weight do
-      add(drawing_box, value)
-    end
+ drawing_box = {}
+ for value, weight in pairs(weights) do
+  for i=1,weight do
+   add(drawing_box, value)
   end
-  return drawing_box
+ end
+ return drawing_box
 end
 
 function make_gauge(
-width_in_sprites,
-max_value,
-x,y)
+ width_in_sprites,
+ max_value,
+ x,y)
 
  width_in_sprites = max(
   3,width_in_sprites)
-  
+
  local width =
-  width_in_sprites * 8
-  
+ width_in_sprites * 8
+
  -- create gauge object
  gauge={
   w=w,
@@ -1476,17 +1471,17 @@ x,y)
   y=y,
   width=width,
   width_in_sprites=
-   width_in_sprites,
+  width_in_sprites,
   pixels_per_unit=
-   width/max_value,
+  width/max_value,
   max_value=max_value,
   value=0,
   multiplier=1,
   maxed=false
  }
- 
+
  set_gauge_value(gauge,units)
- 
+
  return gauge
 end
 
@@ -1495,18 +1490,18 @@ function reset_gauge(gauge)
 end
 
 function set_gauge_value(
-gauge,value)
+ gauge,value)
  gauge.value = min(
   gauge.max_value,value)
  local _maxed = gauge.maxed
  gauge.maxed = gauge.value==
-  gauge.max_value 
+ gauge.max_value
  if not _maxed and gauge.maxed then
   play_snd(snd.ticker)
  end
  local mult =
  flr(4*(gauge.value/
- gauge.max_value))+1
+   gauge.max_value))+1
  mult = min(mult,4)
  if destruct_level < 6 then
   -- don't mess with it if the
@@ -1530,11 +1525,11 @@ function draw_gauge(gauge)
  local y = gauge.y
  local col = 7+gauge.multiplier
  local basecol = 5
- 
- local flasht 
+
+ local flasht
  local gaugecol
  local textcol
- 
+
  if gauge.maxed then
   col = basecol
   -- zero or one
@@ -1543,7 +1538,7 @@ function draw_gauge(gauge)
   textcol = flasht == 0 and 0 or 7
   pal(basecol,gaugecol)
  end
- 
+
  -- left cap
  spr(70,x-1,y)
  for i=0,
@@ -1560,18 +1555,18 @@ function draw_gauge(gauge)
    x,
    y+1,
    x+gauge.pixels_per_unit*
-    gauge.value-1,
+   gauge.value-1,
    y+inner_height,
    col
   )
  end
- 
+
  if gauge.maxed then
   local text = i18n.bring_it_down
   print(
    text,
    x+gauge.width/2-
-    (#text/2)*4,
+   (#text/2)*4,
    y+1,
    textcol
   )
@@ -1588,7 +1583,7 @@ end
 function add_wall_crack(wall)
  local tx = 1+flr(rnd(wall.w-2))
  local ty = 1+flr(rnd(wall.h-3))
- local tile = 
+ local tile =
  wall.tiles[1+ty*wall.w+tx]
  if tile.cracks == 0 then
   tile.flip_x = rnd()<0.5
@@ -1596,7 +1591,7 @@ function add_wall_crack(wall)
  end
  tile.cracks += 1
  tile.cracks = min(
- #crack_frames-1,tile.cracks)
+  #crack_frames-1,tile.cracks)
  tile.frame = crack_frames[tile.cracks+1]
 end
 
@@ -1630,13 +1625,13 @@ function add_wall(x,forced_h)
  if not wall.tiles then
   wall.tiles = {}
  end
- 
+
  local w = wall.w
  local h = wall.h
- 
+
  local numtiles = w*h
  wall.num_tiles=numtiles
- 
+
  for i=1,numtiles do
   local tx = (i-1)%w
   local ty = flr((i-1)/w)
@@ -1649,7 +1644,7 @@ function add_wall(x,forced_h)
   ty == h-2 and 2 or
   ty == 0 and 0 or
   1
-  local frm = 
+  local frm =
   wall_left_frames[row_index+1]+
   col_index
   wall.tiles[i] = {
@@ -1663,22 +1658,22 @@ function add_wall(x,forced_h)
    flip_y=false
   }
  end
- 
+
  -- add barbwire (or not)
  if barbwire_on then
   if rnd(1) < 0.2 then
    local numbarbs =
-    min(4,2+flr(rnd(wall.w-4+1)))
+   min(4,2+flr(rnd(wall.w-4+1)))
    local barbstart =
-    1+flr(rnd(wall.w-numbarbs+1))
+   1+flr(rnd(wall.w-numbarbs+1))
    for i=1,wall.w do
     wall.barbwire[i] =
-     i >=barbstart and
-     i < barbstart+numbarbs
+    i >=barbstart and
+    i < barbstart+numbarbs
    end
   end
  end
- 
+
  ----------------------
  -- propaganda
  ----------------------
@@ -1699,15 +1694,15 @@ function add_wall(x,forced_h)
    end
    p.walls_without += 1
   end
-  
+
   -- pick one template randomly
   -- from the list
   local p = posterslist[
    1+flr(rnd(#posterslist))
   ]
-  
+
   p.walls_without = 0
-  
+
   -- paste it on the wall
   local poster=
   {
@@ -1750,20 +1745,20 @@ function add_wall(x,forced_h)
       hole.flipx=rnd()<0.5
       hole.flipy=rnd()<0.5
      end
-     
+
      poster.holes[
       #poster.holes+1
      ] = hole
-    end  
+    end
    end
   end
-  
+
   wall.posters[#wall.posters+1]=
   poster
  end
- 
+
  local crack_level =
-  gauge.multiplier - 1
+ gauge.multiplier - 1
  if crack_level > 0 then
   crack_one_wall(
    wall,
@@ -1778,30 +1773,30 @@ function add_wall(x,forced_h)
 end
 
 function generate_wall_width()
-  return random_draw(wall_width_drawing_box)
+ return random_draw(wall_width_drawing_box)
 end
 
 function generate_wall_height()
-  local box = 
-  tut_running and
-  trying_to_grind and
-  wall_height_drawing_box.
-  tutorial_ground
-  or
-  trying_to_grind and
-  wall_height_drawing_box.ground
-  or
-  wall_height_drawing_box.normal
-  return random_draw(box)
+ local box =
+ tut_running and
+ trying_to_grind and
+ wall_height_drawing_box.
+ tutorial_ground
+ or
+ trying_to_grind and
+ wall_height_drawing_box.ground
+ or
+ wall_height_drawing_box.normal
+ return random_draw(box)
 end
 
 function random_draw(drawing_box)
-  local index = flr(rnd(#drawing_box)) + 1
-  return drawing_box[index]
+ local index = flr(rnd(#drawing_box)) + 1
+ return drawing_box[index]
 end
 
 function crack_one_wall(wall,maybe,
-num_min,num_max)
+ num_min,num_max)
  -- make the nbr of cracks
  -- proportionnal to the wall's
  -- size
@@ -1811,11 +1806,11 @@ num_min,num_max)
  num_max*=size_factor
  num_min = flr(num_min)
  num_max = flr(num_max)
- 
+
  if wall.exists and not
-  wall.breaking then
+ wall.breaking then
   if rnd()<maybe then
-   local num = num_min + 
+   local num = num_min +
    flr(rnd(num_max-num_min))
    for j=1,num do
     add_wall_crack(wall)
@@ -1825,7 +1820,7 @@ num_min,num_max)
 end
 
 function crack_all_walls(maybe,
-num_min,num_max)
+ num_min,num_max)
  for i=1, #walls do
   crack_one_wall(
    walls[i],
@@ -1842,7 +1837,7 @@ function break_all_walls()
  local wallx = 128
  if lastwall then
   wallx = flr(lastwall.x+
-  lastwall.w*8)
+   lastwall.w*8)
  end
  add_wall(wallx)
  -----------------
@@ -1855,16 +1850,16 @@ end
 
 function break_wall(wall)
  if not wall.exists or
- wall.breaking then 
+ wall.breaking then
   return
  end
  wall.breaking = true
  wall.anim_elapsed = 0
  for i=1, wall.w do
-  wall.explosions[i] = 
-   -4-flr(rnd(4))
-  wall.rubble[i] = 
-   rubble[1+flr(rnd(3))]
+  wall.explosions[i] =
+  -4-flr(rnd(4))
+  wall.rubble[i] =
+  rubble[1+flr(rnd(3))]
  end
  play_snd(snd.explode)
  destruct_level = 6
@@ -1873,7 +1868,7 @@ end
 
 function update_wall(wall)
  if not (wall.exists and
- game_started) then
+  game_started) then
   return
  end
  -- no anim offset by default
@@ -1897,12 +1892,12 @@ function update_wall(wall)
   if not tut_paused then
    wall.anim_elapsed += 1
   end
-  wall.anim_x = 
-   rnd(6)-3
-  wall.anim_y = 
-   (wall.anim_elapsed/4)*
-   (wall.anim_elapsed/4)+
-   rnd(2)-1
+  wall.anim_x =
+  rnd(6)-3
+  wall.anim_y =
+  (wall.anim_elapsed/4)*
+  (wall.anim_elapsed/4)+
+  rnd(2)-1
  end
  if not tut_paused then
   wall.x -= scroll_speed
@@ -1917,10 +1912,10 @@ function draw_wall(wall)
   return
  end
  local x = wall.x+
-  wall.anim_x
+ wall.anim_x
  local y = wall.y+
-  wall.anim_y
- 
+ wall.anim_y
+
  for i=1, wall.num_tiles do
   local tile = wall.tiles[i]
   spr(
@@ -1933,14 +1928,14 @@ function draw_wall(wall)
    tile.flip_y
   )
  end
- 
+
  for i=1, wall.w do
-   
+
   -- draw barbwire
   if wall.barbwire[i] then
    spr(52,x+(i-1)*8,y-8)
   end
-  
+
   -- draw rubble
   if wall.breaking then
    -- total animation time in frames
@@ -1948,10 +1943,10 @@ function draw_wall(wall)
    -- if at least past a certain point,
    -- reveal the rubble
    local xplo_frames =
-    flr(wall.anim_elapsed/
+   flr(wall.anim_elapsed/
     4+wall.explosions[i])
    if xplo_frames >= 2 then
-    local rubble = 
+    local rubble =
     wall.rubble[i]
     spr(
      rubble.i,
@@ -1963,24 +1958,24 @@ function draw_wall(wall)
    end
   end
  end
- 
+
  -- draw propaganda
  for i=1, #wall.posters do
   palt(7,false)
   palt(0,false)
   local p = wall.posters[i]
-  palt(p.template.tcol or 0,true) 
-  
+  palt(p.template.tcol or 0,true)
+
   local lx = x+p.x
   local rx = x+p.x+p.w*8-8
   local ty = y+p.y
   local by = y+p.y+p.h*8-8
-  
+
   if p.template ==
   posters.make_america_great then
    rectfill(
-   lx,ty,rx+8-1,by+8-1,
-   8)
+    lx,ty,rx+8-1,by+8-1,
+    8)
    local text = 'make america'
    local tw = #text*4
    print(text,lx+p.w*4-tw/2,ty+5,7)
@@ -1994,8 +1989,8 @@ function draw_wall(wall)
   else
    spr(p.i,x+p.x,y+p.y,p.w,p.h)
   end
-  
-  if p.template == 
+
+  if p.template ==
   posters.illegals_out_alt then
    --stripes over 'illegals'
    for j=0,3 do
@@ -2027,9 +2022,9 @@ function draw_wall(wall)
    for i=1,#p.holes do
     local hole = p.holes[i]
     spr(hole.frm,lx+hole.x,
-    ty+hole.y,1,1,
-    hole.flipx,
-    hole.flipy)
+     ty+hole.y,1,1,
+     hole.flipx,
+     hole.flipy)
    end
   end
   palt(0,false)
@@ -2038,7 +2033,7 @@ function draw_wall(wall)
 end
 
 function draw_wall_explosions(
-wall)
+ wall)
  if not wall.exists then
   return
  end
@@ -2052,32 +2047,32 @@ wall)
    -- total elapsed animation
    -- frames
    local xplo_frames =
-    flr(wall.anim_elapsed/4+
+   flr(wall.anim_elapsed/4+
     wall.explosions[i])
    -- current frame index
    local xplo_curframe =
-    xplo_frames%xplo_duration
+   xplo_frames%xplo_duration
    -- plays explosion anim only 2 times
    if xplo_frames >=0 and
-    xplo_frames < 
-    xplo_duration*1 and
-    xplo_curframe >= 0 and
-    xplo_curframe <= 3 then
-     local sprite_index=
-      explosion_frames[
-      xplo_curframe+1]
-     spr(
-      sprite_index,
-      wall.x+(i-1)*8-4,
-      wall.y+(wall.h-2)*8,
-      2,
-      2
-     )
-    end
+   xplo_frames <
+   xplo_duration*1 and
+   xplo_curframe >= 0 and
+   xplo_curframe <= 3 then
+    local sprite_index=
+    explosion_frames[
+     xplo_curframe+1]
+    spr(
+     sprite_index,
+     wall.x+(i-1)*8-4,
+     wall.y+(wall.h-2)*8,
+     2,
+     2
+    )
    end
+  end
   palt(0,false)
   palt(7,true)
- end   
+ end
 end
 
 function drawscrollmap(
@@ -2102,10 +2097,10 @@ function is_a_wall_moving()
  for i=1, #walls do
   local wall = walls[i]
   if (
-    wall.exists and
-    wall.breaking and
-    wall.y + wall.anim_y <
-     ground_y + 60
+   wall.exists and
+   wall.breaking and
+   wall.y + wall.anim_y <
+   ground_y + 60
   ) then
    return true
   end
@@ -2132,23 +2127,23 @@ function draw_title()
  end
 
  local wall_anim_y =
-  flr((t/4)*(t/4))
+ flr((t/4)*(t/4))
  local wall_y =
-  -- apply gravity at start
-  title_wall_y+wall_anim_y
- 
+ -- apply gravity at start
+ title_wall_y+wall_anim_y
+
  local logo_t = max(0,t-5)
  local logo_anim_y =
-  flr((logo_t/4)*(logo_t/4))
+ flr((logo_t/4)*(logo_t/4))
  local logo_x = 13
  local logo_y = 12+logo_anim_y
 
  -- wall in foreground
  map(0,17,-1,wall_y,18,15)
- 
+
  local border_offset_x = 42
  local border_offset_y = 26
- 
+
  -- logo
  -- sk8
  spr(162,logo_x,logo_y,5,6)
@@ -2156,30 +2151,30 @@ function draw_title()
  spr(200,logo_x+6*8,logo_y+2*8,1,3)
  -- border
  spr(201,
- logo_x+border_offset_x,
- logo_y+border_offset_y,
- 2,3)
+  logo_x+border_offset_x,
+  logo_y+border_offset_y,
+  2,3)
  spr(187,
- logo_x+border_offset_x+2*8,
- logo_y+border_offset_y-1*8,
- 1,4)
+  logo_x+border_offset_x+2*8,
+  logo_y+border_offset_y-1*8,
+  1,4)
  spr(188,
- logo_x+border_offset_x+3*8,
- logo_y+border_offset_y-1*8,
- 1,3)
+  logo_x+border_offset_x+3*8,
+  logo_y+border_offset_y-1*8,
+  1,3)
  spr(173,
- logo_x+border_offset_x+4*8,
- logo_y+border_offset_y-2*8,
- 1,4)
+  logo_x+border_offset_x+4*8,
+  logo_y+border_offset_y-2*8,
+  1,4)
  spr(174,
- logo_x+border_offset_x+5*8,
- logo_y+border_offset_y-2*8,
- 2,3)
- 
+  logo_x+border_offset_x+5*8,
+  logo_y+border_offset_y-2*8,
+  2,3)
+
  -- score
  if not (last_score == nil) then
   local text = i18n.score.." "..
-   last_score
+  last_score
   print(
    text,
    64-#text*2,
@@ -2195,7 +2190,7 @@ function draw_title()
   )
  ) then
   text = i18n.hi_score.." "..
-   hi_score
+  hi_score
   print(
    text,
    64-#text*2,
@@ -2205,14 +2200,14 @@ function draw_title()
  end
 
  local message =
-   i18n.press_buttons
+ i18n.press_buttons
  local blink = true
  if (
   start_countdown or
   game_started
  ) then
   message =
-   i18n.wreck_that_wall
+  i18n.wreck_that_wall
   blink = false
  end
  if (
@@ -2229,79 +2224,79 @@ function draw_title()
 end
 
 function draw_wall_outline(wall)
-  local width = 8*wall.w
-  local height = 8*wall.h
-  if (
-    wall.exists and
-    not wall.breaking
-    and player.x + 16 >= wall.x
-    and player.x <= wall.x + width
-  ) then
-    line(wall.x, wall.y, wall.x, wall.y + height, 11)
-    line(wall.x, wall.y, wall.x + width, wall.y, 11)
-    line(wall.x, wall.y + height, wall.x + width, wall.y + height, 11)
-    line(wall.x + width, wall.y, wall.x + width, wall.y + height, 11)
-  end
+ local width = 8*wall.w
+ local height = 8*wall.h
+ if (
+  wall.exists and
+  not wall.breaking
+  and player.x + 16 >= wall.x
+  and player.x <= wall.x + width
+ ) then
+  line(wall.x, wall.y, wall.x, wall.y + height, 11)
+  line(wall.x, wall.y, wall.x + width, wall.y, 11)
+  line(wall.x, wall.y + height, wall.x + width, wall.y + height, 11)
+  line(wall.x + width, wall.y, wall.x + width, wall.y + height, 11)
+ end
 end
 
 function print_debug_messages()
-  if max_dy == nil or max_dy < player.dy then
-    max_dy = player.dy
-  end
+ if max_dy == nil or max_dy < player.dy then
+  max_dy = player.dy
+ end
 
-  if max_y == nil or max_y < player.y then
-    max_y = player.y
-  end
+ if max_y == nil or max_y < player.y then
+  max_y = player.y
+ end
 
-  if min_y == nil or min_y > player.y then
-    min_y = player.y
-  end
+ if min_y == nil or min_y > player.y then
+  min_y = player.y
+ end
 
-  local debug_messages = {
-    "walls: "..tostr(#walls),
-    "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
-    "player state: "..tostr(p_state),
-    "player dy: "..tostr(player.dy),
-    "max y: "..tostr(max_y),
-    "min y: "..tostr(min_y),
-    "max dy: "..tostr(max_dy)
-  }
-  for i=1,#debug_messages do
-    print(debug_messages[i], 1, (i-1)*6 + 16, 1)
-  end
+ local debug_messages = {
+  "walls: "..tostr(#walls),
+  "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
+  "player state: "..tostr(p_state),
+  "player dy: "..tostr(player.dy),
+  "max y: "..tostr(max_y),
+  "min y: "..tostr(min_y),
+  "max dy: "..tostr(max_dy)
+ }
+ for i=1,#debug_messages do
+  print(debug_messages[i], 1, (i-1)*6 + 16, 1)
+ end
 end
 
 function super_print(text,x,y,maincol,backcol)
-	print(
-		text,
-		x+1,
-		y,
-		backcol
-	)
-	print(
-		text,
-		x-1,
-		y,
-		backcol
-	)
-	print(
-		text,
-		x,
-		y+1,
-		backcol
-	)
-	print(
-		text,
-		x,
-		y-1,
-		backcol
-	)
-	print(
-		text,
-		x,
-		y,
-		maincol
-	)
+ print(
+  text,
+  x+1,
+  y,
+  backcol
+ )
+ print(
+  text,
+  x-1,
+  y,
+  backcol
+ )
+ print(
+  text,
+  x,
+  y+1,
+  backcol
+ )
+ print(
+  text,
+  x,
+  y-1,
+  backcol
+ )
+ print(
+  text,
+  x,
+  y,
+  maincol
+ )
 end
 
 function combo_print()
@@ -2320,9 +2315,9 @@ function combo_print()
    off=combo_link_offsets[k]
   end
   add(draw_x_y_list,{
-   x=base_x+4+off[1],
-   y=base_y+100+off[2]
-  })
+    x=base_x+4+off[1],
+    y=base_y+100+off[2]
+   })
  end
  while j <= #current_combo do
   local x = draw_x_y_list[j].x
@@ -2330,7 +2325,7 @@ function combo_print()
   local first = j
   local last = j+15
   if last > #current_combo then
-    last = #current_combo
+   last = #current_combo
   end
   if first > 1 then
    x -= 8
@@ -2341,30 +2336,30 @@ function combo_print()
   )
   local backcol = 7
   if destruct_t == 0 then
-    print(
-     text,
-     x+1,
-     y,
-     backcol
-    )
-    print(
-     text,
-     x-1,
-     y,
-     backcol
-    )
-    print(
-     text,
-     x,
-     y+1,
-     backcol
-    )
-    print(
-     text,
-     x,
-     y-1,
-     backcol
-    )
+   print(
+    text,
+    x+1,
+    y,
+    backcol
+   )
+   print(
+    text,
+    x-1,
+    y,
+    backcol
+   )
+   print(
+    text,
+    x,
+    y+1,
+    backcol
+   )
+   print(
+    text,
+    x,
+    y-1,
+    backcol
+   )
   end
   for i=1,#text do
    local _x = x
@@ -2395,554 +2390,553 @@ function combo_print()
 end
 
 function _draw()
-  local cam_x = 0
-  local cam_y = 0
-  if is_a_wall_moving() then
-   cam_x =
-    flr(-1 + rnd(5))
-   cam_y =
-    flr(-1 + rnd(3))
+ local cam_x = 0
+ local cam_y = 0
+ if is_a_wall_moving() then
+  cam_x =
+  flr(-1 + rnd(5))
+  cam_y =
+  flr(-1 + rnd(3))
+ end
+ camera(cam_x, cam_y)
+
+ cls()
+ --sky
+ rectfill (-8,-8,127+8,127+8,12)
+ --cloud
+ palt(0,true)
+ palt(7,false)
+ local cloudx
+ cloudx = cloud_base_offset + cloud_1_offset
+ spr(76,cloudx,16,4,1)
+ cloudx = cloud_base_offset + cloud_2_offset
+ spr(76,cloudx,24,4,1)
+ palt(0,false)
+ palt(7,true)
+ -- far far mountains
+ drawscrollmap(bg_1_offset,32,2,-8,4*8+3,bg_scroll_width,2)
+ --mapdraw(32,2,0,4*8+3,32,2)
+ -- background
+ drawscrollmap(bg_2_offset,32,5,-8,5*8+3,bg_scroll_width,2);
+ drawscrollmap(bg_3_offset,32,7,-8,7*8,bg_scroll_width,2);
+ drawscrollmap(bg_4_offset,32,9,-8,9*8,bg_scroll_width,5);
+
+ --walls
+ for i=1, #walls do
+  draw_wall(walls[i])
+  if debug then
+   draw_wall_outline(walls[i])
   end
-  camera(cam_x, cam_y)
-  
-  cls()
-  --sky
-  rectfill (-8,-8,127+8,127+8,12)
-  --cloud
+ end
+ for i=1, #walls do
+  draw_wall_explosions(walls[i])
+ end
+
+ -- foreground
+ drawscrollmap(fg_1_offset,0,14,-8,14*8,fg_scroll_width,3)
+ rectfill(-8, 120, 136, 136, 0)
+ drawskater(player)
+
+ -- sparks!
+ for i=1, #sparks do
+  draw_spark(sparks[i])
+ end
+
+ -- tutorial or lyrics
+ -----------------------
+ -- tutorial
+ if tut_displaying then
+  if tut_disp_type != "none" then
+   local prompt
+   if tut_disp_type == "intro" then
+    prompt =
+    tut_prompts[1]
+   elseif tut_disp_type == "success"
+   then
+    local prompt_i = 1
+    if tut_complete then
+     if timer_ready then
+      prompt_i = 3
+     else
+      prompt_i = 2
+     end
+    end
+    prompt =
+    tut_success_prompts[prompt_i]
+   elseif tut_disp_type == "prompt"
+   then
+    prompt = tut_prompts[
+     tut_current_step+1]
+   end
+   ---- draw box ?
+   if (tut_disp_type == "success"
+    and not tut_complete)
+   or ((tut_disp_type == "prompt" or
+     tut_disp_type == "intro") and
+    tut_paused) then
+    color(2)
+    local rx = 2+flr(rnd(2))
+    local ry = 2+flr(rnd(2))
+    rectfill(rx,ry,rx+123,
+     ry+#prompt*8+3+3)
+   end
+   ---- draw text lines
+   local liney
+   for i=1, #prompt do
+    liney = 8+8*(i-1)
+    local text = prompt[i]
+    super_print(
+     text,
+     8*8 - (#text*4)/2,
+     liney,
+     7,  -- main color
+     2  -- back color
+    )
+   end
+   ---- draw press-to-
+   ---- resume prompt
+   if (
+    tut_can_resume and
+    flr(nonstop_t/32)%2 == 0
+   ) then
+    local text =
+    i18n.tut_press_resume
+    super_print(
+     text,
+     8*8 - (#text*4)/2,
+     liney + 16,
+     7,  -- main color
+     2  -- back color
+    )
+   end
+  end
+
+ --- end if tut_displaying
+ elseif lyric_t_offset() ~= nil then
+  -- lyric cursor
+  local lc = t-lyric_t_offset()  -- verse 1 only
+  for _,lyric in pairs(lyrics)
+  do
+   for _,off in pairs(lyric[3])
+   do
+    if
+    lc >= lyric[2][1] + off and
+    lc < lyric[2][2] + off then
+     text = lyric[1]
+     print(
+      text,
+      8*8 - (#text*4)/2,
+      8,
+      7
+     )
+     break
+    end
+   end
+  end
+ end
+ -- end tutorial or lyrics
+
+ ------------------------
+ -- u.i ☉☉
+ ------------------------
+
+ -- gauge
+ draw_gauge(gauge)
+
+ if timer_ready then
+  -- score
+  local text = tostr(display_score)
+  print(text,
+   gauge.x+gauge.width+4
+   ,121,6)
+
+  -- timer
+  local timer_sprite = 53
+  local timer_color = 6
+  if timer <= 10 then
+   timer_sprite = 48
+   timer_color = 8
+  end
   palt(0,true)
   palt(7,false)
-  local cloudx
-  cloudx = cloud_base_offset + cloud_1_offset
-  spr(76,cloudx,16,4,1)
-  cloudx = cloud_base_offset + cloud_2_offset
-  spr(76,cloudx,24,4,1)
+  spr(timer_sprite,2,121-2)
   palt(0,false)
   palt(7,true)
-  -- far far mountains
-  drawscrollmap(bg_1_offset,32,2,-8,4*8+3,bg_scroll_width,2)
-  --mapdraw(32,2,0,4*8+3,32,2)
-  -- background
-  drawscrollmap(bg_2_offset,32,5,-8,5*8+3,bg_scroll_width,2);
-  drawscrollmap(bg_3_offset,32,7,-8,7*8,bg_scroll_width,2);
-  drawscrollmap(bg_4_offset,32,9,-8,9*8,bg_scroll_width,5);
+  text = tostr(timer)
+  print(text,12,121,timer_color)
+ end
 
-  --walls
-  for i=1, #walls do
-   draw_wall(walls[i])
-    if debug then
-      draw_wall_outline(walls[i])
-    end
-  end
-  for i=1, #walls do
-   draw_wall_explosions(walls[i])
-  end
+ combo_print()
 
-  -- foreground
-  drawscrollmap(fg_1_offset,0,14,-8,14*8,fg_scroll_width,3)
-  rectfill(-8, 120, 136, 136, 0)
-  drawskater(player)
+ if debug then
+  print_debug_messages()
+ end
 
-  -- sparks!
-  for i=1, #sparks do
-   draw_spark(sparks[i])
-  end
+ -- layer title screen on top
+ draw_title()
 
-  -- tutorial or lyrics
-  -----------------------
-  -- tutorial
-  if tut_displaying then
-	if tut_disp_type != "none" then
-		local prompt
-		if tut_disp_type == "intro" then
-			prompt =
-			tut_prompts[1]
-		elseif tut_disp_type == "success"
-		then
-			local prompt_i = 1
-			if tut_complete then
-				if timer_ready then
-					prompt_i = 3
-				else
-					prompt_i = 2
-				end
-			end
-			prompt =
-			tut_success_prompts[prompt_i]
-		elseif tut_disp_type == "prompt"
-		then
-			prompt = tut_prompts[
-			tut_current_step+1]
-		end
-		---- draw box ?
-		if (tut_disp_type == "success"
-		and not tut_complete)
-		or ((tut_disp_type == "prompt" or
-		tut_disp_type == "intro") and
-		tut_paused) then
-			color(2)
-			local rx = 2+flr(rnd(2))
-			local ry = 2+flr(rnd(2))
-			rectfill(rx,ry,rx+123,
-			ry+#prompt*8+3+3)
-		end
-		---- draw text lines
-		local liney
-		for i=1, #prompt do
-			liney = 8+8*(i-1)
-			local text = prompt[i]
-			super_print(
-				text,
-				8*8 - (#text*4)/2,
-				liney,
-				7, -- main color
-				2 -- back color
-			)
-		end
-		---- draw press-to-
-		---- resume prompt
-		if (
-   tut_can_resume and
-   flr(nonstop_t/32)%2 == 0
-  ) then
-			local text =
-			i18n.tut_press_resume
-			super_print(
-				text,
-				8*8 - (#text*4)/2,
-				liney + 16,
-				7, -- main color
-				2 -- back color
-			)
-		end
-	end
-  	
-	--- end if tut_displaying
-  elseif lyric_t_offset() ~= nil then
-    -- lyric cursor
-   local lc = t-lyric_t_offset() -- verse 1 only
-   for _,lyric in pairs(lyrics)
-   do
-     for _,off in pairs(lyric[3])
-     do
-       if
-         lc >= lyric[2][1] + off and
-         lc < lyric[2][2] + off then
-           text = lyric[1]
-           print(
-             text,
-             8*8 - (#text*4)/2,
-             8,
-             7
-           )
-           break
-       end
-     end
-   end
-  end
-  -- end tutorial or lyrics
-  
-  ------------------------
-  -- u.i ☉☉
-  ------------------------
-  
-  -- gauge
-  draw_gauge(gauge)
-
-  if timer_ready then
-   -- score
-   local text = tostr(display_score)
-   print(text,
-    gauge.x+gauge.width+4
-    ,121,6)
-
-   -- timer
-   local timer_sprite = 53
-   local timer_color = 6
-   if timer <= 10 then
-    timer_sprite = 48
-    timer_color = 8
-   end
-   palt(0,true)
-   palt(7,false)
-   spr(timer_sprite,2,121-2)
-   palt(0,false)
-   palt(7,true)
-   text = tostr(timer)
-   print(text,12,121,timer_color)
-  end
-
-  combo_print()
-
-  if debug then
-    print_debug_messages()
-  end
-
-  -- layer title screen on top
-  draw_title()
-  
-  -- game over screen
-  --draw_game_over()
+-- game over screen
+--draw_game_over()
 end
 
 function _update60()
-  nonstop_t += 1
+ nonstop_t += 1
 
-  -- sparks!!!
-  for i=1, #sparks do
-   update_spark(sparks[i])
-  end
+ -- sparks!!!
+ for i=1, #sparks do
+  update_spark(sparks[i])
+ end
 
-  for i=1, #walls do
-   update_wall(walls[i])
-  end
+ for i=1, #walls do
+  update_wall(walls[i])
+ end
 
-  if tut_displaying then
-	
-	tut_t += 1
-	tutorial_refresh()
-	
-	if tut_t > tut_intro_starttime then
-		
-		if tut_t < tut_intro_endtime and
-		tut_current_step == 1 then
-			tut_disp_type = "intro"
-			tutorial_pause()
-		elseif tut_success_t > 0 or
-		post_tut_msg_t > 0 then
-			tut_disp_type = "success"
-			tut_success_t -= 1
-			post_tut_msg_t -= 1
-			if tut_complete then
-				-- end the tutorial
-				-- display
-				-- after the end of tue
-				-- tutorial complete
-				-- message
-				if (tut_success_t <= 0 and
-				post_tut_msg_t <= 0)
-				then
-					tut_displaying = false
-				end
-			end
-			
-		else
-			tut_disp_type = "prompt"
-		end
-		
-	else
-		tut_disp_type = "none"
-		
-	end
+ if tut_displaying then
 
-  end
-  --------------------
-  --- tutorial paused
-  if tut_paused then
-	if tut_disp_type != "intro" then
-		local prev_e = 
-		tut_pause_elapsed
-		
-		tut_pause_elapsed += 1
-		
-		if tut_pause_elapsed >=
-		tut_pause_duration then
-			tut_pause_elapsed = 
-			tut_pause_duration
-			-- do this one time only
-			if prev_e < tut_pause_duration then
-				tut_a_up = false
-				tut_b_up = false
-				tut_can_resume = true
-			end
-			local unpause = false
-			-- a released then pressed?
-			if btn(keys.a) then
-				if tut_a_up then
-					unpause = true
-				end
-			else
-				tut_a_up = true
-			end
-			-- b released then pressed?
-			if btn(keys.b) then
-				if tut_b_up then
-					unpause = true
-				end
-			else
-				tut_b_up = true
-			end
-			--------
-			if unpause then
-				tutorial_unpause()
-			end
-		end
-	end
-	--- prevent anything else
-	--- from updating
-	return
-  ---------------
-  --- countdown to pause
-  elseif (
-   tut_complete == false and
-   tut_pause_delay > 0
-  ) then
-	tut_pause_delay -= 1
-	if tut_pause_delay <= 0 then
-		tut_pause_delay = 0
-		tutorial_pause()
-	end
-  end
-  ---------------
-  if (
-   start_countdown and
-   not game_started
-  ) then
-   if btn(keys.a) or btn(keys.b) then
-    -- make sure player is ready
-    -- to launch on game start
-    p_state = states.crouch
-   end
+  tut_t += 1
+  tutorial_refresh()
 
-   start_countdown -= 1
-   if start_countdown == 0 then
-    game_started = true
-    if not tut_complete then
-      tutorial_start()
+  if tut_t > tut_intro_starttime then
+
+   if tut_t < tut_intro_endtime and
+   tut_current_step == 1 then
+    tut_disp_type = "intro"
+    tutorial_pause()
+   elseif tut_success_t > 0 or
+   post_tut_msg_t > 0 then
+    tut_disp_type = "success"
+    tut_success_t -= 1
+    post_tut_msg_t -= 1
+    if tut_complete then
+     -- end the tutorial
+     -- display
+     -- after the end of tue
+     -- tutorial complete
+     -- message
+     if (tut_success_t <= 0 and
+      post_tut_msg_t <= 0)
+     then
+      tut_displaying = false
+     end
     end
-    music(get_theme_start())
-    play_snd(snd.skate)
+
+   else
+    tut_disp_type = "prompt"
    end
-  end
 
-  if (
-   not game_started and
-   not start_countdown and
-   (btn(keys.a) or btn(keys.b))
-  ) then
-   -- wait 400 ms before
-   -- starting game
-   start_countdown = start_delay
-   music(-1)
-   play_snd(43)
-   
-   -- reset some globals
-   -- for tutorializing
-   num_jumps = 0
-      prev_grind_y = -1
-      p_falling = false
-  end
-
-  update_player(player)
-    
-  --cracks!!!
-  local crack_level =
-  gauge.multiplier - 1
-  
-  if p_state == states.grind 
-  and crack_level > 0
-  then
-   crack_all_walls(0.05,crack_level/100,(3*crack_level)/50)
-  end
-
-  if p_state == states.grind then
-   player.spark.exists = true
-   player.spark.y = player.y -1
-   if player.frame == 86 then
-    --add_spark(player.x+4,player.y-1)
-    player.spark.x = player.x+4
-   elseif player.frame == 90
-   then
-    player.spark.x = player.x+11
-    --add_spark(player.x+11,player.y-1)
-   end
   else
-   player.spark.exists = false
-  end
-  
-  -----------------
-  -- diff level
-  -----------------
-  if timer_ready then
-   diff_level_elapsed += 1
-   if diff_level_elapsed >=
-   diff_level_duration*60  then
-    set_diff_level(diff_level+1)
-   end
+   tut_disp_type = "none"
+
   end
 
-  -- walls !!
-  
-  if lastwall == nil or
-   lastwall.x+lastwall.w*8 <= 
-   128
-  then
-   local wallx = 128
-   if lastwall then
-    wallx = flr(lastwall.x+
-    lastwall.w*8)
-   end
-   add_wall(wallx)
-  end
+ end
+ --------------------
+ --- tutorial paused
+ if tut_paused then
+  if tut_disp_type != "intro" then
+   local prev_e =
+   tut_pause_elapsed
 
-  if game_over then
-   if go_transition_in then
-    if go_colindex >= 0 then
-     pal(go_colindex,0)
-     go_colindex -= 1
-    elseif go_t == 45 then
-     go_transition_in = false
-     go_colindex = 15
-     reset()
+   tut_pause_elapsed += 1
+
+   if tut_pause_elapsed >=
+   tut_pause_duration then
+    tut_pause_elapsed =
+    tut_pause_duration
+    -- do this one time only
+    if prev_e < tut_pause_duration then
+     tut_a_up = false
+     tut_b_up = false
+     tut_can_resume = true
     end
-   else --transition out
-    if go_colindex >=0 then
-     pal(go_colindex,go_colindex)
-     go_colindex -= 1
+    local unpause = false
+    -- a released then pressed?
+    if btn(keys.a) then
+     if tut_a_up then
+      unpause = true
+     end
     else
-     game_over = false
-    end 
+     tut_a_up = true
+    end
+    -- b released then pressed?
+    if btn(keys.b) then
+     if tut_b_up then
+      unpause = true
+     end
+    else
+     tut_b_up = true
+    end
+    --------
+    if unpause then
+     tutorial_unpause()
+    end
    end
-   go_t += 1
+  end
+  --- prevent anything else
+  --- from updating
+  return
+ ---------------
+ --- countdown to pause
+ elseif (
+  tut_complete == false and
+  tut_pause_delay > 0
+ ) then
+  tut_pause_delay -= 1
+  if tut_pause_delay <= 0 then
+   tut_pause_delay = 0
+   tutorial_pause()
+  end
+ end
+ ---------------
+ if (
+  start_countdown and
+  not game_started
+ ) then
+  if btn(keys.a) or btn(keys.b) then
+   -- make sure player is ready
+   -- to launch on game start
+   p_state = states.crouch
   end
 
+  start_countdown -= 1
+  if start_countdown == 0 then
+   game_started = true
+   if not tut_complete then
+    tutorial_start()
+   end
+   music(get_theme_start())
+   play_snd(snd.skate)
+  end
+ end
+
+ if (
+  not game_started and
+  not start_countdown and
+  (btn(keys.a) or btn(keys.b))
+ ) then
+  -- wait 400 ms before
+  -- starting game
+  start_countdown = start_delay
+  music(-1)
+  play_snd(43)
+
+  -- reset some globals
+  -- for tutorializing
+  num_jumps = 0
+  prev_grind_y = -1
+  p_falling = false
+ end
+
+ update_player(player)
+
+ --cracks!!!
+ local crack_level =
+ gauge.multiplier - 1
+
+ if p_state == states.grind
+ and crack_level > 0
+ then
+  crack_all_walls(0.05,crack_level/100,(3*crack_level)/50)
+ end
+
+ if p_state == states.grind then
+  player.spark.exists = true
+  player.spark.y = player.y -1
+  if player.frame == 86 then
+   --add_spark(player.x+4,player.y-1)
+   player.spark.x = player.x+4
+  elseif player.frame == 90
+  then
+   player.spark.x = player.x+11
+  --add_spark(player.x+11,player.y-1)
+  end
+ else
+  player.spark.exists = false
+ end
+
+ -----------------
+ -- diff level
+ -----------------
+ if timer_ready then
+  diff_level_elapsed += 1
+  if diff_level_elapsed >=
+  diff_level_duration*60  then
+   set_diff_level(diff_level+1)
+  end
+ end
+
+ -- walls !!
+
+ if lastwall == nil or
+ lastwall.x+lastwall.w*8 <=
+ 128
+ then
+  local wallx = 128
+  if lastwall then
+   wallx = flr(lastwall.x+
+    lastwall.w*8)
+  end
+  add_wall(wallx)
+ end
+
+ if game_over then
+  if go_transition_in then
+   if go_colindex >= 0 then
+    pal(go_colindex,0)
+    go_colindex -= 1
+   elseif go_t == 45 then
+    go_transition_in = false
+    go_colindex = 15
+    reset()
+   end
+  else  --transition out
+   if go_colindex >=0 then
+    pal(go_colindex,go_colindex)
+    go_colindex -= 1
+   else
+    game_over = false
+   end
+  end
+  go_t += 1
+ end
+
+ if (
+  (not timer_ready) and
+  tut_complete and
+  (
+   p_state == states.idle or
+   p_state == states.crouch or
+   p_state == states.grind
+  )
+ ) then
+  timer_ready = true
+  tut_success_t = 0
+  post_tut_msg_t = post_tut_msg_duration
+  tut_displaying = true
+ end
+
+ if game_started then
+  if t_at_lyric_start == nil then
+   local curr_pattern =
+   stat(24) - removed_pattern_offset
+   if (
+    curr_pattern == 4 or
+    curr_pattern == 31
+   ) then
+    t_at_lyric_start = t
+   end
+  end
+
+  if t%60==0 and timer>0
+  and not tut_running
+  and timer_ready then
+   timer -= 1
+  end
   if (
-   (not timer_ready) and
-   tut_complete and
+   timer == 0 and
+   -- let player skate until
+   -- they touch down on the
+   -- ground!
    (
     p_state == states.idle or
-    p_state == states.crouch or
-    p_state == states.grind
+    p_state == states.crouch
    )
   ) then
-   timer_ready = true
-   tut_success_t = 0
-   post_tut_msg_t = post_tut_msg_duration
-   tut_displaying = true
+   -- enter game over
+   -- set hi-score
+   last_score = score
+   if hi_score == nil or
+   last_score > hi_score then
+    hi_score = last_score
+    dset(storage_keys.hi_score, hi_score)
+   end
+   game_over = true
+   game_started = false
+   go_transition_in = true
+   go_t = 0
+   go_colindex = 15
+   sfx(-1)
+   t_at_lyric_start = nil
+   removed_pattern_offset = 0
+  --music(-1)
   end
 
-  if game_started then
-   if t_at_lyric_start == nil then
-    local curr_pattern =
-     stat(24) - removed_pattern_offset
-    if (
-     curr_pattern == 4 or
-     curr_pattern == 31
-    ) then
-     t_at_lyric_start = t
-    end
-   end
-
-   if t%60==0 and timer>0
-   and not tut_running
-   and timer_ready then
-    timer -= 1
-   end
-   if (
-    timer == 0 and
-    -- let player skate until
-    -- they touch down on the
-    -- ground!
-    (
-     p_state == states.idle or
-     p_state == states.crouch
-    )
-   ) then
-    -- enter game over
-    -- set hi-score
-    last_score = score
-    if hi_score == nil or
-    last_score > hi_score then
-     hi_score = last_score
-     dset(storage_keys.hi_score, hi_score)
-    end
-    game_over = true
-    game_started = false
-    go_transition_in = true
-    go_t = 0
-    go_colindex = 15
-    sfx(-1)
-    t_at_lyric_start = nil
-    removed_pattern_offset = 0
-    --music(-1)
-   end
-
-   if launch_t > 0 then
-    launch_t -= 1
-   end
-   if land_t > 0 then
-    land_t -= 1
-   end
-
-   -- scroll bg/fg
-   bg_1_offset = (
-    bg_1_offset +
-    bg_1_scroll_speed
-   ) % (bg_scroll_width*8)
-   bg_2_offset = (
-    bg_2_offset +
-    bg_2_scroll_speed
-   ) % (bg_scroll_width*8)
-   bg_3_offset = (
-    bg_3_offset +
-    bg_3_scroll_speed
-   ) % (bg_scroll_width*8)
-   bg_4_offset = (
-    bg_4_offset +
-    bg_4_scroll_speed
-   ) % (bg_scroll_width*8)
-   fg_1_offset = (
-    fg_1_offset +
-    scroll_speed
-   ) % (fg_scroll_width*8)
-
-   -- move clouds
-   cloud_1_offset = (
-    cloud_1_offset -
-    cloud_1_speed
-   ) % cloud_range
-   cloud_2_offset = (
-    cloud_2_offset -
-    cloud_2_speed
-   ) % cloud_range
-
-   t += 1
-   if t >= t_loop_end then
-    t = t_loop_start
-   end
+  if launch_t > 0 then
+   launch_t -= 1
   end
-  
-  -- display score
-  -- slot machine thingy
-  if display_score <
-  score then
-   display_score += 1
+  if land_t > 0 then
+   land_t -= 1
   end
 
-  -- disperse combo links
-  if destruct_t and destruct_t > 0 then
-   for i=1,#combo_link_offsets do
-    local angle=combo_link_explosion_angles[i]
-    -- normalize the vector
-    local w = cos(angle)
-    local h = sin(angle)
-    local len = sqrt(w*w+h*h)
-    if len == 0 then len = 1 end
-    w = w / len
-    h = h / len
-    combo_link_offsets[i][1] += w
-    combo_link_offsets[i][2] += h
-    local a_factor = (120-destruct_t) / 8
-    combo_link_offsets[i][2] += a_factor*a_factor - 1.5
-   end
-   destruct_t -= 1
-   if destruct_t == 0 then
-    combo_link_offsets={}
-    combo_link_explosion_angles={}
-    current_combo = ""
-   end
+  -- scroll bg/fg
+  bg_1_offset = (
+   bg_1_offset +
+   bg_1_scroll_speed
+  ) % (bg_scroll_width*8)
+  bg_2_offset = (
+   bg_2_offset +
+   bg_2_scroll_speed
+  ) % (bg_scroll_width*8)
+  bg_3_offset = (
+   bg_3_offset +
+   bg_3_scroll_speed
+  ) % (bg_scroll_width*8)
+  bg_4_offset = (
+   bg_4_offset +
+   bg_4_scroll_speed
+  ) % (bg_scroll_width*8)
+  fg_1_offset = (
+   fg_1_offset +
+   scroll_speed
+  ) % (fg_scroll_width*8)
+
+  -- move clouds
+  cloud_1_offset = (
+   cloud_1_offset -
+   cloud_1_speed
+  ) % cloud_range
+  cloud_2_offset = (
+   cloud_2_offset -
+   cloud_2_speed
+  ) % cloud_range
+
+  t += 1
+  if t >= t_loop_end then
+   t = t_loop_start
   end
+ end
+
+ -- display score
+ -- slot machine thingy
+ if display_score <
+ score then
+  display_score += 1
+ end
+
+ -- disperse combo links
+ if destruct_t and destruct_t > 0 then
+  for i=1,#combo_link_offsets do
+   local angle=combo_link_explosion_angles[i]
+   -- normalize the vector
+   local w = cos(angle)
+   local h = sin(angle)
+   local len = sqrt(w*w+h*h)
+   if len == 0 then len = 1 end
+   w = w / len
+   h = h / len
+   combo_link_offsets[i][1] += w
+   combo_link_offsets[i][2] += h
+   local a_factor = (120-destruct_t) / 8
+   combo_link_offsets[i][2] += a_factor*a_factor - 1.5
+  end
+  destruct_t -= 1
+  if destruct_t == 0 then
+   combo_link_offsets={}
+   combo_link_explosion_angles={}
+   current_combo = ""
+  end
+ end
 end
-
 __gfx__
 00000000700000000000000000000007888888888888888800677777777777771111111111111111111111111111111188888888888888888888888888888888
 00000000056666666666666666666660887788787878778806677888888777771888888881171717171711888888888181188888888899998998888888888118
