@@ -10,126 +10,58 @@ debug = false
 storage_key_hi_score = 0
 storage_key_tutorial = 2
 
--- i18n
-i18n_en = {
- lyric_1="♪we're gonna take♪",
- lyric_2="♪down that wall♪",
- lyric_3="♪break it!♪",
- lyric_4="♪we will tear♪",
- lyric_5="♪down that wall♪",
- lyric_6="♪that wall is comin down♪",
- lyric_7="*interlude harmonique*",
- tut_prompt_start={
-  "let's learn how to",
-  "play sk8border!"
- },
- tut_prompt_jump={
-  "hold 🅾️ (z) or ❎ (x)",
-  "to crouch",
-  "...and release to jump!"
- },
- tut_prompt_grind={
-  "hold 🅾️ (z) or ❎ (x)",
-  "while jumping to land",
-  "and grind on a wall."
- },
- tut_prompt_wall_up={
-  "release to jump off the wall,",
-  "then land on a higher",
-  "wall segment."
- },
- tut_prompt_wall_down={
-  "continue holding at the",
-  "end of a high wall to land",
-  "on the wall below it."
- },
- tut_prompt_grind_switch={
-  "alternate between",
-  "a nosegrind with 🅾️ (z)",
-  "and a 5-0 with ❎ (x) to fill",
-  "your power meter faster!"
- },
- tut_prompt_destroy={
-  "now your final challenge:",
-  "grind long enough to knock",
-  "down that wall!"
- },
- tut_prompt_good={
-  "nice!"
- },
- tut_prompt_complete={
-  "tutorial complete!"
- },
- tut_prompt_go={
-  "let's go!"
- },
- bring_it_down="bring_it_down!",
- score="score:",
- hi_score="hi score:",
- press_buttons="press 🅾️ (z) or ❎ (x)",
- wreck_that_wall="let's wreck that wall!",
- tut_press_resume="(press to resume)"
-}
+function table_from_string(str)
+  local tab, is_key = {}, true
+  local key,val,is_on_key
+  local function reset()
+    key,val,is_on_key = '','',true
+  end
+  reset()
+  local i, len = 1, #str
+  while i <= len do
+    local char = sub(str, i, i)
+    -- token separator
+    if char == '\31' then
+      if is_on_key then
+        is_on_key = false
+      else
+        tab[tonum(key) or key] = val
+        reset()
+      end
+    -- subtable start
+    elseif char == '\29' then
+      local j,c = i,''
+      -- checking for subtable end character
+      while (c ~= '\30') do
+        j = j + 1
+        c = sub(str, j, j)
+      end
+      tab[tonum(key) or key] = table_from_string(sub(str,i+1,j-1))
+      reset()
+      i = j
+    else
+      if is_on_key then
+        key = key..char
+      else
+        val = val..char
+      end
+    end
+    i = i + 1
+  end
+  return tab
+end
 
-i18n_fr = {
- lyric_1="♪աҽ'ɾҽ ցօղղą էąҟҽ♪",
- lyric_2="♪ժօաղ էհąէ աąӀӀ♪",
- lyric_3="♪ҍɾҽąҟ ìէ!♪",
- lyric_4="♪աҽ աìӀӀ էҽąɾ♪",
- lyric_5="♪ժօաղ էհąէ աąӀӀ♪",
- lyric_6="♪էհąէ աąӀӀ ìʂ çօʍìղ ժօաղ♪",
- lyric_7="*ìղէҽɾӀմժҽ հąɾʍօղìզմҽ*",
- tut_prompt_start={
-  "Ӏҽէ'ʂ Ӏҽąɾղ հօա էօ",
-  "քӀąվ ʂҟ8ҍօɾժҽɾ!"
- },
- tut_prompt_jump={
-  "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
-  "էօ çɾօմçհ",
-  "...ąղժ ɾҽӀҽąʂҽ էօ ʝմʍք!"
- },
- tut_prompt_grind={
-  "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
-  "ահìӀҽ ʝմʍքìղց էօ Ӏąղժ",
-  "ąղժ ցɾìղժ օղ ą աąӀӀ."
- },
- tut_prompt_wall_up={
-  "ɾҽӀҽąʂҽ էօ ʝմʍք օƒƒ էհҽ աąӀӀ,",
-  "էհҽղ Ӏąղժ օղ ą հìցհҽɾ",
-  "աąӀӀ ʂҽցʍҽղէ."
- },
- tut_prompt_wall_down={
-  "çօղէìղմҽ հօӀժìղց ąէ էհҽ",
-  "ҽղժ օƒ ą հìցհ աąӀӀ էօ Ӏąղժ",
-  "օղ էհҽ աąӀӀ ҍҽӀօա ìէ."
- },
- tut_prompt_grind_switch={
-  "ąӀէҽɾղąէҽ ҍҽէաҽҽղ",
-  "ą ղօʂҽցɾìղժ աìէհ 🅾️ {Հ}",
-  "ąղժ ą Ƽ-⊘ աìէհ ❎ {×} էօ ƒìӀӀ",
-  "վօմɾ քօաҽɾ ʍҽէҽɾ ƒąʂէҽɾ!"
- },
- tut_prompt_destroy={
-  "ղօա վօմɾ ƒìղąӀ çհąӀӀҽղցҽ:",
-  "ցɾìղժ Ӏօղց ҽղօմցհ էօ ҟղօçҟ",
-  "ժօաղ էհąէ աąӀӀ!"
- },
- tut_prompt_good={
-  "ղìçҽ!"
- },
- tut_prompt_complete={
-  "էմէօɾìąӀ çօʍքӀҽէҽ!"
- },
- tut_prompt_go={
-  "Ӏҽէ'ʂ ցօ!"
- },
- bring_it_down="ҍɾìղց ìէ ժօաղ!",
- score="ʂçօɾҽ:",
- hi_score="հì ʂçօɾҽ:",
- press_buttons="քɾҽʂʂ 🅾️ {Հ} օɾ ❎ {×}",
- wreck_that_wall="Ӏҽէ'ʂ աɾҽçҟ էհąէ աąӀӀ!",
- tut_press_resume="appuie pour continuer"
-}
+-- i18n
+-- GENERATED_TRANSLATIONS_BEGIN
+i18n_en=
+table_from_string(
+ 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪we will tear♪bring_it_downbring_it_down!tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_complete1tutorial complete!tut_prompt_start1let\'s learn how to2play sk8border!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.lyric_1♪we\'re gonna take♪tut_press_resume(press to resume)wreck_that_walllet\'s wreck that wall!press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_go1let\'s go!tut_prompt_good1nice!tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!lyric_3♪break it!♪lyric_5♪down that wall♪lyric_6♪that wall is comin down♪lyric_2♪down that wall♪'
+)
+i18n_fr=
+table_from_string(
+ 'scoreʂçօɾҽ:hi_scoreհì ʂçօɾҽ:lyric_7*ìղէҽɾӀմժҽ հąɾʍօղìզմҽ*lyric_4♪աҽ աìӀӀ էҽąɾ♪bring_it_downҍɾìղց ìէ ժօաղ!tut_prompt_jump1հօӀժ 🅾️ {Հ} օɾ ❎ {×}2էօ çɾօմçհ3...ąղժ ɾҽӀҽąʂҽ էօ ʝմʍք!tut_prompt_complete1էմէօɾìąӀ çօʍքӀҽէҽ!tut_prompt_start1Ӏҽէ\'ʂ Ӏҽąɾղ հօա էօ2քӀąվ ʂҟ8ҍօɾժҽɾ!tut_prompt_wall_up1ɾҽӀҽąʂҽ էօ ʝմʍք օƒƒ էհҽ աąӀӀ,2էհҽղ Ӏąղժ օղ ą հìցհҽɾ3աąӀӀ ʂҽցʍҽղէ.tut_prompt_grind_switch1ąӀէҽɾղąէҽ ҍҽէաҽҽղ2ą ղօʂҽցɾìղժ աìէհ 🅾️ {Հ}3ąղժ ą Ƽ-⊘ աìէհ ❎ {×} էօ ƒìӀӀ4վօմɾ քօաҽɾ ʍҽէҽɾ ƒąʂէҽɾ!tut_prompt_grind1հօӀժ 🅾️ {Հ} օɾ ❎ {×}2ահìӀҽ ʝմʍքìղց էօ Ӏąղժ3ąղժ ցɾìղժ օղ ą աąӀӀ.lyric_1♪աҽ\'ɾҽ ցօղղą էąҟҽ♪tut_press_resumeappuie pour continuerwreck_that_wallӀҽէ\'ʂ աɾҽçҟ էհąէ աąӀӀ!press_buttonsքɾҽʂʂ 🅾️ {Հ} օɾ ❎ {×}tut_prompt_wall_down1çօղէìղմҽ հօӀժìղց ąէ էհҽ2ҽղժ օƒ ą հìցհ աąӀӀ էօ Ӏąղժ3օղ էհҽ աąӀӀ ҍҽӀօա ìէ.tut_prompt_go1Ӏҽէ\'ʂ ցօ!tut_prompt_good1ղìçҽ!tut_prompt_destroy1ղօա վօմɾ ƒìղąӀ çհąӀӀҽղցҽ:2ցɾìղժ Ӏօղց ҽղօմցհ էօ ҟղօçҟ3ժօաղ էհąէ աąӀӀ!lyric_3♪ҍɾҽąҟ ìէ!♪lyric_5♪ժօաղ էհąէ աąӀӀ♪lyric_6♪էհąէ աąӀӀ ìʂ çօʍìղ ժօաղ♪lyric_2♪ժօաղ էհąէ աąӀӀ♪'
+)
+-- GENERATED_TRANSLATIONS_END
 lang="en"
 i18n=lang=="fr"and i18n_fr or i18n_en
 

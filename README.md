@@ -81,3 +81,9 @@ If you need to update the html content in the `web_template` directory, you can 
 0. Install Node.js
 1. Run `npm install` in the project directory
 2. `npm run build`
+
+## traduction
+
+If you need to update any game text translations, they're kept in the [`game_translations/`](/game_translations) directory. In order for your changes to show up in the game, you'll need to run [`./update_translation`](/update_translation), which will update `sk8border.p8` automatically, using a compiled string format to save tokens. This requires [Lua](https://www.lua.org/start.html) to be installed on your system (this version doesn't ship with PICO-8 so you would need to install it separately).
+
+If you want to add a new language, just copy an existing translation file and modify it. When you're done, update the boilerplate in [`./update_translation`](/update_translation) to make sure it gets included in the updated p8 file.
