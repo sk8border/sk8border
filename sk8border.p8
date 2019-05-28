@@ -52,17 +52,17 @@ function table_from_string(str)
 end
 
 -- i18n
--- GENERATED_TRANSLATIONS_BEGIN
+-- generated_translations_begin
 i18n_en=
 table_from_string(
- 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪we will tear♪bring_it_downbring_it_down!tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_complete1tutorial complete!tut_prompt_start1let\'s learn how to2play sk8border!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.lyric_1♪we\'re gonna take♪tut_press_resume(press to resume)wreck_that_walllet\'s wreck that wall!press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_go1let\'s go!tut_prompt_good1nice!tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!lyric_3♪break it!♪lyric_5♪down that wall♪lyric_6♪that wall is comin down♪lyric_2♪down that wall♪'
+ 'lyric_4♪we will tear♪tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_start1let\'s learn how to2play sk8border!wreck_that_walllet\'s wreck that wall!tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.tut_press_resume(press to resume)press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!hi_scorehi score:tut_prompt_good1nice!lyric_6♪that wall is comin down♪bring_it_downbring_it_down!lyric_1♪we\'re gonna take♪tut_prompt_go1let\'s go!lyric_5♪down that wall♪tut_prompt_complete1tutorial complete!scorescore:tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.lyric_7*interlude harmonique*lyric_3♪break it!♪lyric_2♪down that wall♪'
 )
 i18n_fr=
 table_from_string(
- 'scoreʂçօɾҽ:hi_scoreհì ʂçօɾҽ:lyric_7*ìղէҽɾӀմժҽ հąɾʍօղìզմҽ*lyric_4♪աҽ աìӀӀ էҽąɾ♪bring_it_downҍɾìղց ìէ ժօաղ!tut_prompt_jump1հօӀժ 🅾️ {Հ} օɾ ❎ {×}2էօ çɾօմçհ3...ąղժ ɾҽӀҽąʂҽ էօ ʝմʍք!tut_prompt_complete1էմէօɾìąӀ çօʍքӀҽէҽ!tut_prompt_start1Ӏҽէ\'ʂ Ӏҽąɾղ հօա էօ2քӀąվ ʂҟ8ҍօɾժҽɾ!tut_prompt_wall_up1ɾҽӀҽąʂҽ էօ ʝմʍք օƒƒ էհҽ աąӀӀ,2էհҽղ Ӏąղժ օղ ą հìցհҽɾ3աąӀӀ ʂҽցʍҽղէ.tut_prompt_grind_switch1ąӀէҽɾղąէҽ ҍҽէաҽҽղ2ą ղօʂҽցɾìղժ աìէհ 🅾️ {Հ}3ąղժ ą Ƽ-⊘ աìէհ ❎ {×} էօ ƒìӀӀ4վօմɾ քօաҽɾ ʍҽէҽɾ ƒąʂէҽɾ!tut_prompt_grind1հօӀժ 🅾️ {Հ} օɾ ❎ {×}2ահìӀҽ ʝմʍքìղց էօ Ӏąղժ3ąղժ ցɾìղժ օղ ą աąӀӀ.lyric_1♪աҽ\'ɾҽ ցօղղą էąҟҽ♪tut_press_resumeappuie pour continuerwreck_that_wallӀҽէ\'ʂ աɾҽçҟ էհąէ աąӀӀ!press_buttonsքɾҽʂʂ 🅾️ {Հ} օɾ ❎ {×}tut_prompt_wall_down1çօղէìղմҽ հօӀժìղց ąէ էհҽ2ҽղժ օƒ ą հìցհ աąӀӀ էօ Ӏąղժ3օղ էհҽ աąӀӀ ҍҽӀօա ìէ.tut_prompt_go1Ӏҽէ\'ʂ ցօ!tut_prompt_good1ղìçҽ!tut_prompt_destroy1ղօա վօմɾ ƒìղąӀ çհąӀӀҽղցҽ:2ցɾìղժ Ӏօղց ҽղօմցհ էօ ҟղօçҟ3ժօաղ էհąէ աąӀӀ!lyric_3♪ҍɾҽąҟ ìէ!♪lyric_5♪ժօաղ էհąէ աąӀӀ♪lyric_6♪էհąէ աąӀӀ ìʂ çօʍìղ ժօաղ♪lyric_2♪ժօաղ էհąէ աąӀӀ♪'
+ 'lyric_4♪nous demolironstut_prompt_wall_down1maintenez le bouton enfonce2a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.tut_prompt_start1apprenons a jouer2a sk8border!wreck_that_wallexplosons ce mur!tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.tut_press_resume(appuyez pour continuer)press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et relachez pour sauter!hi_scorehi score:tut_prompt_good1bien!lyric_6♪ce mur va tomber♪bring_it_downbring_it_down!lyric_1♪nous allons faire♪tut_prompt_go1allons-y!lyric_5♪ce stupide mur♪tut_prompt_complete1tutoriel termine!scorescore:tut_prompt_destroy1votre defi final:2grindez assez longtemps3pour detruire ce mur!tut_prompt_wall_up1relachez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.lyric_7*interlude harmonique*lyric_3♪par terre!♪lyric_2♪tomber ce mur♪'
 )
--- GENERATED_TRANSLATIONS_END
-lang="en"
+-- generated_translations_end
+lang="fr"
 i18n=lang=="fr"and i18n_fr or i18n_en
 
 -- constants
@@ -2069,8 +2069,8 @@ function draw_title()
   flr(time()) % 2 == 0
  ) then
   print(
-   message,
-   8*2.5,
+  	message,
+   63-#message*2,
    8*13+wall_anim_y,
    7
   )

@@ -1,59 +1,61 @@
 return {
-  lyric_1="♪աҽ'ɾҽ ցօղղą էąҟҽ♪",
-  lyric_2="♪ժօաղ էհąէ աąӀӀ♪",
-  lyric_3="♪ҍɾҽąҟ ìէ!♪",
-  lyric_4="♪աҽ աìӀӀ էҽąɾ♪",
-  lyric_5="♪ժօաղ էհąէ աąӀӀ♪",
-  lyric_6="♪էհąէ աąӀӀ ìʂ çօʍìղ ժօաղ♪",
-  lyric_7="*ìղէҽɾӀմժҽ հąɾʍօղìզմҽ*",
+  lyric_1="♪nous allons faire♪",
+  lyric_2="♪tomber ce mur♪",
+  lyric_3="♪par terre!♪",
+  lyric_4="♪nous demolirons",
+  lyric_5="♪ce stupide mur♪",
+  lyric_6="♪ce mur va tomber♪",
+  lyric_7="*interlude harmonique*",
   tut_prompt_start={
-    "Ӏҽէ'ʂ Ӏҽąɾղ հօա էօ",
-    "քӀąվ ʂҟ8ҍօɾժҽɾ!"
+    "apprenons a jouer",
+    "a sk8border!"
   },
   tut_prompt_jump={
-    "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
-    "էօ çɾօմçհ",
-    "...ąղժ ɾҽӀҽąʂҽ էօ ʝմʍք!"
+    "maintenez 🅾️ (z) ou ❎ (x)",
+    "pour vous accroupir...",
+    "et relachez pour sauter!"
   },
   tut_prompt_grind={
-    "հօӀժ 🅾️ {Հ} օɾ ❎ {×}",
-    "ահìӀҽ ʝմʍքìղց էօ Ӏąղժ",
-    "ąղժ ցɾìղժ օղ ą աąӀӀ."
+    "maintenez 🅾️ (z) ou ❎ (x)",
+    "pendant un saut pour",
+    "aterrir et grinder",
+	"sur un mur."
   },
   tut_prompt_wall_up={
-    "ɾҽӀҽąʂҽ էօ ʝմʍք օƒƒ էհҽ աąӀӀ,",
-    "էհҽղ Ӏąղժ օղ ą հìցհҽɾ",
-    "աąӀӀ ʂҽցʍҽղէ."
+    "relachez pour sauter du mur,",
+    "puis atterrissez sur une",
+    "section de mur plus haute."
   },
   tut_prompt_wall_down={
-    "çօղէìղմҽ հօӀժìղց ąէ էհҽ",
-    "ҽղժ օƒ ą հìցհ աąӀӀ էօ Ӏąղժ",
-    "օղ էհҽ աąӀӀ ҍҽӀօա ìէ."
+    "maintenez le bouton enfonce",
+    "a la fin d'un mur haut",
+    "pour atterrir sur le mur",
+	"plus bas."
   },
   tut_prompt_grind_switch={
-    "ąӀէҽɾղąէҽ ҍҽէաҽҽղ",
-    "ą ղօʂҽցɾìղժ աìէհ 🅾️ {Հ}",
-    "ąղժ ą Ƽ-⊘ աìէհ ❎ {×} էօ ƒìӀӀ",
-    "վօմɾ քօաҽɾ ʍҽէҽɾ ƒąʂէҽɾ!"
+    "alternez entre",
+    "un nosegrind avec 🅾️ (z)",
+    "et un 5-0 avec ❎ (x) pour",
+    "remplir la jauge plus vite!"
   },
   tut_prompt_destroy={
-    "ղօա վօմɾ ƒìղąӀ çհąӀӀҽղցҽ:",
-    "ցɾìղժ Ӏօղց ҽղօմցհ էօ ҟղօçҟ",
-    "ժօաղ էհąէ աąӀӀ!"
+    "votre defi final:",
+    "grindez assez longtemps",
+    "pour detruire ce mur!"
   },
   tut_prompt_good={
-    "ղìçҽ!"
+    "bien!"
   },
   tut_prompt_complete={
-    "էմէօɾìąӀ çօʍքӀҽէҽ!"
+    "tutoriel termine!"
   },
   tut_prompt_go={
-    "Ӏҽէ'ʂ ցօ!"
+    "allons-y!"
   },
-  bring_it_down="ҍɾìղց ìէ ժօաղ!",
-  score="ʂçօɾҽ:",
-  hi_score="հì ʂçօɾҽ:",
-  press_buttons="քɾҽʂʂ 🅾️ {Հ} օɾ ❎ {×}",
-  wreck_that_wall="Ӏҽէ'ʂ աɾҽçҟ էհąէ աąӀӀ!",
-  tut_press_resume="appuie pour continuer"
+  bring_it_down="bring_it_down!",
+  score="score:",
+  hi_score="hi score:",
+  press_buttons="appuyez sur 🅾️ (z) ou ❎ (x)",
+  wreck_that_wall="explosons ce mur!",
+  tut_press_resume="(appuyez pour continuer)"
 }

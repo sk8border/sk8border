@@ -68,8 +68,8 @@ end
 i18n_en = require "game_translations/en"
 i18n_fr = require "game_translations/fr"
 
-before_delimiter = "-- GENERATED_TRANSLATIONS_BEGIN\n"
-after_delimiter = "-- GENERATED_TRANSLATIONS_END"
+before_delimiter = "-- generated_translations_begin\n"
+after_delimiter = "-- generated_translations_end"
 
 filename = "sk8border.p8"
 f = io.open(filename)
