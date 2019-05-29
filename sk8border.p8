@@ -11,55 +11,55 @@ storage_key_hi_score = 0
 storage_key_tutorial = 2
 
 function table_from_string(str)
-  local tab, is_key = {}, true
-  local key,val,is_on_key
-  local function reset()
-    key,val,is_on_key = '','',true
+ local tab, is_key = {}, true
+ local key,val,is_on_key
+ local function reset()
+  key,val,is_on_key = '','',true
+ end
+ reset()
+ local i, len = 1, #str
+ while i <= len do
+  local char = sub(str, i, i)
+  -- token separator
+  if char == '\31' then
+   if is_on_key then
+    is_on_key = false
+   else
+    tab[tonum(key) or key] = val
+    reset()
+   end
+  -- subtable start
+  elseif char == '\29' then
+   local j,c = i,''
+   -- checking for subtable end character
+   while (c ~= '\30') do
+    j = j + 1
+    c = sub(str, j, j)
+   end
+   tab[tonum(key) or key] = table_from_string(sub(str,i+1,j-1))
+   reset()
+   i = j
+  else
+   if is_on_key then
+    key = key..char
+   else
+    val = val..char
+   end
   end
-  reset()
-  local i, len = 1, #str
-  while i <= len do
-    local char = sub(str, i, i)
-    -- token separator
-    if char == '\31' then
-      if is_on_key then
-        is_on_key = false
-      else
-        tab[tonum(key) or key] = val
-        reset()
-      end
-    -- subtable start
-    elseif char == '\29' then
-      local j,c = i,''
-      -- checking for subtable end character
-      while (c ~= '\30') do
-        j = j + 1
-        c = sub(str, j, j)
-      end
-      tab[tonum(key) or key] = table_from_string(sub(str,i+1,j-1))
-      reset()
-      i = j
-    else
-      if is_on_key then
-        key = key..char
-      else
-        val = val..char
-      end
-    end
-    i = i + 1
-  end
-  return tab
+  i = i + 1
+ end
+ return tab
 end
 
 -- i18n
 -- generated_translations_begin
 i18n_en=
 table_from_string(
- 'lyric_3♪break it!♪tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.tut_prompt_complete1tutorial complete!tut_prompt_go1let\'s go!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.press_buttonspress 🅾️ (z) or ❎ (x)scorescore:lyric_7*interlude harmonique*lyric_1♪we\'re gonna take♪tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.wreck_that_walllet\'s wreck that wall!hi_scorehi score:bring_it_downbring_it_down!tut_prompt_good1nice!tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!lyric_6♪that wall is comin down♪lyric_4♪we will tear♪tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!tut_press_resume(press to resume)tut_prompt_start1let\'s learn how to2play sk8border!lyric_5♪down that wall♪lyric_2♪down that wall♪'
+ 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪we will tear♪bring_it_downbring_it_down!tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_complete1tutorial complete!tut_prompt_start1let\'s learn how to2play sk8border!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.lyric_1♪we\'re gonna take♪tut_press_resume(press to resume)wreck_that_walllet\'s wreck that wall!press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_go1let\'s go!tut_prompt_good1nice!tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!lyric_3♪break it!♪lyric_5♪down that wall♪lyric_6♪that wall is comin down♪lyric_2♪down that wall♪'
 )
 i18n_fr=
 table_from_string(
- 'lyric_3♪par terre!♪tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et relachez pour sauter!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.tut_prompt_complete1tutoriel termine!tut_prompt_go1allons-y!tut_prompt_wall_up1relachez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)scorescore:lyric_7*interlude harmonique*lyric_1♪nous allons faire♪tut_prompt_wall_down1maintenez le bouton enfonce2a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.wreck_that_wallexplosons ce mur!hi_scorehi score:bring_it_downa bas le mur!tut_prompt_good1bien!tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!lyric_6♪ce mur va tomber♪lyric_4♪nous demolirons♪tut_prompt_destroy1votre defi final:2grindez assez longtemps3pour detruire ce mur!tut_press_resume(appuyez pour continuer)tut_prompt_start1apprenons a jouer2a sk8border!lyric_5♪ce stupide mur♪lyric_2♪tomber ce mur♪'
+ 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪nous demolirons♪bring_it_downa bas le mur!tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et relachez pour sauter!tut_prompt_complete1tutoriel termine!tut_prompt_start1apprenons a jouer2a sk8border!tut_prompt_wall_up1relachez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.lyric_1♪nous allons faire♪tut_press_resume(appuyez pour continuer)wreck_that_wallexplosons ce mur!press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)tut_prompt_wall_down1maintenez le bouton enfonce2a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.tut_prompt_go1allons-y!tut_prompt_good1bien!tut_prompt_destroy1votre defi final:2grindez assez longtemps3pour detruire ce mur!lyric_3♪par terre!♪lyric_5♪ce stupide mur♪lyric_6♪ce mur va tomber♪lyric_2♪tomber ce mur♪'
 )
 -- generated_translations_end
 lang="fr"
@@ -79,7 +79,7 @@ function print_fr(str,x,y,col)
  local p=1
  while p <= #str do
   local c=sub(str,p,p)
-  if (dat[c]) then
+  if dat[c] then
    ?dat[c][1],x+dat[c][2],y+dat[c][3],col
    p+=1
    c=sub(str,p,p)
@@ -2128,7 +2128,7 @@ function draw_title()
  -- score
  if not (last_score == nil) then
   local text = i18n.score.." "..
-   last_score
+  last_score
   print_fr(
    text,
    64-#text*2,
@@ -2144,7 +2144,7 @@ function draw_title()
   )
  ) then
   text = i18n.hi_score.." "..
-   hi_score
+  hi_score
   print_fr(
    text,
    64-#text*2,
@@ -2195,63 +2195,63 @@ end
 
 function print_debug_messages()
  assert(false, "uncomment print_debug_messages body!")
- -- if max_dy == nil or max_dy < player.dy then
- --  max_dy = player.dy
- -- end
+-- if max_dy == nil or max_dy < player.dy then
+--  max_dy = player.dy
+-- end
 
- -- if max_y == nil or max_y < player.y then
- --  max_y = player.y
- -- end
+-- if max_y == nil or max_y < player.y then
+--  max_y = player.y
+-- end
 
- -- if min_y == nil or min_y > player.y then
- --  min_y = player.y
- -- end
+-- if min_y == nil or min_y > player.y then
+--  min_y = player.y
+-- end
 
- -- local debug_messages = {
- --  "walls: "..tostr(#walls),
- --  "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
- --  "player state: "..tostr(p_state),
- --  "player dy: "..tostr(player.dy),
- --  "max y: "..tostr(max_y),
- --  "min y: "..tostr(min_y),
- --  "max dy: "..tostr(max_dy)
- -- }
- -- for i=1,#debug_messages do
- --  print(debug_messages[i], 1, (i-1)*6 + 16, 1)
- -- end
+-- local debug_messages = {
+--  "walls: "..tostr(#walls),
+--  "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
+--  "player state: "..tostr(p_state),
+--  "player dy: "..tostr(player.dy),
+--  "max y: "..tostr(max_y),
+--  "min y: "..tostr(min_y),
+--  "max dy: "..tostr(max_dy)
+-- }
+-- for i=1,#debug_messages do
+--  print(debug_messages[i], 1, (i-1)*6 + 16, 1)
+-- end
 end
 
 function super_print(text,x,y,maincol,backcol)
-	print_fr(
-		text,
-		x+1,
-		y,
-		backcol
-	)
-	print_fr(
-		text,
-		x-1,
-		y,
-		backcol
-	)
-	print_fr(
-		text,
-		x,
-		y+1,
-		backcol
-	)
-	print_fr(
-		text,
-		x,
-		y-1,
-		backcol
-	)
-	print_fr(
-		text,
-		x,
-		y,
-		maincol
-	)
+ print_fr(
+  text,
+  x+1,
+  y,
+  backcol
+ )
+ print_fr(
+  text,
+  x-1,
+  y,
+  backcol
+ )
+ print_fr(
+  text,
+  x,
+  y+1,
+  backcol
+ )
+ print_fr(
+  text,
+  x,
+  y-1,
+  backcol
+ )
+ print_fr(
+  text,
+  x,
+  y,
+  maincol
+ )
 end
 
 function combo_print()
