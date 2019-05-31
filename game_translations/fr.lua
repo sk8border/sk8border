@@ -2,7 +2,7 @@ return {
   lyric_1="♪nous allons faire♪",
   lyric_2="♪tomber ce mur♪",
   lyric_3="♪par terre!♪",
-  lyric_4="♪nous demolirons",
+  lyric_4="♪nous demolirons♪",
   lyric_5="♪ce stupide mur♪",
   lyric_6="♪ce mur va tomber♪",
   lyric_7="*interlude harmonique*",
@@ -52,7 +52,7 @@ return {
   tut_prompt_go={
     "allons-y!"
   },
-  bring_it_down="bring_it_down!",
+  bring_it_down="a bas le mur!",
   score="score:",
   hi_score="hi score:",
   press_buttons="appuyez sur 🅾️ (z) ou ❎ (x)",
