@@ -55,11 +55,11 @@ end
 -- generated_translations_begin
 i18n_en=
 table_from_string(
- 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪we will tear♪bring_it_downbring_it_down!tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_complete1tutorial complete!tut_prompt_start1let\'s learn how to2play sk8border!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.lyric_1♪we\'re gonna take♪tut_press_resume(press to resume)wreck_that_walllet\'s wreck that wall!press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_go1let\'s go!tut_prompt_good1nice!tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!lyric_3♪break it!♪lyric_5♪down that wall♪lyric_6♪that wall is comin down♪lyric_2♪down that wall♪'
+ 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪we will tear♪bring_it_downbring it down!tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_complete1tutorial complete!tut_prompt_start1let\'s learn how to2play sk8border!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.lyric_1♪we\'re gonna take♪tut_press_resume(press to resume)wreck_that_walllet\'s wreck that wall!press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_go1let\'s go!tut_prompt_good1nice!tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!lyric_3♪break it!♪lyric_5♪down that wall♪lyric_6♪that wall is comin down♪lyric_2♪down that wall♪'
 )
 i18n_fr=
 table_from_string(
- 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪nous demolirons♪bring_it_downa bas le mur!tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et relachez pour sauter!tut_prompt_complete1tutoriel termine!tut_prompt_start1apprenons a jouer2a sk8border!tut_prompt_wall_up1relachez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.lyric_1♪nous allons faire♪tut_press_resume(appuyez pour continuer)wreck_that_wallexplosons ce mur!press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)tut_prompt_wall_down1maintenez le bouton enfonce2a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.tut_prompt_go1allons-y!tut_prompt_good1bien!tut_prompt_destroy1votre defi final:2grindez assez longtemps3pour detruire ce mur!lyric_3♪par terre!♪lyric_5♪ce stupide mur♪lyric_6♪ce mur va tomber♪lyric_2♪tomber ce mur♪'
+ 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪nous d|emolirons♪bring_it_down`a bas le mur!tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et rel^achez pour sauter!tut_prompt_complete1tutoriel termin|e!tut_prompt_start1apprenons `a jouer2`a sk8border!tut_prompt_wall_up1rel^achez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.lyric_1♪nous allons faire♪tut_press_resume(appuyez pour continuer)wreck_that_wallexplosons ce mur!press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)tut_prompt_wall_down1maintenez le bouton enfonc|e2`a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.tut_prompt_go1allons-y!tut_prompt_good1bien!tut_prompt_destroy1votre d|efi final:2grindez assez longtemps3pour d|etruire ce mur!lyric_3♪par terre!♪lyric_5♪ce stupide mur♪lyric_6♪ce mur va tomber♪lyric_2♪tomber ce mur♪'
 )
 -- generated_translations_end
 lang="fr"
@@ -76,84 +76,25 @@ function print_fr(str,x,y,col)
   ["|"] = {",",  1,-6},
   ["@"] = {"\"", 0,-3}
  }
- local p=1
+ local p = 1
  while p <= #str do
   local c=sub(str,p,p)
   if dat[c] then
    ?dat[c][1],x+dat[c][2],y+dat[c][3],col
-   p+=1
-   c=sub(str,p,p)
+   p += 1
+   c = sub(str,p,p)
   end
   ?c,x,y,col
-  printh("printing char.. "..c.." ("..x..","..y..")","hello")
-  x+=4 p+=1
- end
- printh("french printing.. "..str,"hello")
-end
-
-function encode_accents(str)
- local new_str = ""
- local i = 0
- while i <= #str do
-  local c = sub(str,i,i)
-  printh(c,"hello")
-  local e = c
-  -- cedille
-  if c == "ç" then
-   e="#c"
-  -- aigu
-  elseif c == "é" then
-   e="|e"
-  -- circonflex
-  elseif c == "â" then
-   e="^a"
-  elseif c == "ê" then
-   e="^e"
-  elseif c == "î" then
-   e="^i"
-  elseif c == "ô" then
-   e="^o"
-  elseif c == "û" then
-   e="^u"
-  -- grave
-  elseif c == "à" then
-   e="`a"
-  elseif c == "è" then
-   e="`e"
-  elseif c == "ì" then
-   e="`i"
-  elseif c == "ò" then
-   e="`o"
-  elseif c == "ù" then
-   e="`u"
-  -- trema
-  elseif c == "ë" then
-   e="@e"
-  elseif c == "ï" then
-   e="@i"
-  elseif c == "ü" then
-   e='@u'
-  end
-  new_str=new_str..e
-  printh(e,"hello")
-  i += 1
- end
- printh(new_str,"hello")
- return new_str
-end
-
-function encode_table(table)
- for k,v in pairs(table) do
-  if type(v) == "table" then
-   encode_table(v)
-  else
-   table[k]=encode_accents(v)
+  x += 4 p += 1
+  if (
+   c == '🅾️' or
+   c == '❎' or
+   c == '♪'
+  ) then
+   x += 4
   end
  end
 end
-
-encode_table(i18n_en)
-encode_table(i18n_fr)
 
 -- constants
 tpb=16 // ticks per beat
