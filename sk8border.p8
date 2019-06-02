@@ -67,12 +67,14 @@ function switch_to_english()
  i18n = i18n_en
  menuitem(1, "francais", switch_to_french)
  if (set_lyrics) set_lyrics()
+ if (set_tut_prompts) set_tut_prompts()
  if (write_gpio) write_gpio(0,7,1)
 end
 function switch_to_french()
  i18n = i18n_fr
  menuitem(1, "english", switch_to_english)
  if (set_lyrics) set_lyrics()
+ if (set_tut_prompts) set_tut_prompts()
  if (write_gpio) write_gpio(1,7,1)
 end
 function check_language()
@@ -492,21 +494,38 @@ tut_theme_triggers={
  tut_steps.grind_switch,
  tut_steps.destroy
 }
-tut_prompts = {
- i18n["tut_prompt_start"],
- i18n["tut_prompt_jump"],
- i18n["tut_prompt_grind"],
- i18n["tut_prompt_wall_up"],
- i18n["tut_prompt_wall_down"],
- i18n["tut_prompt_grind_switch"],
- i18n["tut_prompt_destroy"]
-}
-
-tut_success_prompts = {
- i18n["tut_prompt_good"],
- i18n["tut_prompt_complete"],
- i18n["tut_prompt_go"]
-}
+function tut_prompts_for_i18n(i18n)
+ return {
+  i18n["tut_prompt_start"],
+  i18n["tut_prompt_jump"],
+  i18n["tut_prompt_grind"],
+  i18n["tut_prompt_wall_up"],
+  i18n["tut_prompt_wall_down"],
+  i18n["tut_prompt_grind_switch"],
+  i18n["tut_prompt_destroy"]
+ }
+end
+function tut_success_prompts_for_i18n(i18n)
+ return {
+  i18n["tut_prompt_good"],
+  i18n["tut_prompt_complete"],
+  i18n["tut_prompt_go"]
+ }
+end
+tut_prompts_en = tut_prompts_for_i18n(i18n_en)
+tut_prompts_fr = tut_prompts_for_i18n(i18n_fr)
+tut_success_prompts_en = tut_success_prompts_for_i18n(i18n_en)
+tut_success_prompts_fr = tut_success_prompts_for_i18n(i18n_fr)
+function set_tut_prompts()
+ if i18n == i18n_fr then
+  tut_prompts = tut_prompts_fr
+  tut_success_prompts = tut_success_prompts_fr
+ else
+  tut_prompts = tut_prompts_en
+  tut_success_prompts = tut_success_prompts_en
+ end
+end
+set_tut_prompts()
 
 timer_ready = tut_complete
 
