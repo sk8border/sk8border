@@ -90,11 +90,16 @@ function print_fr(str,x,y,col)
  while p <= #str do
   local c=sub(str,p,p)
   if dat[c] then
-   ?dat[c][1],x+dat[c][2],y+dat[c][3],col
+   print(
+    dat[c][1],
+    x + dat[c][2],
+    y + dat[c][3],
+    col
+   )
    p += 1
    c = sub(str,p,p)
   end
-  ?c,x,y,col
+  print(c, x, y, col)
   x += 4 p += 1
   if (
    c == '🅾️' or
@@ -2252,10 +2257,10 @@ function combo_print()
   )
   local backcol = 7
   if destruct_t == 0 then
-   ?text,x+1,y,backcol
-   ?text,x-1,y,backcol
-   ?text,x,y+1,backcol
-   ?text,x,y-1,backcol
+   print(text,x+1,y,backcol)
+   print(text,x-1,y,backcol)
+   print(text,x,y+1,backcol)
+   print(text,x,y-1,backcol)
   end
   for i=1,#text do
    local _x,_y,index=x,y,first+i-1
@@ -2270,12 +2275,12 @@ function combo_print()
     maincol = 13
    end
    if combo_link_offsets[index] then
-    ?char,_x+(i-1)*8+1,_y,backcol
-    ?char,_x+(i-1)*8-1,_y,backcol
-    ?char,_x+(i-1)*8,_y+1,backcol
-    ?char,_x+(i-1)*8,_y-1,backcol
+    print(char,_x+(i-1)*8+1,_y,backcol)
+    print(char,_x+(i-1)*8-1,_y,backcol)
+    print(char,_x+(i-1)*8,_y+1,backcol)
+    print(char,_x+(i-1)*8,_y-1,backcol)
    end
-   ?char,_x+(i-1)*8,_y,maincol
+   print(char,_x+(i-1)*8,_y,maincol)
   end
   j += 16
   _y_off += 8
@@ -2448,7 +2453,7 @@ function _draw()
   spr(timer_sprite,2,121-2)
   palt(0,false)
   palt(7,true)
-  ?timer,12,121,timer_color
+  print(timer,12,121,timer_color)
  end
 
  combo_print()
