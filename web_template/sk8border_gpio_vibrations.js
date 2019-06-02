@@ -15,6 +15,16 @@
       }, 0);
   }
 
+  function writeNumberToGpio(gpio, num, pinIndex, bits) {
+    var lastBitIndex = pinIndex + bits - 1;
+    var mask = 1;
+    for (var i = 0; i < bits; i++) {
+      var bit = (num & mask) >> i;
+      gpio[lastBitIndex - i] = bit * 255;
+      mask = mask << 1;
+    }
+  }
+
   function groundVibration() {
     // TODO: implement a ground vibration? maybe?
     // navigator.vibrate([1, 300, 1]);
@@ -47,6 +57,9 @@
   window.vibrateInterval = null;
 
   var gpio = getP8Gpio();
+
+  writeNumberToGpio(gpio, window.LANG_FR ? 1 : 0, 7, 1);
+
   gpio.subscribe(function() {
     // don't waste time doing this if we can't vibrate!
     if (!navigator.vibrate) return;

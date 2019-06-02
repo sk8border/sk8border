@@ -50,7 +50,7 @@ return {
   tut_prompt_go={
     "let's go!"
   },
-  bring_it_down="bring_it_down!",
+  bring_it_down="bring it down!",
   score="score:",
   hi_score="hi score:",
   press_buttons="press 🅾️ (z) or ❎ (x)",

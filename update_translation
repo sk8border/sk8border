@@ -63,10 +63,79 @@ function split(s, delimiter)
   return result
 end
 
+-- encode to print with accents
+-- inspired by work by zep
+-- https://lexaloffle.com/bbs/?tid=34306
+function encode_accents(str)
+ local new_str = ""
+ local i = 0
+ while i <= #str do
+  -- two byte compare string
+  local c = sub(str,i,i+1)
+  -- one byte default
+  local e = sub(str,i,i)
+  -- cedille ¸
+  if c == "ç" then
+   e="#c"
+  -- aigu ˊ
+  elseif c == "é" then
+   e="|e"
+  -- circonflexe ˆ
+  elseif c == "â" then
+   e="^a"
+  elseif c == "ê" then
+   e="^e"
+  elseif c == "î" then
+   e="^i"
+  elseif c == "ô" then
+   e="^o"
+  elseif c == "û" then
+   e="^u"
+  -- grave ˋ
+  elseif c == "à" then
+   e="`a"
+  elseif c == "è" then
+   e="`e"
+  elseif c == "ì" then
+   e="`i"
+  elseif c == "ò" then
+   e="`o"
+  elseif c == "ù" then
+   e="`u"
+  -- tréma ¨
+  elseif c == "ë" then
+   e="@e"
+  elseif c == "ï" then
+   e="@i"
+  elseif c == "ü" then
+   e='@u'
+  end
+  new_str=new_str..e
+  if e ~= sub(str,i,i) then
+    i = i + 1
+  end
+  i = i + 1
+ end
+ return new_str
+end
+
+function encode_table(table)
+ for k,v in pairs(table) do
+  if type(v) == "table" then
+   encode_table(v)
+  else
+   table[k]=encode_accents(v)
+  end
+ end
+end
+
 -- do the thing
 
 i18n_en = require "game_translations/en"
 i18n_fr = require "game_translations/fr"
+
+encode_table(i18n_en)
+encode_table(i18n_fr)
 
 before_delimiter = "-- generated_translations_begin\n"
 after_delimiter = "-- generated_translations_end"
