@@ -67,11 +67,20 @@ function switch_to_english()
  i18n = i18n_en
  menuitem(1, "francais", switch_to_french)
  if (set_lyrics) set_lyrics()
+ if (write_gpio) write_gpio(0,7,1)
 end
 function switch_to_french()
  i18n = i18n_fr
  menuitem(1, "english", switch_to_english)
  if (set_lyrics) set_lyrics()
+ if (write_gpio) write_gpio(1,7,1)
+end
+function check_language()
+ if read_gpio(7,1) == 1 then
+  switch_to_french()
+ else
+  switch_to_english()
+ end
 end
 switch_to_english()
 
@@ -642,6 +651,18 @@ function write_gpio(num,i,bits)
   poke(lastbit_i-j, bit*255)
   mask = shl(mask, 1)
  end
+end
+
+function read_gpio(i,bits)
+ local firstbit_i = 0x5f80+i
+ local num = 0
+ for j=0,bits-1 do
+  local val = peek(firstbit_i+j)
+  if val > 0 then
+   num = num + shl(1, bits-1-j)
+  end
+ end
+ return num
 end
 
 music_start_address = 0x3100
@@ -1314,6 +1335,8 @@ function reset()
 end
 
 function _init()
+
+ check_language()
 
  game_over = false
 
@@ -2470,6 +2493,8 @@ function _draw()
 end
 
 function _update60()
+ check_language()
+
  nonstop_t += 1
 
  -- sparks!!!
