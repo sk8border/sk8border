@@ -62,8 +62,18 @@ table_from_string(
  'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪nous d|emolirons♪bring_it_down`a bas le mur!tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et rel^achez pour sauter!tut_prompt_complete1tutoriel termin|e!tut_prompt_start1apprenons `a jouer2`a sk8border!tut_prompt_wall_up1rel^achez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.lyric_1♪nous allons faire♪tut_press_resume(appuyez pour continuer)wreck_that_wallexplosons ce mur!press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)tut_prompt_wall_down1maintenez le bouton enfonc|e2`a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.tut_prompt_go1allons-y!tut_prompt_good1bien!tut_prompt_destroy1votre d|efi final:2grindez assez longtemps3pour d|etruire ce mur!lyric_3♪par terre!♪lyric_5♪ce stupide mur♪lyric_6♪ce mur va tomber♪lyric_2♪tomber ce mur♪'
 )
 -- generated_translations_end
-lang="fr"
-i18n=lang=="fr"and i18n_fr or i18n_en
+
+function switch_to_english()
+ i18n = i18n_en
+ menuitem(1, "francais", switch_to_french)
+ if (set_lyrics) set_lyrics()
+end
+function switch_to_french()
+ i18n = i18n_fr
+ menuitem(1, "english", switch_to_english)
+ if (set_lyrics) set_lyrics()
+end
+switch_to_english()
 
 -- print with accents
 -- by zep (modified by us)
@@ -100,39 +110,6 @@ end
 tpb=16 // ticks per beat
 lyric_early = 8 // early display ticks
 v1_recur = {0, 32*tpb}
-lyrics = {
- {i18n.lyric_1,
-  -- span of time to display
-  {0*tpb, 4*tpb},
-  -- list of time offsets for
-  -- recurring display
-  v1_recur},
- {i18n.lyric_2,
-  {4*tpb, 7*tpb},
-  v1_recur},
- {i18n.lyric_2,
-  {8*tpb, 11*tpb},
-  v1_recur},
- {i18n.lyric_2,
-  {12*tpb, 14.5*tpb},
-  v1_recur},
- {i18n.lyric_3,
-  {14.5*tpb, 17*tpb},
-  v1_recur},
- {i18n.lyric_4,
-  {17*tpb, 20*tpb},
-  v1_recur},
- {i18n.lyric_5,
-  {20*tpb, 24*tpb},
-  v1_recur},
- {i18n.lyric_6,
-  {24*tpb, 28*tpb},
-  v1_recur},
- {i18n.lyric_7,
-  {64*tpb, 80*tpb},
-  {0}},
-}
-
 key_left = 0
 key_right = 1
 key_up = 2
@@ -390,6 +367,52 @@ tut_intro_starttime = 90
 tut_intro_endtime =
 tut_intro_starttime + 120
 -- end constants
+
+-- lyrics
+function lyrics_for_i18n(i18n)
+ return {
+  {i18n.lyric_1,
+   -- span of time to display
+   {0*tpb, 4*tpb},
+   -- list of time offsets for
+   -- recurring display
+   v1_recur},
+  {i18n.lyric_2,
+   {4*tpb, 7*tpb},
+   v1_recur},
+  {i18n.lyric_2,
+   {8*tpb, 11*tpb},
+   v1_recur},
+  {i18n.lyric_2,
+   {12*tpb, 14.5*tpb},
+   v1_recur},
+  {i18n.lyric_3,
+   {14.5*tpb, 17*tpb},
+   v1_recur},
+  {i18n.lyric_4,
+   {17*tpb, 20*tpb},
+   v1_recur},
+  {i18n.lyric_5,
+   {20*tpb, 24*tpb},
+   v1_recur},
+  {i18n.lyric_6,
+   {24*tpb, 28*tpb},
+   v1_recur},
+  {i18n.lyric_7,
+   {64*tpb, 80*tpb},
+   {0}},
+ }
+end
+lyrics_en=lyrics_for_i18n(i18n_en)
+lyrics_fr=lyrics_for_i18n(i18n_fr)
+function set_lyrics()
+ if i18n == i18n_fr then
+  lyrics = lyrics_fr
+ else
+  lyrics = lyrics_en
+ end
+end
+set_lyrics()
 
 -- global variables
 hi_score = dget(storage_key_hi_score)
