@@ -376,34 +376,34 @@ tut_intro_starttime + 120
 -- lyrics
 function lyrics_for_i18n(i18n)
  return {
-  {i18n.lyric_1,
+  {i18n["lyric_1"],
    -- span of time to display
    {0*tpb, 4*tpb},
    -- list of time offsets for
    -- recurring display
    v1_recur},
-  {i18n.lyric_2,
+  {i18n["lyric_2"],
    {4*tpb, 7*tpb},
    v1_recur},
-  {i18n.lyric_2,
+  {i18n["lyric_2"],
    {8*tpb, 11*tpb},
    v1_recur},
-  {i18n.lyric_2,
+  {i18n["lyric_2"],
    {12*tpb, 14.5*tpb},
    v1_recur},
-  {i18n.lyric_3,
+  {i18n["lyric_3"],
    {14.5*tpb, 17*tpb},
    v1_recur},
-  {i18n.lyric_4,
+  {i18n["lyric_4"],
    {17*tpb, 20*tpb},
    v1_recur},
-  {i18n.lyric_5,
+  {i18n["lyric_5"],
    {20*tpb, 24*tpb},
    v1_recur},
-  {i18n.lyric_6,
+  {i18n["lyric_6"],
    {24*tpb, 28*tpb},
    v1_recur},
-  {i18n.lyric_7,
+  {i18n["lyric_7"],
    {64*tpb, 80*tpb},
    {0}},
  }
@@ -484,19 +484,19 @@ tut_theme_triggers={
  tut_steps.destroy
 }
 tut_prompts = {
- i18n.tut_prompt_start,
- i18n.tut_prompt_jump,
- i18n.tut_prompt_grind,
- i18n.tut_prompt_wall_up,
- i18n.tut_prompt_wall_down,
- i18n.tut_prompt_grind_switch,
- i18n.tut_prompt_destroy
+ i18n["tut_prompt_start"],
+ i18n["tut_prompt_jump"],
+ i18n["tut_prompt_grind"],
+ i18n["tut_prompt_wall_up"],
+ i18n["tut_prompt_wall_down"],
+ i18n["tut_prompt_grind_switch"],
+ i18n["tut_prompt_destroy"]
 }
 
 tut_success_prompts = {
- i18n.tut_prompt_good,
- i18n.tut_prompt_complete,
- i18n.tut_prompt_go
+ i18n["tut_prompt_good"],
+ i18n["tut_prompt_complete"],
+ i18n["tut_prompt_go"]
 }
 
 timer_ready = tut_complete
@@ -1488,7 +1488,7 @@ function draw_gauge(gauge)
  end
 
  if gauge.maxed then
-  local text = i18n.bring_it_down
+  local text = i18n["bring_it_down"]
   print_fr(
    text,
    x+gauge.width/2-
@@ -2096,7 +2096,7 @@ function draw_title()
 
  -- score
  if not (last_score == nil) then
-  local text = i18n.score.." "..
+  local text = i18n["score"].." "..
   last_score
   print_fr(
    text,
@@ -2112,7 +2112,7 @@ function draw_title()
    hi_score > 0
   )
  ) then
-  text = i18n.hi_score.." "..
+  text = i18n["hi_score"].." "..
   hi_score
   print_fr(
    text,
@@ -2123,14 +2123,14 @@ function draw_title()
  end
 
  local message =
- i18n.press_buttons
+ i18n["press_buttons"]
  local blink = true
  if (
   start_countdown or
   game_started
  ) then
   message =
-  i18n.wreck_that_wall
+  i18n["wreck_that_wall"]
   blink = false
  end
  if (
@@ -2395,7 +2395,7 @@ function _draw()
     flr(nonstop_t/32)%2 == 0
    ) then
     local text =
-    i18n.tut_press_resume
+    i18n["tut_press_resume"]
     super_print(
      text,
      8*8 - (#text*4)/2,
