@@ -55,5 +55,7 @@ return {
   hi_score="hi score:",
   press_buttons="press 🅾️ (z) or ❎ (x)",
   wreck_that_wall="let's wreck that wall!",
-  tut_press_resume="(press to resume)"
+  tut_press_resume="(press to resume)",
+  overtime="overtime!",
+  time_up="time's up!"
 }

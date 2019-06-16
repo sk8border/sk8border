@@ -55,11 +55,11 @@ end
 -- generated_translations_begin
 i18n_en=
 table_from_string(
- 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪we will tear♪bring_it_downbring it down!tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_complete1tutorial complete!tut_prompt_start1let\'s learn how to2play sk8border!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.lyric_1♪we\'re gonna take♪tut_press_resume(press to resume)wreck_that_walllet\'s wreck that wall!press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_go1let\'s go!tut_prompt_good1nice!tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!lyric_3♪break it!♪lyric_5♪down that wall♪lyric_6♪that wall is comin down♪lyric_2♪down that wall♪'
+ 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪we will tear♪bring_it_downbring it down!time_uptime\'s up!tut_prompt_jump1hold 🅾️ (z) or ❎ (x)2to crouch3...and release to jump!tut_prompt_complete1tutorial complete!tut_prompt_start1let\'s learn how to2play sk8border!overtimeovertime!tut_prompt_wall_up1release to jump off the wall,2then land on a higher3wall segment.tut_prompt_grind_switch1alternate between2a nosegrind with 🅾️ (z)3and a 5-0 with ❎ (x) to fill4your power meter faster!tut_prompt_grind1hold 🅾️ (z) or ❎ (x)2while jumping to land3and grind on a wall.lyric_1♪we\'re gonna take♪tut_press_resume(press to resume)wreck_that_walllet\'s wreck that wall!press_buttonspress 🅾️ (z) or ❎ (x)tut_prompt_wall_down1continue holding at the2end of a high wall to land3on the wall below it.tut_prompt_go1let\'s go!tut_prompt_good1nice!tut_prompt_destroy1now your final challenge:2grind long enough to knock3down that wall!lyric_3♪break it!♪lyric_5♪down that wall♪lyric_6♪that wall is comin down♪lyric_2♪down that wall♪'
 )
 i18n_fr=
 table_from_string(
- 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪nous d|emolirons♪bring_it_down`a bas le mur!tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et rel^achez pour sauter!tut_prompt_complete1tutoriel termin|e!tut_prompt_start1apprenons `a jouer2`a sk8border!tut_prompt_wall_up1rel^achez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.lyric_1♪nous allons faire♪tut_press_resume(appuyez pour continuer)wreck_that_wallexplosons ce mur!press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)tut_prompt_wall_down1maintenez le bouton enfonc|e2`a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.tut_prompt_go1allons-y!tut_prompt_good1bien!tut_prompt_destroy1votre d|efi final:2grindez assez longtemps3pour d|etruire ce mur!lyric_3♪par terre!♪lyric_5♪ce stupide mur♪lyric_6♪ce mur va tomber♪lyric_2♪tomber ce mur♪'
+ 'scorescore:hi_scorehi score:lyric_7*interlude harmonique*lyric_4♪nous d|emolirons♪bring_it_down`a bas le mur!time_uptime\'s up!tut_prompt_jump1maintenez 🅾️ (z) ou ❎ (x)2pour vous accroupir...3et rel^achez pour sauter!tut_prompt_complete1tutoriel termin|e!tut_prompt_start1apprenons `a jouer2`a sk8border!overtimeovertime!tut_prompt_wall_up1rel^achez pour sauter du mur,2puis atterrissez sur une3section de mur plus haute.tut_prompt_grind_switch1alternez entre2un nosegrind avec 🅾️ (z)3et un 5-0 avec ❎ (x) pour4remplir la jauge plus vite!tut_prompt_grind1maintenez 🅾️ (z) ou ❎ (x)2pendant un saut pour3aterrir et grinder4sur un mur.lyric_1♪nous allons faire♪tut_press_resume(appuyez pour continuer)wreck_that_wallexplosons ce mur!press_buttonsappuyez sur 🅾️ (z) ou ❎ (x)tut_prompt_wall_down1maintenez le bouton enfonc|e2`a la fin d\'un mur haut3pour atterrir sur le mur4plus bas.tut_prompt_go1allons-y!tut_prompt_good1bien!tut_prompt_destroy1votre d|efi final:2grindez assez longtemps3pour d|etruire ce mur!lyric_3♪par terre!♪lyric_5♪ce stupide mur♪lyric_6♪ce mur va tomber♪lyric_2♪tomber ce mur♪'
 )
 -- generated_translations_end
 
@@ -334,8 +334,8 @@ combo_link_offsets={}
 -- of weights)
 diff_level_duration = 15
 
--- acceleration due to gravity
 game_duration = 60
+-- acceleration due to gravity
 g = 0.2
 ground_jump_speed = 5
 grind_jump_speed = 4.1
@@ -2329,6 +2329,87 @@ function combo_print()
  end
 end
 
+-- thanks a bunch to JWinslow23 for
+-- coming up with this optimized
+-- function for printing big text!
+function print_big(text,x,y,col,factor)
+ --set aside the palette values
+ --of black and "col" for later
+ --somewhere in user ram
+ poke(0x4580,peek(0x5f00+col))
+ poke(0x4581,peek(0x5f00))
+ poke(0x4582,peek(0x5f01))
+ --oh yeah, same with camera
+ poke(0x4583,peek(0x5f28))
+ poke(0x4584,peek(0x5f29))
+ poke(0x4585,peek(0x5f2a))
+ poke(0x4586,peek(0x5f2b))
+ --set "col" color to "col"
+ --& "col" transparency to off
+ poke(0x5f00+col,col)
+ --if "col" is black, then we
+ --will instead draw black text
+ --on a dark blue background.
+ --so if "col" is black, then
+ --dark blue is transparent and
+ --black is not transparent.
+ --but if "col" is not black,
+ --vice versa.
+ poke(0x5f00,col==0 and 0x00 or 0x10)
+ poke(0x5f01,col==0 and 0x11 or 0x01)
+ --copy the first 5 scanlines
+ --of the spritesheet to yet
+ --another place in user ram
+ mcpy_320(0x4440,0x0,320)
+ --copy the first 5 scanlines
+ --of the screen to that part
+ --of the spritesheet we just
+ --backed up
+ mcpy_320(0x0,0x6000,320)
+ --print the text normally over
+ --the background of the right
+ --color (black or dark blue)
+ camera()
+ rectfill(0,0,127,4,(16-peek(0x5f00))*0x0.1,320)
+ print(text,0,0,col)
+ --copy the first 5 scanlines
+ --of this text to still
+ --another place in user ram
+ mcpy_320(0x4300,0x6000,320)
+ --copy the spritesheet screen
+ --backup back to the screen
+ mcpy_320(0x6000,0x0,320)
+ --now the screen is intact.
+ --copy the text to the first 5
+ --scanlines of the spritesheet
+ mcpy_320(0x0,0x4300,320)
+ --display the text at the
+ --desired scale
+ camera(peek(0x4583)+peek(0x4584)*0x100,peek(0x4585)+peek(0x4586)*0x100)
+ sspr(0,0,128,5,x,y,128*factor,5*factor)
+ --copy the userram spritesheet
+ --backup back to the sheet
+ mcpy_320(0x0,0x4440,320)
+ --restore our backups of the
+ --previous palette values
+ poke(0x5f00+col,peek(0x4580))
+ poke(0x5f00,peek(0x4581))
+ poke(0x5f01,peek(0x4582))
+end
+function mcpy_320(dest,src)
+ memcpy(dest,src,320)
+end
+
+function print_big_center(text,col,factor)
+ print_big(
+  text,
+  128/2 - #tostr(text)*7*factor/4,
+  128/2 - 5*factor/2,
+  col,
+  factor
+ )
+end
+
 function _draw()
  local cam_x,cam_y = 0,0
  if is_a_wall_moving() then
@@ -2495,7 +2576,7 @@ function _draw()
   spr(timer_sprite,2,121-2)
   palt(0,false)
   palt(7,true)
-  print(timer,12,121,timer_color)
+  print(max(0,timer),12,121,timer_color)
  end
 
  combo_print()
@@ -2506,6 +2587,17 @@ function _draw()
 
  -- layer title screen on top
  draw_title()
+
+ -- print time left near end
+ if game_over and timer <= 0 then
+  print_big_center(i18n["time_up"],6,3)
+ elseif timer > -1 then
+  if timer == 0 then
+   print_big_center(i18n["overtime"],6,3)
+  elseif timer <= 10 then
+   print_big_center(timer,6,12)
+  end
+ end
 
 -- game over screen
 --draw_game_over()
@@ -2751,13 +2843,13 @@ function _update60()
    end
   end
 
-  if t%60==0 and timer>0
+  if t%60==0
   and not tut_running
   and timer_ready then
    timer -= 1
   end
   if (
-   timer == 0 and
+   timer <= 0 and
    -- let player skate until
    -- they touch down on the
    -- ground!
