@@ -57,5 +57,7 @@ return {
   hi_score="hi score:",
   press_buttons="appuyez sur 🅾️ (z) ou ❎ (x)",
   wreck_that_wall="explosons ce mur!",
-  tut_press_resume="(appuyez pour continuer)"
+  tut_press_resume="(appuyez pour continuer)",
+  overtime="overtime!",
+  time_up="time's up!"
 }
