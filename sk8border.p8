@@ -2595,7 +2595,7 @@ function _draw()
   if timer == 0 then
    print_big_center(i18n["overtime"],6,3)
   elseif timer <= 10 then
-   print_big_center(timer,6,12)
+   print_big_center(timer,6,9)
   end
  end
 
