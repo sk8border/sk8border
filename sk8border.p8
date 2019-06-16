@@ -2329,7 +2329,7 @@ function combo_print()
  end
 end
 
--- thanks a bunch of JWinslow23 for
+-- thanks a bunch to JWinslow23 for
 -- coming up with this optimized
 -- function for printing big text!
 function print_big(text,x,y,col,factor)
