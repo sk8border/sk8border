@@ -43,6 +43,14 @@ Create a new web build from PICO-8 with:
 export index.js
 ```
 
+### Standard .p8.png export (won't work currently)
+
+Create a new PNG export from PICO-8 with:
+
+```console
+save sk8border.p8.png
+```
+
 ### Minified build (because we have too much code!)
 
 0. Make sure you have python3 installed on your OS
@@ -59,6 +67,13 @@ export index.js
   load sk8border.p8
   ```
 5. Delete the minified file: `rm sk8border_fmt.p8`
+
+### Minified p8.png export
+
+Follow the same steps as the regular minified build, but:
+
+- Before step 4, copy the code comment from the top of the Lua section in sk8border.p8 (`-- lay that wall to waste!`) and paste it into sk8border_fmt.p8 at the same spot. We want this for the png export.
+- Instead of `export index.js` do `save sk8border.p8.png`.
 
 ### Finish up
 
@@ -81,3 +96,9 @@ If you need to update the html content in the `web_template` directory, you can 
 0. Install Node.js
 1. Run `npm install` in the project directory
 2. `npm run build`
+
+## traduction
+
+If you need to update any game text translations, they're kept in the [`game_translations/`](/game_translations) directory. In order for your changes to show up in the game, you'll need to run [`./update_translation`](/update_translation), which will update `sk8border.p8` automatically, using a compiled string format to save tokens. This requires [Lua](https://www.lua.org/start.html) to be installed on your system (this version doesn't ship with PICO-8 so you would need to install it separately).
+
+If you want to add a new language, just copy an existing translation file and modify it. When you're done, update the boilerplate in [`./update_translation`](/update_translation) to make sure it gets included in the updated p8 file.

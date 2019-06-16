@@ -22,7 +22,8 @@ fs.writeFileSync(
       enStrings,
       {
         other_lang_href: buildConfig.html_fr,
-        build_filename: buildConfig.build_filename
+        build_filename: buildConfig.build_filename,
+        lang_fr: JSON.stringify(false)
       }
     )
   )
@@ -37,7 +38,8 @@ fs.writeFileSync(
       frStrings,
       {
         other_lang_href: buildConfig.html_en,
-        build_filename: buildConfig.build_filename
+        build_filename: buildConfig.build_filename,
+        lang_fr: JSON.stringify(true)
       }
     )
   )
