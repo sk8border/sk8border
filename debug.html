@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sk8Border</title>
+  <meta name="description" content="Lay that Wall to Waste!">
+  <meta property="og:title" content="Sk8Border" />
+  <meta property="og:description" content="Lay that Wall to Waste!">
+  <meta property="og:url" content="https://sk8border.github.io/sk8border/" />
+  <meta property="og:image" content="https://sk8border.github.io/sk8border/sk8border_logo.png" />
+
+  <style>
+    @font-face {
+      font-family: 'PICO-8';
+      src: url('PICO-8 wide.ttf');
+    }
+    @font-face {
+      font-family: Softsquare;
+      src: url('ChevyRay - Softsquare FR.ttf');
+    }
+    body,
+    html {
+      margin: 0;
+      width: 100%;
+      font-size: 20px;
+    }
+    body {
+      background-color: #5e564e; /* pico-8 dark-gray */
+      font-family: Softsquare;
+      color: white;
+      box-sizing: border-box;
+    }
+    h1 {
+      font-family: Softsquare;
+      line-height: 2rem;
+    }
+    h1, h2, p, ul, #play_game {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+    h1, h2, p, ul {
+      max-width: 512px;
+    }
+    ul {
+      text-align: left;
+    }
+    ul li {
+      margin-bottom: 1rem;
+    }
+    a {
+      font-size: 1.1em;
+      color: #29adff; /* pico-8 blue */
+    }
+    #lang a {
+      font-size: inherit;
+    }
+    a:active {
+      color: #ffa300 !important; /* pico-8 orange */
+    }
+    a:visited {
+      color: #83769c; /* pico-8 indigo */
+    }
+    .main {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3rem;
+    }
+    .playing.using_touch .main {
+      display: none;
+    }
+    .pico-8 {
+      font-family: 'PICO-8';
+      font-size: 0.6em;
+    }
+    .logo {
+      width: 100%;
+      margin-bottom: 3em;
+    }
+    .logo img {
+      width: 100%;
+    }
+    canvas {
+      width: 256px;
+      height: 256px;
+      image-rendering: optimizeSpeed;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: optimize-contrast;
+      image-rendering: pixelated;
+      -ms-interpolation-mode: nearest-neighbor;
+    }
+    @media screen and (min-width: 382px) and (min-height: 382px) {
+      canvas {
+        width: 384px;
+        height: 384px;
+      }
+    }
+    @media screen and (min-width: 514px) and (min-height: 514px) {
+      canvas {
+        width: 512px;
+        height: 512px;
+      }
+    }
+    .desk_controls {
+      width: 512px;
+    }
+    .pico8_el {
+      float: left;
+      width: 92px;
+      display: inline-block;
+      margin: 1px;
+      padding: 4px;
+      text-align: center;
+      color: #fff;
+      background-color: #777;
+      font-family: verdana;
+      font-size: 9pt;
+      cursor: pointer;
+      cursor: hand;
+    }
+    .pico8_el a {
+      text-decoration: none;
+      color: #fff;
+    }
+    .pico8_el:hover {
+      background-color: #aaa;
+    }
+    .pico8_el:link {
+      background-color: #aaa;
+    }
+    #play_game {
+      font-size: 2rem;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-family: Softsquare;
+      background-color: #ff004d; /* pico-8 red */
+      border: 3px solid white;
+      border-radius: 15px;
+      cursor: pointer;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      line-height: 3rem;
+    }
+    #play_game.hidden {
+      display: none;
+    }
+    .touch_game, .desk_game {
+      display: none;
+    }
+    .playing.using_touch .touch_game,
+    .playing:not(.using_touch) .desk_game {
+      display: initial;
+    }
+    .touch_game {
+      background-color: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+      -webkit-touch-callout: none;
+    }
+    .touch_game canvas,
+    .touch_game .status {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+    }
+    @media screen and (max-width: 800px) and (min-height: 460px) {
+      .touch_game canvas,
+      .touch_game .status {
+        -webkit-transform: translate(-50%, -70%);
+                transform: translate(-50%, -70%);
+      }
+    }
+    .desk_game canvas {
+      border: 1px solid white;
+      margin: 1rem;
+    }
+    .meta_controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      margin: 0.5rem 1rem;
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-pack: justify;
+              justify-content: space-between;
+      -webkit-box-align: center;
+              align-items: center;
+    }
+    .meta_btn {
+      padding: 0 1rem 3rem;
+    }
+    .meta_btn.exit {
+      color: white;
+      font-size: 1.8rem;
+      font-family: verdana;
+    }
+    .control_btn {
+      position: fixed;
+      padding-bottom: 2.5rem;
+      padding-top: 5rem;
+    }
+    .control_btn.a {
+      bottom: 0;
+      left: 0;
+      padding-left: 2.5rem;
+      padding-right: 3rem;
+    }
+    .control_btn.b {
+      bottom: 0;
+      right: 0;
+      padding-left: 3rem;
+      padding-right: 2.5rem;
+    }
+    .control_btn button {
+      font-family: 'PICO-8';
+      border: 2px solid white;
+      border-radius: 50%;
+      width: 2.6rem;
+      padding: 1.3rem 0;
+      color: white;
+      font-size: 0.8rem;
+      line-height: 0;
+    }
+    .control_btn.a button {
+      background-color: #ff004d; /* pico-8 red */
+    }
+    .control_btn.b button {
+      background-color: #83769c; /* pico-8 indigo */
+    }
+    .control_btn button::before {
+      font-family: verdana;
+      font-size: 14px;
+      content: '\00a0'; /* space */
+    }
+    .control_btn button:focus {
+      outline: 0;
+    }
+    .playing #separator {
+      margin-top: 3.6rem;
+    }
+    .gif_wrapper {
+      position: relative;
+      display: inline-block;
+      display: inline-grid;
+    }
+    .gif_wrapper > .notice::after {
+      content: "This isn't the game (please scroll down!)";
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      font-style: italic;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 0.08s;
+    }
+    .gif_wrapper:hover > .notice::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="logo">
+    <img src="sk8border_logo.png">
+  </div>
+  <h1>[DEBUG BUILD]</h1>
+  <div class="touch_game">
+    <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
+    <div class="meta_controls">
+      <img class="meta_btn pause">
+      <img class="meta_btn reset">
+      <span class="meta_btn exit">×</span>
+    </div>
+    <div class="control_btn a"><button>Î</button></div>
+    <div class="control_btn b"><button>×</button></div>
+    <div class="status"></div>
+  </div>
+  <center class="main">
+  <div class="gif_wrapper">
+    <img src="./img/preview_gif_compressed.gif">
+    <div class="notice"></div>
+  </div>
+  <h3 id="lang">====================<br/>[ENGLISH] - <a href="fr.html">FRANÇAIS</a><br>====================<h3>
+    <h1 id="slogan">Lay that Wall to Waste!</h1>
+    <p>Sk8Border was created in Montréal in March/April 2018 for the <a href="https://itch.io/jam/antifa-game-jam">Anti-Fascist Game Jam</a> as a collaborative effort by Leif Halldór Ásgeirsson, <a href="http://uncanard.com">Marc-André Toupin</a> and <a href="https://benwiley.org">Ben Wiley</a>. It is built with <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
+    <p>This game runs in your web browser - even on your phone!</p>
+    <button id="play_game">Let&#39;s go!</button>
+    <div class="desk_game">
+      <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
+      <div class="desk_controls">
+        <div class=pico8_el onclick="Module.pico8Reset();">
+          <img class="reset" width=12 height=12/> Reset
+        </div>
+
+        <div class=pico8_el onclick="Module.pico8TogglePaused();">
+          <img class="pause" width=12 height=12/> Pause
+        </div>
+
+        <div class=pico8_el onclick="Module.requestFullScreen(true, false);">
+          <img class="fullscreen" width=12 height=12/> Fullscreen
+        </div>
+
+        <div class=pico8_el onclick="Module.pico8ToggleSound();">
+          <img class="sound" width=12 height=12/> Sound
+        </div>
+
+        <div class=pico8_el>
+          <a target="_new" href="http://www.lexaloffle.com/bbs/?cat=7&sub=2">
+            <img class="carts" width=12 height=12/> Carts
+          </a>
+        </div>
+      </div>
+    </div>
+  <h3 id="separator">==============================</h3>
+  <h2>Download</h2>
+  <p>Binaries for Linux, Windows and Mac are available from <a href="" id="itch">ITCH.IO</a></p>
+  <h2 id="opensource">This game is open source. Woah!</h2>
+  <p><a href="https://github.com/sk8border/sk8border/">GITHUB REPOSITORY</a></p>
+  <p><small>Or load this cart in PICO-8!</small></br></br><img src = "./debug.p8.png"></img></p>
+    <h2 id="fonts">Fonts on this page</h2>
+    <ul>
+      <li><a href="http://pixel-fonts.com/">Softsquare</a> font by <a href="https://twitter.com/chevyray">Chevy Ray Johnston</a></li>
+      <li>Thanks to <a href="https://www.lexaloffle.com/bbs/?tid=3760">RhythmLynx</a> for making the PICO-8 font available on the web, and to <a href="https://twitter.com/lexaloffle">Zep</a> for developing it!</li>
+    </ul>
+  </center>
+
+  <script>
+    var imgSrcs = {
+      pause: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      reset: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      fullscreen: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      sound: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII=',
+      carts: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAlElEQVR4Ae2dMQ5FQBCGh6jcwAkkateg3DiAa+iQUGqVKi95FQfAJRQOoHeBUf8JyQqKjZ1uMzuz2e/LTE3KhyF7kSlgLOykas23f6D+A9Yp84aAOYU15pcJnfji0Il2ID8HzC4y38ZrnfIBGxeRoR3c3EWrACdsV5BOsx7OSRnrOXh4F5HzA6bevwUn8wlz7eCDsQM99B3ks0s/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII='
+    };
+    Object.keys(imgSrcs).forEach(function(className) {
+      var imgs = document.getElementsByClassName(className);
+      for (var i = 0; i < imgs.length; i++) {
+        imgs[i].src = imgSrcs[className];
+      }
+    });
+  </script>
+  <script>
+    // PICO-8 setup
+    var Module = {};
+    // disable autostart
+    Module.noInitialRun = true;
+    window.LANG_FR=false;
+  </script>
+  <script src="debug.js"></script>
+  <script>
+    // key blocker. prevent cursor keys from scrolling page while playing cart.
+    function onKeyDown_blocker(event) {
+      event = event || window.event;
+      var o = document.activeElement;
+      if (!o || o == document.body || o.tagName == "canvas") {
+        if ([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+          if (event.preventDefault) event.preventDefault();
+        }
+      }
+    }
+    document.addEventListener('keydown', onKeyDown_blocker, false);
+  </script>
+  <script src="sk8border_touch_ui.js"></script>
+  <script src="https://unpkg.com/pico8-gpio-listener@0.2.1/pico8-gpio-listener.js"></script>
+  <script src="sk8border_gpio_vibrations.js"></script>
+  <script src="https://static.itch.io/api.js"></script>
+  <script>
+    Itch.attachBuyButton(document.getElementById('itch'), {
+      user: 'sk8border',
+      game: 'sk8border'
+    });
+  </script>
+</body>
+
+</html>

@@ -1,5 +1,6 @@
 *.gif
 *.png
+!*.p8.png
 *.jpg
 *.wav
 *.gal
