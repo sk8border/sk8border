@@ -5,7 +5,7 @@ __lua__
 
 cartdata('sk8border')
 
-debug = false
+debug = true
 
 storage_key_hi_score = 0
 storage_key_tutorial = 2
@@ -345,7 +345,7 @@ ground_y = 8*14.5
 launch_frm_time = 8
 launch_time = launch_frm_time*2
 max_grind_y = 30
-grind_y_offset = 2
+grind_y_offset = 4
 land_time = 10
 idle_bob_time = 8
 title_wall_y = 8 * 8
@@ -533,9 +533,9 @@ timer_ready = tut_complete
 destruct_level = 0
 
 -- for debug info
-max_dy = nil
-max_y = nil
-min_y = nil
+max_dy = 0
+max_y = 0
+min_y = 1000
 
 wall_height_drawing_box = nil
 wall_width_drawing_box = nil
@@ -2205,34 +2205,32 @@ function draw_wall_outline(wall)
 end
 
 function print_debug_messages()
- assert(false, "uncomment print_debug_messages body!")
--- if max_dy == nil or max_dy < player.dy then
---  max_dy = player.dy
--- end
+ if (max_dy < player.dy) max_dy = player.dy
+ if (max_y < player.y) max_y = player.y
+ if (min_y > player.y) min_y = player.y
 
--- if max_y == nil or max_y < player.y then
---  max_y = player.y
--- end
-
--- if min_y == nil or min_y > player.y then
---  min_y = player.y
--- end
-
--- local debug_messages = {
---  "walls: "..tostr(#walls),
---  "player: ("..tostr(player.x)..", "..tostr(player.y)..")",
---  "player state: "..tostr(p_state),
---  "player dy: "..tostr(player.dy),
---  "max y: "..tostr(max_y),
---  "min y: "..tostr(min_y),
---  "max dy: "..tostr(max_dy)
--- }
--- for i=1,#debug_messages do
---  print(debug_messages[i], 1, (i-1)*6 + 16, 1)
--- end
+ local debug_messages = {
+  -- "walls: "..#walls,
+  "player: "..player.x..","..player.y,
+  "player state: "..p_state,
+  "player dy: "..player.dy,
+  -- "max y: "..max_y,
+  -- "min y: "..min_y,
+  -- "max dy: "..max_dy
+ }
+ local btns="buttons: "
+ for i=0,5 do
+  if (btn(i)) btns = btns..i..","
+ end
+ add(debug_messages,btns)
+ for i=1,#debug_messages do
+  super_print(debug_messages[i], 56, i*6 + 86)
+ end
 end
 
-function super_print(text,x,y,maincol,backcol)
+function super_print(text,x,y)
+ local maincol = 7
+ local backcol = 2
  print_fr(
   text,
   x+1,
@@ -2506,9 +2504,7 @@ function _draw()
     super_print(
      text,
      8*8 - (#text*4)/2,
-     liney,
-     7,  -- main color
-     2  -- back color
+     liney
     )
    end
    ---- draw press-to-
@@ -2522,9 +2518,7 @@ function _draw()
     super_print(
      text,
      8*8 - (#text*4)/2,
-     liney + 16,
-     7,  -- main color
-     2  -- back color
+     liney + 16
     )
    end
   end
@@ -2581,10 +2575,6 @@ function _draw()
 
  combo_print()
 
- if debug then
-  print_debug_messages()
- end
-
  -- layer title screen on top
  draw_title()
 
@@ -2597,6 +2587,10 @@ function _draw()
   elseif timer <= 10 then
    print_big_center(timer,6,9)
   end
+ end
+
+ if debug then
+  print_debug_messages()
  end
 
 -- game over screen
