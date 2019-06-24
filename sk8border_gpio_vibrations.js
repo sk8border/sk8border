@@ -24,6 +24,9 @@
       mask = mask << 1;
     }
   }
+  window.writeNumberToGpio_global = function(num, pinIndex, bits) {
+    writeNumberToGpio(gpio, num, pinIndex, bits);
+  };
 
   function groundVibration() {
     // TODO: implement a ground vibration? maybe?

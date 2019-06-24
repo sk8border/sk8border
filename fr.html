@@ -36,7 +36,7 @@
       font-family: Softsquare;
       line-height: 2rem;
     }
-    h1, h2, p, ul, #play_game {
+    h1, h2, p, ul, #play_game, #play_game_30fps {
       margin-left: 1rem;
       margin-right: 1rem;
     }
@@ -130,20 +130,34 @@
     .pico8_el:link {
       background-color: #aaa;
     }
-    #play_game {
-      font-size: 2rem;
+    #play_game,
+    #play_game_30fps {
       color: white;
-      padding: 0.5rem 1rem;
       font-family: Softsquare;
       background-color: #ff004d; /* pico-8 red */
-      border: 3px solid white;
-      border-radius: 15px;
+      border-style: solid;
+      border-color: white;
       cursor: pointer;
+    }
+    #play_game {
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 15px;
+      border-width: 3px;
+      line-height: 3rem;
       margin-top: 1rem;
       margin-bottom: 1rem;
-      line-height: 3rem;
     }
-    #play_game.hidden {
+    #play_game_30fps {
+      font-size: 1.2rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 9px;
+      border-width: 2px;
+      line-height: 1.8rem;
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+    *.hidden {
       display: none;
     }
     .touch_game, .desk_game {
@@ -298,11 +312,13 @@
     <img src="./img/preview_gif_compressed.gif">
     <div class="notice"></div>
   </div>
-  <h3 id="lang">====================<br/>[FRANÇAIS] - <a href="index.html">ENGLISH</a><br>====================<h3>
+  <h3 id="lang">====================<br/>[FRANÇAIS] - <a href=".">ENGLISH</a><br>====================<h3>
     <h1 id="slogan">Fracassez la frontière!</h1>
     <p>Sk8Border a été créé à Montréal en mars/avril 2018 pour le <a href="https://itch.io/jam/antifa-game-jam">Game Jam Antifasciste</a>, par Leif Halldór Ásgeirsson, <a href="http://uncanard.com">Marc-André Toupin</a> et <a href="https://benwiley.org">Ben Wiley</a>. Il est fait avec <a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>.</p>
     <p>Ce jeu fonctionne dans le navigateur - même sur les téléphones!</p>
     <button id="play_game">Allons-y!</button>
+    <p class="or_for_slower">Or, if your device runs a bit slower:</p>
+    <button id="play_game_30fps">30fps version</button>
     <div class="desk_game">
       <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
       <div class="desk_controls">
@@ -328,6 +344,13 @@
           </a>
         </div>
       </div>
+      <br>
+      <p class="switch_to_30">
+        Game lagging a bit? <a href="">Try the 30fps version</a>
+      </p>
+      <p class="switch_to_60 hidden">
+        Is your device pretty fast? <a href="">Try running Sk8Border at 60fps</a>
+      </p>
     </div>
   <h3 id="separator">==============================</h3>
   <h2>Télécharger</h2>
