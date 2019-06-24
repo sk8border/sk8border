@@ -36,7 +36,7 @@
       font-family: Softsquare;
       line-height: 2rem;
     }
-    h1, h2, p, ul, #play_game {
+    h1, h2, p, ul, #play_game, #play_game_30fps {
       margin-left: 1rem;
       margin-right: 1rem;
     }
@@ -130,20 +130,34 @@
     .pico8_el:link {
       background-color: #aaa;
     }
-    #play_game {
-      font-size: 2rem;
+    #play_game,
+    #play_game_30fps {
       color: white;
-      padding: 0.5rem 1rem;
       font-family: Softsquare;
       background-color: #ff004d; /* pico-8 red */
-      border: 3px solid white;
-      border-radius: 15px;
+      border-style: solid;
+      border-color: white;
       cursor: pointer;
+    }
+    #play_game {
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
+      border-radius: 15px;
+      border-width: 3px;
+      line-height: 3rem;
       margin-top: 1rem;
       margin-bottom: 1rem;
-      line-height: 3rem;
     }
-    #play_game.hidden {
+    #play_game_30fps {
+      font-size: 1.2rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 9px;
+      border-width: 2px;
+      line-height: 1.8rem;
+      margin-top: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+    *.hidden {
       display: none;
     }
     .touch_game, .desk_game {
@@ -303,6 +317,8 @@
     <p>{{{about_sk8border}}}</p>
     <p>{{works_on_mobile}}</p>
     <button id="play_game">{{start_game}}</button>
+    <p class="or_for_slower">{{or_for_slower_device}}</p>
+    <button id="play_game_30fps">{{start_game_30fps}}</button>
     <div class="desk_game">
       <canvas class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
       <div class="desk_controls">
@@ -328,6 +344,13 @@
           </a>
         </div>
       </div>
+      <br>
+      <p class="switch_to_30">
+        {{is_device_slow}} <a href="">{{try_30_fps}}</a>
+      </p>
+      <p class="switch_to_60 hidden">
+        {{can_device_go_faster}} <a href="">{{try_60_fps}}</a>
+      </p>
     </div>
   <h3 id="separator">==============================</h3>
   <h2>{{download}}</h2>
