@@ -10,14 +10,39 @@
     window.pico8_buttons = [0];
     document.body.classList.add('using_touch');
   }
+  function startGame60fps() {
+    startGame(60);
+  }
+  function startGame30fps() {
+    startGame(30);
+  }
   var game_started = false;
   var game_started_once = false;
-  function startGame() {
+  var last_chosen_framerate = null;
+  function startGame(framerate) {
+    if (last_chosen_framerate !== framerate) {
+      var bit = framerate === 30 ? 1 : 0;
+      window.writeNumberToGpio_global(bit, 0, 1);
+      resetGame();
+      last_chosen_framerate = framerate;
+      if (framerate === 30) {
+        qS('.switch_to_30').classList.add('hidden');
+        qS('.switch_to_60').classList.remove('hidden');
+      } else {
+        qS('.switch_to_60').classList.add('hidden');
+        qS('.switch_to_30').classList.remove('hidden');
+      }
+    }
     if (game_started) {
+      if (game_paused) {
+        toggleGamePaused();
+      }
       return;
     }
     document.body.classList.add('playing');
     qS('#play_game').classList.add('hidden');
+    qS('#play_game_30fps').classList.add('hidden');
+    qS('.or_for_slower').classList.add('hidden');
     if (!game_started_once) {
       // choose canvas
       var namespace = using_touch ? '.touch_game' : '.desk_game';
@@ -45,6 +70,7 @@
     clearInterval(window.vibrateInterval);
     if (navigator.vibrate) navigator.vibrate(0);
     qS('#play_game').classList.remove('hidden');
+    qS('#play_game_30fps').classList.remove('hidden');
     if (!game_paused) {
       toggleGamePaused();
     }
@@ -124,7 +150,22 @@
   }, true);
 
   var start_btn = qS('#play_game');
-  start_btn.addEventListener('click', startGame);
+  start_btn.addEventListener('click', startGame60fps);
+
+  var start_btn_30fps = qS('#play_game_30fps');
+  start_btn_30fps.addEventListener('click', startGame30fps);
+
+  var switch_to_30fps = qS('.switch_to_30 a');
+  switch_to_30fps.addEventListener('click', function(e) {
+    e.preventDefault();
+    startGame30fps();
+  });
+
+  var switch_to_60fps = qS('.switch_to_60 a');
+  switch_to_60fps.addEventListener('click', function(e) {
+    e.preventDefault();
+    startGame60fps();
+  });
 
   var pause_btn = qS('.meta_btn.pause');
   pause_btn.addEventListener('click', toggleGamePaused);
