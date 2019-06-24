@@ -6,6 +6,17 @@ const enStrings = require('./web_template/en.json');
 const frStrings = require('./web_template/fr.json');
 const buildConfig = require('./build_config.json');
 
+function getWebPathname(filename) {
+  let pathname = filename;
+  if (pathname.endsWith('.html')) {
+    pathname = pathname.slice(0, -5);
+  }
+  if (pathname === 'index') {
+    pathname = '.';
+  }
+  return pathname;
+}
+
 const template = fs.readFileSync(
   path.join(__dirname, 'web_template', 'template.html'),
   'utf-8'
@@ -21,7 +32,7 @@ fs.writeFileSync(
       {},
       enStrings,
       {
-        other_lang_href: buildConfig.html_fr,
+        other_lang_href: getWebPathname(buildConfig.html_fr),
         build_filename: buildConfig.build_filename,
         lang_fr: JSON.stringify(false)
       }
@@ -37,7 +48,7 @@ fs.writeFileSync(
       {},
       frStrings,
       {
-        other_lang_href: buildConfig.html_en,
+        other_lang_href: getWebPathname(buildConfig.html_en),
         build_filename: buildConfig.build_filename,
         lang_fr: JSON.stringify(true)
       }
