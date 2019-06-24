@@ -73,10 +73,12 @@
     window.codo_command = 4;
   }
   function resetGame() {
-    if (!game_started) {
+    if (!game_started_once) {
       return;
     }
-    window.codo_command = 1;
+    requestAnimationFrame(function() {
+      window.codo_command = 1;
+    });
   }
 
   // game controls
