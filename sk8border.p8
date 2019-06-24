@@ -2603,7 +2603,7 @@ function _draw()
 --draw_game_over()
 end
 
-function _update60()
+function update()
  check_language()
 
  nonstop_t += 1
@@ -2951,6 +2951,16 @@ function _update60()
    current_combo = ""
   end
  end
+end
+
+if read_gpio(0,1) == 1 then
+ -- 30 fps update
+ _update = function()
+  update()
+  update()
+ end
+else
+ _update60 = update
 end
 __gfx__
 00000000700000000000000000000007888888888888888800677777777777771111111111111111111111111111111188888888888888888888888888888888
