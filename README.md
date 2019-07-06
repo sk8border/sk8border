@@ -77,6 +77,12 @@ Follow the same steps as the regular minified build, but:
 
 ### Finish up
 
+Commit changes:
+
+```console
+git add index.js sk8border.p8.png && git commit -m "Built."
+```
+
 Push:
 
 ```console
