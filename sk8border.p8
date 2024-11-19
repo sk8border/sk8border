@@ -559,6 +559,19 @@ function tutorial_start()
  tut_pause_delay = 0
  tut_pause_elapsed = 0
  tut_successes={}
+
+ -- added initialization
+ -- to preserve music progression
+ -- syncing to tutorial progress
+ -- on 2nd tutorial play
+ tut_success_t = 0
+ post_tut_msg_t = 0
+ tut_theme_triggers_done = {}
+ removed_pattern_offset = 0
+ tut_paused = false
+ tut_can_resume = false
+ tut_should_pause = false
+ reload_music()
 end
 
 function tutorial_achieve(step)
@@ -591,7 +604,7 @@ function tutorial_achieve(step)
  if just_achieved
  then
   tut_successes[step]=true
-  to_break = 0
+  local to_break = 0
   if step > tut_highest_success
   then
    tut_highest_success = step
@@ -666,7 +679,7 @@ function write_gpio(num,i,bits)
  local lastbit_i = 0x5f80+i+bits-1
  local mask = 1
  for j=0,bits-1 do
-  local bit = shr(band(num, mask), j)
+  local bit = shr(num&mask, j)
   poke(lastbit_i-j, bit*255)
   mask = shl(mask, 1)
  end
@@ -707,7 +720,7 @@ function has_end_loop(pattern_i)
   end_loop_byte_offset
  )
  local byte = peek(address)
- return band(byte, 0b10000000) > 0
+ return byte&0b10000000 > 0
 end
 
 function unloop_pattern(pattern_i)
@@ -717,8 +730,18 @@ function unloop_pattern(pattern_i)
   end_loop_byte_offset
  )
  local byte = peek(address)
+
  -- set loop bit to 0
- poke(address, band(byte, 0b01111111))
+ -- note: & is recommended over band()
+ poke(address, byte&0b01111111)
+end
+
+function reload_music()
+ reload(
+  music_start_address, 
+  music_start_address, 
+  music_end_address-music_start_address
+ )
 end
 
 function remove_music_section(
@@ -2956,6 +2979,9 @@ function update()
  -- display score
  -- slot machine thingy
  if display_score <
+ score - 20 then
+  display_score += 3
+ elseif display_score <
  score then
   display_score += 1
  end
