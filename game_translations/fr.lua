@@ -56,6 +56,8 @@ return {
   score="score:",
   hi_score="hi score:",
   press_buttons="appuyez sur 🅾️ (z) ou ❎ (x)",
+  press_play="jouer: appuyez sur 🅾️ (z)",
+  press_tutorial="tutoriel: appuyez sur ❎ (x)",
   wreck_that_wall="explosons ce mur!",
   tut_press_resume="(appuyez pour continuer)",
   overtime="extension!",

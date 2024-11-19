@@ -8,18 +8,36 @@
 local sub = sub or string.sub
 local tonum = tonum or tonumber
 
--- ASCII US "unit separator"
--- used to delimit both keys and values
-local token_sep = '\31'
+-- old deprecated separators: have been updated to valid P8SCII control characters
+-- in order for minification with picotools to work
 
--- ASCII GS "group separator"
+-- -- ASCII US "unit separator"
+-- -- used to delimit both keys and values
+-- local token_sep = '\31'
+
+-- -- ASCII GS "group separator"
+-- -- used to delimit the begining of a
+-- -- subtable following a key
+-- local subtable_start = '\29'
+
+-- -- ASCII RS "record separator"
+-- -- used to delimit the end of a subtable
+-- local subtable_end = '\30'
+
+-- new separators
+
+-- P8SCII-compatible "Hollow square" (Japanese punctuation)
+-- used to delimit both keys and values
+local token_sep = '□'
+
+-- P8SCII-compatible "Vertical rectangle" (Japanese punctuation)
 -- used to delimit the begining of a
 -- subtable following a key
-local subtable_start = '\29'
+local subtable_start = '▮'
 
--- ASCII RS "record separator"
+-- P8SCII-compatible "Filled square" (Japanese punctuation)
 -- used to delimit the end of a subtable
-local subtable_end = '\30'
+local subtable_end = '■'
 
 function stringify_table(table)
   local str = ''
