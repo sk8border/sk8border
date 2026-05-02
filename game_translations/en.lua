@@ -11,12 +11,12 @@ return {
     "play sk8border!"
   },
   tut_prompt_jump={
-    "hold 🅾️ (z) or ❎ (x)",
+    "hold 🅾️ ($1) or ❎ ($2)",
     "to crouch",
     "...and release to jump!"
   },
   tut_prompt_grind={
-    "hold 🅾️ (z) or ❎ (x)",
+    "hold 🅾️ ($1) or ❎ ($2)",
     "while jumping to land",
     "and grind on a wall."
   },
@@ -32,8 +32,8 @@ return {
   },
   tut_prompt_grind_switch={
     "alternate between",
-    "a nosegrind with 🅾️ (z)",
-    "and a 5-0 with ❎ (x) to fill",
+    "a nosegrind with 🅾️ ($1)",
+    "and a 5-0 with ❎ ($2) to fill",
     "your power meter faster!"
   },
   tut_prompt_destroy={
@@ -53,9 +53,9 @@ return {
   bring_it_down="bring it down!",
   score="score:",
   hi_score="hi score:",
-  press_buttons="press 🅾️ (z) or ❎ (x)",
-  press_play="press 🅾️ (z) to play",
-  press_tutorial="press ❎ (x) for tutorial",
+  press_buttons="press 🅾️ ($1) or ❎ ($2)",
+  press_play="press 🅾️ ($1) to play",
+  press_tutorial="press ❎ ($2) for tutorial",
   wreck_that_wall="let's wreck that wall!",
   tut_press_resume="(press to resume)",
   overtime="overtime!",

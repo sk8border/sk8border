@@ -147,6 +147,25 @@ function encode_table(table)
  end
 end
 
+-- load button names from config
+local config = dofile("button_name_config")
+
+function replace_button_placeholders(str)
+  str = str:gsub("%($1%)", "("..btn_1_name..")")
+  str = str:gsub("%($2%)", "("..btn_2_name..")")
+  return str
+end
+
+function process_table_placeholders(tbl)
+  for k, v in pairs(tbl) do
+    if type(v) == "table" then
+      process_table_placeholders(v)
+    elseif type(v) == "string" then
+      tbl[k] = replace_button_placeholders(v)
+    end
+  end
+end
+
 -- do the thing
 
 i18n_en = require "game_translations/en"
@@ -154,6 +173,8 @@ i18n_fr = require "game_translations/fr"
 
 encode_table(i18n_en)
 encode_table(i18n_fr)
+process_table_placeholders(i18n_en)
+process_table_placeholders(i18n_fr)
 
 before_delimiter = "-- generated_translations_begin\n"
 after_delimiter = "-- generated_translations_end"

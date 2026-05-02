@@ -11,12 +11,12 @@ return {
     "à sk8border!"
   },
   tut_prompt_jump={
-    "maintenez 🅾️ (z) ou ❎ (x)",
+    "maintenez 🅾️ ($1) ou ❎ ($2)",
     "pour vous accroupir...",
     "et relâchez pour sauter!"
   },
   tut_prompt_grind={
-    "maintenez 🅾️ (z) ou ❎ (x)",
+    "maintenez 🅾️ ($1) ou ❎ ($2)",
     "pendant un saut pour",
     "aterrir et grinder",
 	  "sur un mur."
@@ -34,8 +34,8 @@ return {
   },
   tut_prompt_grind_switch={
     "alternez entre",
-    "un nosegrind avec 🅾️ (z)",
-    "et un 5-0 avec ❎ (x) pour",
+    "un nosegrind avec 🅾️ ($1)",
+    "et un 5-0 avec ❎ ($2) pour",
     "remplir la jauge plus vite!"
   },
   tut_prompt_destroy={
@@ -55,9 +55,9 @@ return {
   bring_it_down="à bas le mur!",
   score="score:",
   hi_score="hi score:",
-  press_buttons="appuyez sur 🅾️ (z) ou ❎ (x)",
-  press_play="jouer: appuyez sur 🅾️ (z)",
-  press_tutorial="tutoriel: appuyez sur ❎ (x)",
+  press_buttons="appuyez sur 🅾️ ($1) ou ❎ ($2)",
+  press_play="jouer: appuyez sur 🅾️ ($1)",
+  press_tutorial="tutoriel: appuyez sur ❎ ($2)",
   wreck_that_wall="explosons ce mur!",
   tut_press_resume="(appuyez pour continuer)",
   overtime="extension!",

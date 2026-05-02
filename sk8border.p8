@@ -7,6 +7,11 @@ cartdata('sk8border')
 
 debug = false
 
+-- vars for non-web builds
+-- forcing specific behaviors
+ignore_accent_markers = false
+force_30_fps = false
+
 storage_key_hi_score = 0
 storage_key_tutorial = 2
 
@@ -55,11 +60,11 @@ end
 -- generated_translations_begin
 i18n_en=
 table_from_string(
- 'lyric_6□♪that wall is comin down♪□tut_prompt_complete▮1□tutorial complete!□■tut_prompt_jump▮1□hold 🅾️ (z) or ❎ (x)□2□to crouch□3□...and release to jump!□■lyric_2□♪down that wall♪□lyric_1□♪we\'re gonna take♪□overtime□overtime!□press_buttons□press 🅾️ (z) or ❎ (x)□hi_score□hi score:□lyric_3□♪break it!♪□press_play□press 🅾️ (z) to play□tut_prompt_wall_down▮1□continue holding at the□2□end of a high wall to land□3□on the wall below it.□■time_up□time\'s up!□tut_prompt_destroy▮1□now your final challenge:□2□grind long enough to knock□3□down that wall!□■tut_prompt_go▮1□let\'s go!□■press_tutorial□press ❎ (x) for tutorial□lyric_5□♪down that wall♪□tut_prompt_start▮1□let\'s learn how to□2□play sk8border!□■tut_press_resume□(press to resume)□tut_prompt_grind_switch▮1□alternate between□2□a nosegrind with 🅾️ (z)□3□and a 5-0 with ❎ (x) to fill□4□your power meter faster!□■wreck_that_wall□let\'s wreck that wall!□lyric_7□*interlude harmonique*□lyric_4□♪we will tear♪□bring_it_down□bring it down!□score□score:□tut_prompt_good▮1□nice!□■tut_prompt_wall_up▮1□release to jump off the wall,□2□then land on a higher□3□wall segment.□■tut_prompt_grind▮1□hold 🅾️ (z) or ❎ (x)□2□while jumping to land□3□and grind on a wall.□■'
+ 'tut_prompt_destroy▮1□now your final challenge:□2□grind long enough to knock□3□down that wall!□■hi_score□hi score:□press_tutorial□press ❎ (x) for tutorial□lyric_6□♪that wall is comin down♪□press_play□press 🅾️ (z) to play□time_up□time\'s up!□tut_prompt_complete▮1□tutorial complete!□■lyric_1□♪we\'re gonna take♪□overtime□overtime!□lyric_4□♪we will tear♪□tut_prompt_jump▮1□hold 🅾️ (z) or ❎ (x)□2□to crouch□3□...and release to jump!□■tut_prompt_start▮1□let\'s learn how to□2□play sk8border!□■lyric_2□♪down that wall♪□press_buttons□press 🅾️ (z) or ❎ (x)□lyric_3□♪break it!♪□tut_prompt_wall_down▮1□continue holding at the□2□end of a high wall to land□3□on the wall below it.□■tut_prompt_go▮1□let\'s go!□■tut_press_resume□(press to resume)□bring_it_down□bring it down!□score□score:□tut_prompt_grind_switch▮1□alternate between□2□a nosegrind with 🅾️ (z)□3□and a 5-0 with ❎ (x) to fill□4□your power meter faster!□■lyric_5□♪down that wall♪□wreck_that_wall□let\'s wreck that wall!□tut_prompt_good▮1□nice!□■tut_prompt_wall_up▮1□release to jump off the wall,□2□then land on a higher□3□wall segment.□■lyric_7□*interlude harmonique*□tut_prompt_grind▮1□hold 🅾️ (z) or ❎ (x)□2□while jumping to land□3□and grind on a wall.□■'
 )
 i18n_fr=
 table_from_string(
- 'lyric_6□♪ce mur va tomber♪□tut_prompt_complete▮1□tutoriel termin|e!□■tut_prompt_jump▮1□maintenez 🅾️ (z) ou ❎ (x)□2□pour vous accroupir...□3□et rel^achez pour sauter!□■lyric_2□♪tomber ce mur♪□lyric_1□♪nous allons faire♪□overtime□extension!□press_buttons□appuyez sur 🅾️ (z) ou ❎ (x)□hi_score□hi score:□lyric_3□♪par terre!♪□press_play□jouer: appuyez sur 🅾️ (z)□tut_prompt_wall_down▮1□maintenez le bouton enfonc|e□2□`a la fin d\'un mur haut□3□pour atterrir sur le mur□4□plus bas.□■time_up□fini!□tut_prompt_destroy▮1□votre d|efi final:□2□grindez assez longtemps□3□pour d|etruire ce mur!□■tut_prompt_go▮1□allons-y!□■press_tutorial□tutoriel: appuyez sur ❎ (x)□lyric_5□♪ce stupide mur♪□tut_prompt_start▮1□apprenons `a jouer□2□`a sk8border!□■tut_press_resume□(appuyez pour continuer)□tut_prompt_grind_switch▮1□alternez entre□2□un nosegrind avec 🅾️ (z)□3□et un 5-0 avec ❎ (x) pour□4□remplir la jauge plus vite!□■wreck_that_wall□explosons ce mur!□lyric_7□*interlude harmonique*□lyric_4□♪nous d|emolirons♪□bring_it_down□`a bas le mur!□score□score:□tut_prompt_good▮1□bien!□■tut_prompt_wall_up▮1□rel^achez pour sauter du mur,□2□puis atterrissez sur une□3□section de mur plus haute.□■tut_prompt_grind▮1□maintenez 🅾️ (z) ou ❎ (x)□2□pendant un saut pour□3□aterrir et grinder□4□sur un mur.□■'
+ 'tut_prompt_destroy▮1□votre d|efi final:□2□grindez assez longtemps□3□pour d|etruire ce mur!□■hi_score□hi score:□press_tutorial□tutoriel: appuyez sur ❎ (x)□lyric_6□♪ce mur va tomber♪□press_play□jouer: appuyez sur 🅾️ (z)□time_up□fini!□tut_prompt_complete▮1□tutoriel termin|e!□■lyric_1□♪nous allons faire♪□overtime□extension!□lyric_4□♪nous d|emolirons♪□tut_prompt_jump▮1□maintenez 🅾️ (z) ou ❎ (x)□2□pour vous accroupir...□3□et rel^achez pour sauter!□■tut_prompt_start▮1□apprenons `a jouer□2□`a sk8border!□■lyric_2□♪tomber ce mur♪□press_buttons□appuyez sur 🅾️ (z) ou ❎ (x)□lyric_3□♪par terre!♪□tut_prompt_wall_down▮1□maintenez le bouton enfonc|e□2□`a la fin d\'un mur haut□3□pour atterrir sur le mur□4□plus bas.□■tut_prompt_go▮1□allons-y!□■tut_press_resume□(appuyez pour continuer)□bring_it_down□`a bas le mur!□score□score:□tut_prompt_grind_switch▮1□alternez entre□2□un nosegrind avec 🅾️ (z)□3□et un 5-0 avec ❎ (x) pour□4□remplir la jauge plus vite!□■lyric_5□♪ce stupide mur♪□wreck_that_wall□explosons ce mur!□tut_prompt_good▮1□bien!□■tut_prompt_wall_up▮1□rel^achez pour sauter du mur,□2□puis atterrissez sur une□3□section de mur plus haute.□■lyric_7□*interlude harmonique*□tut_prompt_grind▮1□maintenez 🅾️ (z) ou ❎ (x)□2□pendant un saut pour□3□aterrir et grinder□4□sur un mur.□■'
 )
 -- generated_translations_end
 
@@ -100,12 +105,12 @@ function print_fr(str,x,y,col)
  local p = 1
  while p <= #str do
   local c=sub(str,p,p)
-  if dat[c] then
+  if not ignore_accent_markers and dat[c] then
    print(
-    dat[c][1],
-    x + dat[c][2],
-    y + dat[c][3],
-    col
+     dat[c][1],
+     x + dat[c][2],
+     y + dat[c][3],
+     col
    )
    p += 1
    c = sub(str,p,p)
@@ -3010,7 +3015,7 @@ function update()
  end
 end
 
-if read_gpio(0,1) == 1 then
+if force_30_fps or read_gpio(0,1) == 1 then
  -- 30 fps update
  _update = function()
   update()

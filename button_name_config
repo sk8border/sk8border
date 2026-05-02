@@ -1,0 +1,5 @@
+-- button names for translation substitution
+-- these replace ($1) and ($2) placeholders in translations
+
+btn_1_name = 'z'
+btn_2_name = 'x'
